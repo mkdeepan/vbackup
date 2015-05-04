@@ -1,0 +1,247 @@
+<div class="wrap-content container" id="container">
+<!-- start: PAGE TITLE -->
+<section id="page-title">
+<div class="row">
+	<div class="col-sm-8">
+		<h1 class="mainTitle">Paypal Additional Table</h1>
+		<span class="mainDescription">Additional costs during paypal transaction</span>
+	</div>
+	<ol class="breadcrumb">
+		<li>
+		<span>Admin</span>
+		</li>
+		<li class="active">
+		<span>Paypal</span>
+		</li>
+	</ol>
+</div>
+</section>
+ <?php if($this->session->flashdata('success')) {?>
+    <div class="alert alert-success alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <?php echo $this->session->flashdata('success');?> 
+    </div>
+    <?php } else if($this->session->flashdata('failure')) {?>
+    <div class="alert alert-danger alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <?php echo $this->session->flashdata('failure');?> 
+    </div>
+    <?php } ?>
+<!-- end: PAGE TITLE -->
+<!--<?php var_dump($feedback);?>-->
+
+<!-- start: USER PROFILE -->
+<div class="container-fluid container-fullw bg-white">
+	<div class="row">
+		<div class="col-md-12">
+		   <!--<div class="row">
+			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addon">
+				Add New
+			   </button>
+		   </div>-->
+			<div class="row table-responsive">
+										<table id="sample-table-1" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th>S.No</th>
+													<th>Description</th>
+													<th>Cost</th>
+													<th>Status</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody>
+											<?php if(!empty($payment)){
+												foreach($payment as $key=>$pay){ ?>
+												<tr>
+												<td><?=$key+1?></td>
+												<td><?=ucfirst($pay['description'])?></td>												
+												<td>$<?=$pay['amount']?></td>																								
+												<td><?php echo ($pay['status'])?'Active':'In-active';?></td>																								
+												<td><a href="#" class="edit" data-toggle="modal" data-target="#addon" 
+		                                data-row-id='<?php echo $pay["addonId"]; ?>'
+		                                data-row-desc='<?php echo $pay["description"]; ?>'
+		                                data-row-cost='<?php echo $pay["amount"]; ?>'                           
+		                                data-row-status='<?php echo $pay["status"]; ?>'                           
+		                                title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+		                                <a href="#" class="delete" data-toggle="modal" data-target="#delete" 
+		                                data-row-did='<?php echo $pay["addonId"]; ?>'		                                                         
+		                                title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
+		                              </td>												
+												</tr>
+											<?php } }else{
+												echo "<td align='center' colspan='4'>No records found</td>";
+											} ?>
+											</tbody>
+										</table>
+										<?php //echo $links; ?>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+                               <div class="modal fade" id="addon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel"><span id="addon_header">New paypal addon</span></h4>
+													</div>
+													<form role="form" method="post" id="edit_form" action="<?php echo base_url('admin/paypalAddon');?>">
+													<input type="hidden" name="addonId" id="addonId" value=""/> 
+													<input type="hidden" name="save_addon" id="save_addon" value="Save"  />
+													<div class="modal-body">
+														
+														<div class="row">
+														<div class="col-md-4 col-xs-12">
+														<div class="form-group">														
+														<label>Description</label>
+														<select disabled class="form-control" name="desc_name" id="desc_name">
+														<option value="">--select--</option>
+														<?php if(!empty($payment)){
+															foreach($payment as $var){
+																echo "<option value=".$var['addonId'].">".$var['description']."</option>";
+															}
+														}?>
+														</select>
+														<!--<input type="text" class="form-control" name="desc_name"  id="desc_name" value=""/>-->											
+														</div>
+														</div>
+														
+														<div class="col-md-4 col-xs-12">
+														<div class="form-group">				
+														<label>Cost</label>
+														<input type="number" class="form-control" name="cost" id="cost" value=""/>		
+														</div>
+														</div>
+														
+														<div class="col-md-4 col-xs-12">
+														<div class="form-group">				
+														<label>Status</label>
+														<select class="form-control" name="status" id="status">
+														<option value="">--select status--</option>
+														<option value="1">Active</option>
+														<option value="0">In-active</option>
+														</select>		
+														</div>
+														</div>
+														</div>
+														
+														
+													</div>
+													
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
+															Close
+														</button>
+														<input type="submit" name="save_addon" id="save_addon" value="Save" class="btn btn-primary" />
+														
+													</div>
+													</form>
+												</div>
+											</div>
+										</div>
+										<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Paypal addon delete</span></h4>
+													</div>
+													<form role="form" method="post" id="edit_form" action="<?php echo base_url('admin/paypalAddon');?>">
+													<input type="hidden" name="del_id" id="del_id" value=""/> 
+													<div class="modal-body">
+														
+														<h5>Are you sure want to delete? </h5>														
+														
+													</div>
+													
+													<div class="modal-footer">
+														<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
+															No
+														</button>
+														<input type="submit" name="delete_addon" id="delete_addon" value="Yes" class="btn btn-primary" />
+														
+													</div>
+													</form>
+												</div>
+											</div>
+										</div>
+<script>
+$(document).ready(function(){
+	
+	 $(".delete").on('click', function(){
+	 	var did = $(this).data('row-did');
+	 	$('#del_id').val(did);
+	 });
+	 
+	 $(".edit").on('click', function(){
+        
+         var id = $(this).data('row-id');
+         var desc_name = $(this).data('row-desc');
+         var cost = $(this).data('row-cost');
+         var state = $(this).data('row-status');
+         $('#addonId').val(id);
+         $('#desc_name').val(id);
+         $('#cost').val(cost);
+         $('#status').val(state);
+         
+   });
+   
+   $('body').on('hidden.bs.modal', '.modal', function () {
+   	$(this).find('.has-error').removeClass('has-error');
+   	$('span.help-block').remove();
+   	$(this).find('input').removeClass('help-block');
+   	$(this).find('select').removeClass('help-block');
+      $('#del_id').val("");
+      $('#addonId').val("");
+      $('#desc_name').val("");
+      $('#cost').val("");
+      $('#status').val("");
+   });
+   
+	$('#edit_form').validate({
+		rules:{
+			desc_name:{
+				required: true,
+				remote:{
+								url: "<?php echo base_url();?>admin/checkDescription",
+								type: "post",
+								data: {
+									description_name: function() {
+									  return $( "#desc_name" ).val();
+									},
+									exist_id: function() {
+									  return $( "#addonId" ).val();
+									},
+								}
+						 }
+			},
+			cost:{
+				required:true,
+				number:true,
+			},
+			status:{
+				required:true
+			}
+		},
+		messages:{
+			desc_name:{
+				required:"You can't leave this empty",
+				remote: "Description name already exist"      
+			},
+			cost:{
+				required:"You can't leave this empty",
+				number:"Only numbers are allowed"
+			},
+			status:{
+				required:"You can't leave this empty",
+			}
+		}
+	});
+});
+</script>

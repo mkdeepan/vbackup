@@ -1,0 +1,24 @@
+[21-Jan-2015 03:49:17 America/Chicago] PHP Fatal error:  Call to a member function prepare() on a non-object in /home1/vebinary/public_html/beta/slimtest.php on line 16
+[23-Jan-2015 01:26:11 America/Chicago] PHP Fatal error:  Call to undefined method Slim\Slim::getBody() in /home1/vebinary/public_html/beta/webservice.php on line 46
+[23-Jan-2015 01:26:11 America/Chicago] PHP Fatal error:  Call to undefined method Slim\Slim::getBody() in /home1/vebinary/public_html/beta/webservice.php on line 46
+[23-Jan-2015 01:28:20 America/Chicago] PHP Fatal error:  Call to undefined method Slim\Slim::getBody() in /home1/vebinary/public_html/beta/webservice.php on line 47
+[23-Jan-2015 01:28:26 America/Chicago] PHP Fatal error:  Call to undefined method Slim\Slim::getBody() in /home1/vebinary/public_html/beta/webservice.php on line 47
+[02-Mar-2015 23:42:39 America/Chicago] PHP Parse error:  syntax error, unexpected 'join' (T_STRING) in /home1/vebinary/public_html/beta/webservice.php on line 232
+[12-Mar-2015 12:30:54 America/Chicago] PHP Fatal error:  Call to a member function prepare() on a non-object in /home1/vebinary/public_html/beta/webservice.php on line 57
+[12-Mar-2015 13:18:52 America/Chicago] PHP Parse error:  syntax error, unexpected 'group' (T_STRING) in /home1/vebinary/public_html/beta/webservice.php on line 62
+[13-Mar-2015 04:06:58 America/Chicago] PHP Parse error:  syntax error, unexpected ',' in /home1/vebinary/public_html/beta/webservice.php on line 79
+[13-Mar-2015 04:09:03 America/Chicago] PHP Fatal error:  Cannot use object of type stdClass as array in /home1/vebinary/public_html/beta/webservice.php on line 79
+[13-Mar-2015 04:09:07 America/Chicago] PHP Fatal error:  Cannot use object of type stdClass as array in /home1/vebinary/public_html/beta/webservice.php on line 79
+[13-Mar-2015 04:09:57 America/Chicago] PHP Fatal error:  Cannot use object of type stdClass as array in /home1/vebinary/public_html/beta/webservice.php on line 79
+[13-Mar-2015 04:09:59 America/Chicago] PHP Fatal error:  Cannot use object of type stdClass as array in /home1/vebinary/public_html/beta/webservice.php on line 79
+[13-Mar-2015 04:11:52 America/Chicago] PHP Fatal error:  Cannot use object of type stdClass as array in /home1/vebinary/public_html/beta/webservice.php on line 80
+[13-Mar-2015 04:36:31 America/Chicago] PHP Fatal error:  Call to a member function prepare() on a non-object in /home1/vebinary/public_html/beta/webservice.php on line 73
+[13-Mar-2015 04:38:45 America/Chicago] PHP Fatal error:  Call to a member function prepare() on a non-object in /home1/vebinary/public_html/beta/webservice.php on line 73
+[13-Mar-2015 04:41:51 America/Chicago] PHP Fatal error:  Call to a member function prepare() on a non-object in /home1/vebinary/public_html/beta/webservice.php on line 68
+[02-Apr-2015 07:30:05 America/Chicago] PHP Parse error:  syntax error, unexpected ';' in /home1/vebinary/public_html/beta/webservice.php on line 1317
+[02-Apr-2015 07:30:27 America/Chicago] PHP Parse error:  syntax error, unexpected ';' in /home1/vebinary/public_html/beta/webservice.php on line 1317
+[08-Apr-2015 06:31:15 America/Chicago] PHP Fatal error:  Call to undefined function length() in /home1/vebinary/public_html/beta/webservice.php on line 1325
+[08-Apr-2015 09:05:21 America/Chicago] PHP Fatal error:  Call to undefined function convert_html_to_text() in /home1/vebinary/public_html/beta/webservice.php on line 37
+[08-Apr-2015 09:11:14 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home1/vebinary/public_html/beta/webservice.php on line 1147
+[22-Apr-2015 05:14:20 America/Chicago] PHP Fatal error:  Call to undefined function sendMail() in /home1/vebinary/public_html/beta/webservice.php on line 1493
+[29-Apr-2015 05:19:22 America/Chicago] PHP Parse error:  syntax error, unexpected end of file, expecting variable (T_VARIABLE) or ${ (T_DOLLAR_OPEN_CURLY_BRACES) or {$ (T_CURLY_OPEN) in /home1/vebinary/public_html/beta/webservice.php on line 607

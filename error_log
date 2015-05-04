@@ -1,0 +1,9 @@
+[01-Apr-2015 06:13:27 America/Chicago] PHP Fatal error:  Call to a member function delete_ids() on a non-object in /home1/vebinary/public_html/application/controllers/allergy.php on line 187
+[01-Apr-2015 06:13:59 America/Chicago] PHP Fatal error:  Call to a member function delete_ids() on a non-object in /home1/vebinary/public_html/application/controllers/allergy.php on line 187
+[02-Apr-2015 13:24:16 America/Chicago] PHP Parse error:  syntax error, unexpected end of file in /home1/vebinary/public_html/application/views/sidebar.php on line 132
+[02-Apr-2015 14:44:55 America/Chicago] PHP Fatal error:  Call to undefined function debug_last_query() in /home1/vebinary/public_html/application/models/profile_model.php on line 31
+[02-Apr-2015 14:45:04 America/Chicago] PHP Fatal error:  Call to undefined function debug_last_query() in /home1/vebinary/public_html/application/models/profile_model.php on line 31
+[06-Apr-2015 05:30:49 America/Chicago] PHP Parse error:  syntax error, unexpected end of file in /home1/vebinary/public_html/application/views/template.php on line 169
+[06-Apr-2015 05:31:13 America/Chicago] PHP Parse error:  syntax error, unexpected end of file in /home1/vebinary/public_html/application/views/template.php on line 169
+[09-Apr-2015 08:47:09 America/Chicago] PHP Fatal error:  Call to undefined function empty_logo() in /home1/vebinary/public_html/application/views/client/allergy_detail.php on line 1164
+[09-Apr-2015 09:30:36 America/Chicago] PHP Fatal error:  Call to undefined function logo() in /home1/vebinary/public_html/application/views/client/newProfile.php on line 568

@@ -1,0 +1,475 @@
+<?php if($this->session->flashdata('success')){
+	?>
+	<script>
+	$(document).ready(function() {
+          
+        $('#wizard').smartWizard({
+            selected : 3,
+            enableAllSteps : true                   
+        });       
+    }); 
+	</script>
+	<?php
+}?>
+<script>
+$(document).ready(function(){
+      $('#amobile').change(function(){          	 	
+	  	 	 var countryData = $("#amobile").intlTelInput("getSelectedCountryData");
+	  	 	 $('#amobile_ex').val(countryData.iso2);  	 	 	 	
+  	    });  
+  	   $('#pmobile').change(function(){  	   		
+	  	 	 var countryData = $("#pmobile").intlTelInput("getSelectedCountryData");
+	  	 	 $('#pmobile_ex').val(countryData.iso2);  	 	 	 	
+  	    });  
+ });        
+</script>
+<div class="wrap-content container" id="container">						
+						<!-- start: WIZARD DEMO -->
+						<div class="container-fluid container-fullw bg-white">
+							<div class="row" style="padding-bottom:30px">
+								<div class="col-md-12">
+									<h5 class="over-title margin-bottom-15">Create your <img class="valert" src="<?php echo base_url();?>source/assets/images/alert-logo.jpg" alt="vAlert" > account</h5>
+									
+									<!-- start: WIZARD FORM -->
+									<form action="<?php echo base_url('login/registration');?>" method="post" role="form" class="smart-wizard" id="form">
+										<div id="wizard" class="swMain">
+											<!-- start: WIZARD SEPS -->
+											<ul>
+												<li>
+													<a href="#step-1">
+														<div class="stepNumber">
+															1
+														</div>
+														<span class="stepDesc"><small> Personal Information </small></span>
+													</a>
+												</li>
+												<li>
+													<a href="#step-2">
+														<div class="stepNumber">
+															2
+														</div>
+														<span class="stepDesc"> <small> Enter login information </small></span>
+													</a>
+												</li>
+												<li>
+													<a href="#step-3">
+														<div class="stepNumber">
+															3
+														</div>
+														<span class="stepDesc"> <small> Profile details </small> </span>
+													</a>
+												</li>
+												<li>
+													<a href="#step-4">
+														<div class="stepNumber">
+															4
+														</div>
+														<span class="stepDesc"> <small> Complete </small> </span>
+													</a>
+												</li>
+											</ul>
+											<!-- end: WIZARD SEPS -->
+											<!-- start: WIZARD STEP 1 -->
+											<div id="step-1">
+												<div class="row">
+													<div class="col-md-5">
+														<div class="padding-30">
+															<h2 class="StepTitle"><i class="ti-face-smile fa-2x text-primary block margin-bottom-10"></i> Enter your personal information</h2>
+															<!--<p>
+																This is an added measure against fraud and to help with billing issues.
+															</p>
+															<p class="text-small">
+																Enter security questions in case you lose access to your account.
+															</p>-->
+														</div>
+													</div>
+													<div class="col-md-7">
+														<fieldset>
+															<legend>
+																Personal Information
+															</legend>
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			First Name <span class="symbol required"></span>
+																		</label>
+																		<input type="text" maxlength="20" placeholder="Enter your First Name" class="form-control" name="afname"/>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			Last Name <span class="symbol required"></span>
+																		</label>
+																		<input type="text" maxlength="20" placeholder="Enter your Last Name" class="form-control" name="alname"/>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+															   <div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			Mobile Number <span class="symbol required"></span>
+																		</label>
+																		<input type="text" placeholder="Enter Mobile Number" id="amobile" class="form-control nova-mobile" name="amobile"/>
+																		<input type="hidden" id="amobile_ex" name="amobile_ex" value="" />
+																   </div>
+																 </div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="block">
+																			Gender <span class="symbol required"></span>
+																		</label>
+																		<div class="clip-radio radio-primary">																		   
+																			<input type="radio" id="wz-female" class="agender" name="agender" value="2">
+																			<label for="wz-female">
+																				Female
+																			</label>
+																			<input type="radio" id="wz-male" class="agender" name="agender" value="1">
+																			<label for="wz-male">
+																				Male
+																			</label>
+																			<input type="radio" id="wz-other" class="agender" name="agender" value="3">
+																			<label for="wz-other">
+																				Other
+																			</label>
+																		</div>
+																	</div>
+																</div>																															
+																
+															</div>
+															<div class="row">
+															<div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			Country <span class="symbol required"></span>
+																		</label>
+																		<select class="form-control" name="acountry">
+																			<option value="">Choose your 
+
+Country or Region</option>
+																			<?php if(!empty($countries)){
+																				foreach($countries as $coun){
+																					echo "<option value=".$coun['countryId'].">".$coun['countryName']."</option>";
+																				}
+																			} ?>
+																		</select>
+																	</div>
+																</div>
+															</div>
+															<p>
+																<a href="javascript:void(0)" data-content="We need 
+
+your pesonal information for record keeping purposes only. We will 
+
+not be sharing this information with any third party entities." data-title="Don't worry!" data-placement="top" data-toggle="popover">
+																	Why do you need my personal information?
+																</a>
+															</p>
+														</fieldset>
+														<!--<fieldset>
+															<legend>
+																Security question
+															</legend>
+															<p>
+																Enter security questions in case you lose access to your account. <span class="text-small block">Be sure to pick questions that you will remember the answers to.</span>
+															</p>
+															<div class="panel-group accordion" id="accordion">
+																<div class="panel panel-white">
+																	<div class="panel-heading">
+																		<h5 class="panel-title">
+																		<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+																			<i class="icon-arrow"></i> What was the name of your first stuffed animal?
+																		</a></h5>
+																	</div>
+																	<div id="collapseOne" class="panel-collapse collapse">
+																		<div class="panel-body">
+																			<div class="form-group">
+																				<input type="text" class="form-control" name="stuffedAnimal" placeholder="Enter the the name of your first stuffed animal">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="panel panel-white">
+																	<div class="panel-heading">
+																		<h5 class="panel-title">
+																		<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+																			<i class="icon-arrow"></i> What is your grandfather's first name?
+																		</a></h5>
+																	</div>
+																	<div id="collapseTwo" class="panel-collapse collapse">
+																		<div class="panel-body">
+																			<div class="form-group">
+																				<input type="text" class="form-control" name="grandfatherName" placeholder="Enter your grandfather's first name">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+																<div class="panel panel-white">
+																	<div class="panel-heading">
+																		<h5 class="panel-title">
+																		<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+																			<i class="icon-arrow"></i> In what city your grandmother live?
+																		</a></h5>
+																	</div>
+																	<div id="collapseThree" class="panel-collapse collapse">
+																		<div class="panel-body">
+																			<div class="form-group">
+																				<input type="text" class="form-control" name="grandmotherCity" placeholder="Enter your grandmother's city">
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</fieldset>-->
+														<div class="form-group">
+															<button class="btn btn-primary btn-o next-step btn-wide pull-right">
+																Next <i class="fa fa-arrow-circle-right"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end: WIZARD STEP 1 -->
+											<!-- start: WIZARD STEP 2 -->
+											<div id="step-2">
+												<div class="row">
+													<div class="col-md-5">
+														<div class="padding-30">
+															<h2 class="StepTitle">Enter login information <!--<span class="text-large block">to manage everything you do with Clip-Two</span>--></h2>
+															<!--<p>
+																You’ll enjoy personal services and great benefits including:
+															</p>
+															<p class="text-small">
+																<ul class="no-margin">
+																	<li>
+																		Access to exclusive releases and limited products.
+																	</li>
+																	<li>
+																		ng-Clip services, benefits and promotions.
+																	</li>
+																</ul>
+															</p>-->
+														</div>
+													</div>
+													<div class="col-md-7">
+														<fieldset>
+															<legend>
+																Login Information
+															</legend>
+															<div class="form-group">
+																<label class="control-label">
+																	Email <span class="symbol required"></span>
+																</label>
+																<input type="email" placeholder="Enter a valid E-mail" class="form-control" name="aemail">
+															</div>
+															<div class="row">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label">
+																			Password <span class="symbol required"></span>
+																		</label>
+																		<input type="password" placeholder="Enter a Password" class="form-control" name="apassword" id="apassword"/>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="control-label">
+																			Repeat Password <span class="symbol required"></span>
+																		</label>
+																		<input type="password" placeholder="Repeat Password" class="form-control" name="apassword2"/>
+																	</div>
+																</div>
+															</div>
+														</fieldset>
+														<div class="form-group">
+															<button class="btn btn-primary btn-o back-step btn-wide pull-left">
+																<i class="fa fa-circle-arrow-left"></i> Back
+															</button>
+															<button class="btn btn-primary btn-o next-step btn-wide pull-right">
+																Next <i class="fa fa-arrow-circle-right"></i>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end: WIZARD STEP 2 -->
+											<!-- start: WIZARD STEP 3 -->
+											<div id="step-3">
+												<div class="row">
+													<div class="col-md-5">
+														<div class="padding-30">
+															<h2 class="StepTitle">Enter profile details</h2>
+															<!--<p class="text-large">
+																You will need to enter your profile details.
+															</p>
+															<p class="text-small">
+																Later you can add allergy details for the corresponding profiles.
+															</p>-->
+														</div>
+													</div>
+													<div class="col-md-7">
+														<fieldset>
+															<legend>
+																Profile Information
+															</legend>
+															
+															
+																
+																<div class="row">
+																												<div class="col-md-4 col-sm-4">
+																<label>
+																	First Name
+																</label> <span class="symbol required"></span>
+																	<div class="form-group">
+																	  <input type="text" class="form-control" name="pfname" placeholder="Enter First Name">
+																	</div>
+																</div>
+																
+																<div class="col-md-4 col-sm-4">
+																<label>
+																	Middle 
+
+Name
+																</label>
+																	<div class="form-group">
+																	  <input type="text" class="form-control" name="pmname" placeholder="Enter 
+
+Middle Name">
+																	</div>
+																</div>
+																
+																<div class="col-md-4 col-sm-4">
+																<label>
+																	Last Name
+																</label> <span class="symbol required"></span>
+																	<div class="form-group">
+																	  <input type="text" class="form-control" name="plname" placeholder="Enter Last Name">
+																	</div>
+																</div>
+																</div>
+																
+														
+															<label>
+																Birthday
+															</label> <span class="symbol required"></span>
+															<div class="row">
+																<div class="col-md-4 col-sm-4">
+																	<div class="form-group">
+<input type="text" name="pbmonth" id="pbmonth" maxlength="2" class="form-control" placeholder="Month" />																		<!--<select name="pbmonth" id="pbmonth" class="">
+																			<option value="">Month</option>
+																			<option value="1">January</option>
+																			<option value="2">February</option>
+																			<option value="3">March</option>
+																			<option value="4">April</option>
+																			<option value="5">May</option>
+																			<option value="6">June</option>
+																			<option value="7">July</option>
+																			<option value="8">August</option>
+																			<option value="9">September</option>
+																			<option value="10">October</option>
+																			<option value="11">November</option>
+																			<option value="12">December</option>
+																		</select>-->
+																	</div>
+																</div>
+																<div class="col-md-4 col-sm-4">
+																	<div class="form-group">
+																	<input type="text" maxlength="2" class="form-control" id="pbday" name="pbday" placeholder="Day">
+																	</div>
+															   </div>
+																<div class="col-md-4 col-sm-4">
+																	<div class="form-group">
+																		<input type="text" maxlength="4" placeholder="Year" class="form-control" id="pbyear" name="pbyear"/>
+																	</div>
+																</div>
+															</div>
+															<div class="row">
+															   <div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			Mobile Number <span class="symbol required"></span>
+																		</label>
+																		<input type="text" placeholder="Enter Mobile Number" class="form-control nova-mobile" id="pmobile" name="pmobile"/>
+																		<input type="hidden" id="pmobile_ex" name="pmobile_ex" value="" />
+																   </div>
+																 </div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label>
+																			Email <span class="symbol required"></span>
+																		</label>
+																		<input type="text" class="form-control" name="pemail" placeholder="Enter a valid E-mail">
+																	</div>
+																</div>																															
+																
+															</div>
+															<div class="row">
+															  <div class="col-md-6">
+															     <div class="form-group">
+																	<label >
+																		Gender <span class="symbol required" aria-required="true"></span>
+																	</label>
+																	<div class="clip-radio radio-primary">																	  
+																		<input type="radio" id="pgender_female" class="pgender" name="pgender" value="2">
+																		<label for="pgender_female">
+																			Female
+																		</label>
+																		<input type="radio" id="pgender_male" class="pgender" name="pgender" value="1">
+																		<label for="pgender_male">
+																			Male
+																		</label>
+																	   <input type="radio" id="pgender_other" class="pgender" name="pgender" value="3">
+																		<label for="pgender_other">
+																			Other
+																		</label>
+																	</div>
+												               </div>
+																</div>													
+															</div>
+														</fieldset>
+														<div class="form-group">
+															<button class="btn btn-primary btn-o back-step btn-wide pull-left">
+																<i class="fa fa-circle-arrow-left"></i> Back
+															</button>
+														  <input type="submit" class="btn btn-primary btn-o btn-wide pull-right" value="Submit" name="reg-submit" />
+															<!--<button class="btn btn-primary btn-o next-step btn-wide pull-right">
+																Next <i class="fa fa-arrow-circle-right"></i>
+															</button>-->
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end: WIZARD STEP 3 -->
+											<!-- start: WIZARD STEP 4 -->
+											<div id="step-4">
+												<div class="row">
+													<div class="col-md-12">
+														<div class="text-center">
+															<h1 class=" ti-check block text-primary"></h1>
+															<h2 class="StepTitle">Congratulations!</h2>
+															<p class="text-large">
+																You have 
+successfully registered with <img class="valert" src="<?php echo base_url();?>source/assets/images/alert-logo.jpg" alt="vAlert" >
+															</p><br><br>
+															<p class="text-small">
+																Thank you for registering with us. An email has been sent to you with the authorization link. Please click on that link to activate your account.
+															</p>
+															<!--<a class="btn btn-primary btn-o go-first" href="<?php base_url('login');?>">-->
+															<a class="btn btn-primary btn-o" href="<?php echo base_url('login');?>">
+																Go to Login
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- end: WIZARD STEP 4 -->
+										</div>
+									</form>
+									<!-- end: WIZARD FORM -->
+								</div>
+							</div>
+						</div>
+						<!-- start: WIZARD DEMO -->
+					</div>

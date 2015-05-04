@@ -1,0 +1,6 @@
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^beta\.myvalert\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.beta\.myvalert\.com$
+RewriteRule ^/?$ "http\:\/\/myvalert\.com\/beta\/" [R=301,L]
+
