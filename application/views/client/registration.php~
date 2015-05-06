@@ -1,4 +1,4 @@
-<?php if($this->session->flashdata('success')){
+<?php //if($this->session->flashdata('success')){
 	?>
 	<script>
 	$(document).ready(function() {
@@ -10,7 +10,7 @@
     }); 
 	</script>
 	<?php
-}?>
+//}?>
 <script>
 $(document).ready(function(){
       $('#amobile').change(function(){          	 	
@@ -66,7 +66,7 @@ $(document).ready(function(){
 														</div>
 														<span class="stepDesc"> <small> 
 														<?php if($this->session->flashdata('success')){
-															 echo "Complete";
+															   echo "Complete";
 															}else{
 																echo "Review";
 															}
@@ -101,7 +101,7 @@ $(document).ready(function(){
 																		<label>
 																			First Name <span class="symbol required"></span>
 																		</label>
-																		<input type="text" maxlength="20" placeholder="Enter your First Name" class="form-control" name="afname"/>
+																		<input type="text" maxlength="20" placeholder="Enter your First Name" class="form-control" id="afname" name="afname"/>
 																	</div>
 																</div>
 																<div class="col-md-6">
@@ -109,7 +109,7 @@ $(document).ready(function(){
 																		<label>
 																			Last Name <span class="symbol required"></span>
 																		</label>
-																		<input type="text" maxlength="20" placeholder="Enter your Last Name" class="form-control" name="alname"/>
+																		<input type="text" maxlength="20" placeholder="Enter your Last Name" class="form-control" id="alname" name="alname"/>
 																	</div>
 																</div>
 															</div>
@@ -269,7 +269,7 @@ not be sharing this information with any third party entities." data-title="Don'
 																<label class="control-label">
 																	Email <span class="symbol required"></span>
 																</label>
-																<input type="email" placeholder="Enter a valid E-mail" class="form-control" name="aemail">
+																<input type="email" placeholder="Enter a valid E-mail" class="form-control" id="aemail" name="aemail">
 															</div>
 															<div class="row">
 																<div class="col-md-6">
@@ -330,7 +330,7 @@ not be sharing this information with any third party entities." data-title="Don'
 																	First Name
 																</label> <span class="symbol required"></span>
 																	<div class="form-group">
-																	  <input type="text" class="form-control" name="pfname" placeholder="Enter First Name">
+																	  <input type="text" class="form-control" id="pfname" name="pfname" placeholder="Enter First Name">
 																	</div>
 																</div>
 																
@@ -352,7 +352,7 @@ Middle Name">
 																	Last Name
 																</label> <span class="symbol required"></span>
 																	<div class="form-group">
-																	  <input type="text" class="form-control" name="plname" placeholder="Enter Last Name">
+																	  <input type="text" class="form-control" id="plname" name="plname" placeholder="Enter Last Name">
 																	</div>
 																</div>
 																</div>
@@ -494,8 +494,8 @@ Middle Name">
 												 </div>
 												 <div class="col-md-7 offset-md-5 pull-right">
 												     <div class="checkbox clip-check check-primary">
-																	<input type="checkbox" value="1" id="checkbox2">
-																	<label for="checkbox2">
+																	<input type="checkbox" value="1" name="terms_cond" id="terms_cond">
+																	<label for="terms_cond">
 																		Yes, I accept VAlert terms & conditions and privacy policy.
 																	</label>
 													  </div>
@@ -503,7 +503,7 @@ Middle Name">
 															<button class="btn btn-primary btn-o back-step btn-wide pull-left">
 																<i class="fa fa-circle-arrow-left"></i> Back
 															</button>
-														  <input type="submit" class="btn btn-primary btn-o btn-wide pull-right" value="Submit" name="reg-submit" />
+														  <input type="submit" class="btn btn-primary btn-o btn-wide pull-right" value="Submit" id="reg-submit" name="reg-submit" />
 															<!--<button class="btn btn-primary btn-o next-step btn-wide pull-right">
 																Next <i class="fa fa-arrow-circle-right"></i>
 															</button>-->

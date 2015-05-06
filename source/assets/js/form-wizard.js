@@ -1,5 +1,6 @@
 var FormWizard = function () {
 	"use strict";
+	 $("#reg-submit").attr("disabled", true);
 	 var limit = 100;
  	 var end_date = (new Date).getFullYear();
  	 var start_date = end_date - limit; 
@@ -21,6 +22,13 @@ var FormWizard = function () {
         initValidator();
     };
     
+    $('#terms_cond').click(function(){
+    	if($('#terms_cond').is(':checked')){
+    		$("#reg-submit").removeAttr("disabled");
+    	}else{
+    		$("#reg-submit").attr("disabled", true);
+    	}
+    });
      
     var initValidator = function () {
         
@@ -220,6 +228,18 @@ var FormWizard = function () {
             }
         });
     };
+    var assignReview = function (){
+    	var afname = $('#afname').val();
+    	var alname = $('#alname').val();
+    	var aemail = $('#aemail').val();
+    	var amobile = $('#amobile').val();
+    	var pfname = $('#pfname').val();
+    	var plname = $('#plname').val();
+    	$('#review_acc_name').html(afname+' '+alname);
+    	$('#review_acc_email').html(aemail);
+    	$('#review_acc_mob').html(amobile);
+    	$('#review_pro_name').html(pfname+' '+plname);
+    };
     var onShowStep = function (obj, context) {
     	if(context.toStep == numberOfSteps){
     		$('.anchor').children("li:nth-child(" + context.toStep + ")").children("a").removeClass('wait');
@@ -227,6 +247,7 @@ var FormWizard = function () {
     	}
         $(".next-step").unbind("click").click(function (e) {
             e.preventDefault();
+            assignReview();
             wizardContent.smartWizard("goForward");
         });
         $(".back-step").unbind("click").click(function (e) {
