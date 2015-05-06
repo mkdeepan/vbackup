@@ -1,7 +1,6 @@
-Require valid-user
-Order allow,deny
+Satisfy Any
+Order Allow,Deny
 Allow from all
-Satisfy Any 
 RewriteEngine on
 RewriteCond %{HTTP_HOST} ^beta\.myvalert\.com$ [OR]
 RewriteCond %{HTTP_HOST} ^www\.beta\.myvalert\.com$

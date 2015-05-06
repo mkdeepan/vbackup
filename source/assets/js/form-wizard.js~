@@ -61,7 +61,7 @@ var FormWizard = function () {
                     required: true,
                     email: true,
                     remote:{
-								url: "http://myvalert.com/login/checkEmail",
+								url: "http://192.168.1.58/vbackup/login/checkEmail",
 								type: "post",
 								data: {
 									username: function() {

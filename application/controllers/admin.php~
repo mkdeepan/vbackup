@@ -199,9 +199,11 @@ class Admin extends CI_Controller {
   	  $options = array();
   	  $q = '';
   	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+  	  $config["suffix"] = "?q=".$q;
   	  if(isset($_GET) && isset($_GET['qsearch']))
   	  {
   	  	 $page = 0;
+  	  	 $config["suffix"] = base_url()."admin/loginReport?q=".$q;   
   	  }
   	  if(isset($_GET) && isset($_GET['q']))
   	  {
@@ -209,8 +211,7 @@ class Admin extends CI_Controller {
   	  	 $options['key'] = $q;
   	  }
      $config["base_url"] = base_url()."admin/loginReport";
-     $config['first_url'] = base_url()."admin/loginReport?q=".$q;
-     $config["suffix"] = "?q=".$q;	  
+     $config['first_url'] = base_url()."admin/loginReport?q=".$q;     	  
 	  $config["per_page"] = 5;
      $config["uri_segment"] = 3;
 	  $config["total_rows"] = $this->admin_model->login_report($options,'count');

@@ -8,7 +8,7 @@ var FormWizard = function () {
  	 var currentDay = (new Date).getDate(); 
     var wizardContent = $('#wizard');
     var wizardForm = $('#form');
-    var numberOfSteps = $('.swMain > ul > li').length - 1;
+    var numberOfSteps = $('.swMain > ul > li').length;
     var initWizard = function () {
         // function to initiate Wizard Form
         wizardContent.smartWizard({

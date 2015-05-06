@@ -1,12 +1,32 @@
 <?php
 require 'Slim/Slim.php';
 require 'db.php';
+require 'mail.php';
 
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
-$app->get('/hello/:name', function ($name) {
-    echo "Hello, $name";
+
+function is_json($string,$return_data = false) {
+     $data = json_decode($string);
+     return (json_last_error() == JSON_ERROR_NONE) ? ($return_data ? '3' : '1') : '2';
+}
+
+$app->notFound(function () {
+   $errorCodes = array('statusCode'=>'404','errorMessage'=>'Page not found');
+   echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+$app->get('/', function () {
+	$errorCodes = array('statusCode'=>'404','errorMessage'=>'Page not found');
+   echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+$app->post('/hello', function () {
+	global $app;
+        $request = $app->request();
+        $body = $request->getBody();
+    echo is_json($body);
 });
 
 $app->get('/users/:id',function($id) {
@@ -33,7 +53,10 @@ $app->get('/tips', function () {
         $stmt = $dbCon->prepare($sql);
         $stmt->execute();
         $tips = $stmt -> fetchAll(PDO::FETCH_OBJ);
+//var_dump($tips); exit;
         $dbCon = null;
+       // $tips[0]->atHome = str_replace("\r\n","",strip_tags($tips[0]->atHome));
+        // $tips[0]->atSchool = str_replace("\r\n","",strip_tags($tips[0]->atSchool));
         echo '{"Tips": ' . json_encode($tips) . '}';
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -117,6 +140,107 @@ $app->post('/validateUser',function() {
 	 $request = $app->request();
     $body = $request->getBody();
     $input = json_decode($body); 
+	 //var_dump($input); exit;
+	 $error = 0;
+	 $errorCodes = array();
+		if(!empty($input)){
+              
+                         if(!isset($input->id) || !isset($input->password) || !isset($input->deviceType) || !isset($input->phoneType) || !isset($input->osVersion) || !isset($input->modelNumber) || !isset($input->latitude) || !isset($input->longitude))
+		  	 {
+		  	 	$errorCodes = array('statusCode'=>'111','errorMessage'=>'API parameter missing');
+		  	   goto res;
+		  	 }
+
+			 $logDetails = array(
+			                     'id'=>$input->id, 
+										'pwd'=>$input->password, 
+										'device'=>$input->deviceType, 
+									   'phone'=>$input->phoneType, 
+									   'os'=>$input->osVersion, 
+									   'model'=>$input->modelNumber, 
+									   'lat'=>$input->latitude, 
+									   'long'=>$input->longitude
+									  );
+		
+			 foreach($logDetails as $log){
+			 	if($log == ''){
+			 		$error = 1;
+			 	}
+			 }
+		
+		    if(!$error){
+		       
+		       if(!filter_var($logDetails['id'], FILTER_VALIDATE_EMAIL)) {
+		            $errorCodes = array('statusCode'=>'101','errorMessage'=>'Invalid email format');
+		  	         goto res;
+		       }	
+		       
+		       if(!filter_var($logDetails['lat'], FILTER_VALIDATE_FLOAT) || !filter_var($logDetails['long'], FILTER_VALIDATE_FLOAT) || !($logDetails['lat'] >= -90 && $logDetails['lat'] <= 90) || !($logDetails['long'] >= -180 && $logDetails['long'] <= 180)){
+		       	   $errorCodes = array('statusCode'=>'108','errorMessage'=>'Latitude, Longitude error');		       	   
+		  	         goto res;
+		       }
+				    	
+		    	 $base_url = 'http://myvalert.com/';
+			    $sql = "SELECT * FROM Account where accountEmail=:id and loginPassword=:password";
+			    //echo $id.$pwd; exit;
+			    try {
+			        $dbCon = getConnection();
+			        $stmt = $dbCon->prepare($sql);
+			        $stmt->bindParam("id", $logDetails['id']);
+			        $stmt->bindParam("password", base64_encode($logDetails['pwd']));
+			        $res = $stmt->execute();
+			        $user = $stmt->rowCount(); 			        
+			        if($user){
+				        $vals = $stmt->fetchAll(PDO::FETCH_OBJ);				        
+				        $accountId = $vals[0]->accountId;
+				        $device = $logDetails['device'];
+				        $phone = $logDetails['phone'];
+				        $os = $logDetails['os'];
+				        $model = $logDetails['model'];
+				        $lat = $logDetails['lat'];
+				        $long = $logDetails['long'];			                
+				        $time=date('Y-m-d H:i:s'); 
+				        $login_log_insert = "insert into LoginLog (`accountId`, `deviceType`, `phoneType`, `osVersion`, `modelNumber`, `latitude`, `longitude`, `timeIn`) 
+				                   VALUES ('$accountId','$device','$phone','$os','$model','$lat','$long','$time')";
+				       
+				        $logs = $dbCon->prepare($login_log_insert);
+				        $logs->execute();
+				        $dbCon = null;
+				        $errorCodes = array(
+				                   'statusCode'=>'99',
+				                   'errorMessage'=>'',
+				                   'accountId'=>$vals[0]->accountId,
+				                   'accountPicture'=> $base_url.'uploads/accountImages/'.$vals[0]->accountPicture,
+				                );
+				        goto res;
+				        //echo '{"user": ' . json_encode($user) . '}';
+			        }else{
+			            $errorCodes = array('statusCode'=>'109','errorMessage'=>'User not found');
+  	                  goto res;
+			        }
+			    }catch(PDOException $e) {
+			        $errorCodes = array('statusCode'=>'110','errorMessage:'=>'Database error');
+  	              goto res;
+			    }
+		    }else{
+		    	$errorCodes = array('statusCode'=>'100','errorMessage'=>'Enter all mandatory fields');
+  	         goto res;
+		    }	    
+		}else{
+			$errorCodes = array('statusCode'=>'107','errorMessage'=>'API require inputs to handle');
+		  	goto res;
+		}
+  res:
+  echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+/*$app->post('/validateUser',function() {
+
+    global $app;
+	
+	 $request = $app->request();
+    $body = $request->getBody();
+    $input = json_decode($body); 
 	 //var_dump($input);
 	 $id = $input->id; 
 	 $pwd = $input->password; 
@@ -146,7 +270,7 @@ $app->post('/validateUser',function() {
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
-});
+});*/
 
 $app->post('/accountInformation',function() {
 
@@ -293,6 +417,9 @@ $app->post('/getProfiles',function() {
         $input = json_decode($body); 
 	
 	$users = $input->ids; 
+        $lat = $input->lat;
+	$long = $input->long;
+	$accountId = $input->accountId;
    $base_url = 'http://myvalert.com/';
         if(!empty($users)){
            $sql = "SELECT P.profileId as profileid,CONCAT('SJ',LPAD(P.profileId,3,'0')) as profileIds, P.*,G.description as gender,PT.*,S.stateName,C.countryName,D.*,E.*,I.* FROM Profile P 
@@ -317,20 +444,49 @@ $app->post('/getProfiles',function() {
 
     try {
         $dbCon = getConnection();
+        //for inserting location log
+	        $location_sql = "insert into LocationLog (accountId,latitude,longitude) values ('$accountId','$lat','$long')";
+	        $location = $dbCon->prepare($location_sql);
+	        $location->execute();
+	        $locationLogId = $dbCon->lastInsertId();
+	        
+	        $val = '';
+	        if(!empty($users)){
+	        	$location_list = "insert into LocationLogList (locationLogId,tagId) values ";
+	        	$userids = new ArrayIterator( $users );
+	        	$cit = new CachingIterator( $userids );
+		        foreach($cit as $tid){
+		        		$val .= "('".$locationLogId."','".$tid."')"; 
+		        		if($cit->hasNext())
+		        		{
+		        			$val .= ",";
+		        		}       	
+		        }
+	        }
+	        if($val){
+	        	$location_list .= $val;
+	        	$locationList = $dbCon->prepare($location_list);
+	        	$locationList->execute();
+	        }
+	   //end of inserting location logs
+	   
+	   //for activity log
+	   $activity_sql = "insert into ActivityLog(accountId,action,title) values ('$accountId','scan','scan')";
+	   $activity = $dbCon->prepare($activity_sql);
+	      $activity->execute();
+	   //end of activity log
         $stmt = $dbCon->prepare($sql);
         $stmt->execute();
         $user  = $stmt->fetchAll(PDO::FETCH_OBJ);
         foreach($user as $usr){
+ 
         	$aller_arr = array();
         	$usr_id = $usr->profileid;
         	if($usr->profilePicture)
         	  $usr->profilePicture = $base_url.'uploads/profileImages/'.$usr->profilePicture;
         	if($usr->profileSchoolLogo)
         	  $usr->profileSchoolLogo = $base_url.'uploads/school/'.$usr->profileSchoolLogo;
-        	if($usr->scanCopyFront)
-        	  $usr->scanCopyFront = $base_url.'uploads/insurance/front/'.$usr->scanCopyFront;
-         if($usr->scanCopyBack)
-        	  $usr->scanCopyBack = $base_url.'uploads/insurance/back/'.$usr->scanCopyBack;
+        	
         	  
         	//for allergies
 	      $sql_a = "select A.allergyId, AN.allergyNameDescription, AT.allergyTypeDescription
@@ -345,7 +501,7 @@ $app->post('/getProfiles',function() {
          $allergies = $aller -> fetchAll(PDO::FETCH_OBJ);
          foreach($allergies as $key => $algy) {
          	
-	        	$sql_b = "select A.allergyId, AN.allergyNameDescription, AT.allergyTypeDescription
+	        	$sql_b = "select A.allergyId,AN.allergyNameId, AN.allergyNameDescription,AT.allergyTypeId, AT.allergyTypeDescription
         	         from Allergy A 
         	         join AllergyName AN on AN.allergyNameId = A.allergyNameId
         	         join AllergyType AT on AT.allergyTypeId = A.allergyTypeId
@@ -358,7 +514,9 @@ $app->post('/getProfiles',function() {
 	        	if(!empty($allers)){
 	        	   $temp_array = array(
 	        	                'allergyId' => $allers[0]['allergyId'],
+                                        'allergyNameId' => $allers[0]['allergyNameId'],
 	        	                'allergyNameDescription' => $allers[0]['allergyNameDescription'],
+                                        'allergyTypeId' => $allers[0]['allergyTypeId'],
 	        	                'allergyTypeDescription' => $allers[0]['allergyTypeDescription']
 	        	                );
 	        	}
@@ -388,7 +546,7 @@ $app->post('/getProfiles',function() {
          }
          
          //for incident
-         $sql_i = "select AT.allergyTypeDescription, AIS.allergyIncidentDesc, AIS.allergyIncidentDate
+         $sql_i = "select AT.allergyTypeId,AT.allergyTypeDescription, AIS.allergyIncidentDesc, AIS.allergyIncidentDate
         	         from ProfileTagMapping PTM 
         	         join AllergyIncidentSymptoms AIS on AIS.profileId = PTM.profileId
         	         join AllergyType AT on AT.allergyTypeId = AIS.allergyTypeId
@@ -410,10 +568,10 @@ $app->post('/getProfiles',function() {
          
          //for doctor info
          $sql_doc = "select D.*,P.phoneTypeName,A.addressTypeName,S.stateName,C.countryName from DoctorDetails D 
-                     join PhoneType P on P.id = D.doctorPhoneType
-                     join AddressType A on A.id = D.doctorAddressType
-                     join State S on S.stateId = D.doctorState
-                     join Country C on C.countryId = D.doctorCountry
+                     left join PhoneType P on P.id = D.doctorPhoneType
+                     left join AddressType A on A.id = D.doctorAddressType
+                     left join State S on S.stateId = D.doctorState
+                     left join Country C on C.countryId = D.doctorCountry
                      where D.profileId = '".$usr_id."'";
 
 
@@ -429,7 +587,14 @@ $app->post('/getProfiles',function() {
          $insure = $dbCon->prepare($sql_ins);
          $insure->execute();
          $insurance = $insure -> fetchAll(PDO::FETCH_OBJ);  
-         
+         foreach($insurance as $ins)
+         {
+           if($ins->scanCopyFront)
+        	  $ins->scanCopyFront = $base_url.'uploads/insurance/front/'.$ins->scanCopyFront;
+           if($ins->scanCopyBack)
+        	  $ins->scanCopyBack = $base_url.'uploads/insurance/back/'.$ins->scanCopyBack;
+         }
+        // var_dump($insurance); exit;
          $total_arr = array(
                             'allergies'=>$aller_arr,
                             'incidents'=>$incidents,
@@ -752,15 +917,18 @@ $app->get('/defaultInputs',function() {
     $rs = '';
     try {
         $dbCon = getConnection();
+        //$app->headers->set("Content-type", "application/json;charset=utf-8"); 
+        //$dbCon->set_charset('utf8');
         for($i=0;$i < 10;$i++)
         {
         	  $prepare[$i] = $dbCon->prepare($input[$i]);
         	  $prepare[$i]->execute();
         	  $result[$i] = array($header[$i] => $prepare[$i] -> fetchAll(PDO::FETCH_OBJ));        	  
         }
-     
+     //var_dump($result); exit;
         $dbCon = null;
-        echo json_encode($result);	    
+        
+        echo json_encode(array('default'=>$result));	    
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
@@ -785,29 +953,38 @@ $app->post('/editPersonal',function() {
         $count = $acc_chk->fetchAll();
         if(count($count))
         {
+            //for activity log
+		      $activity_sql = "insert into ActivityLog(accountId,action,title) values ('$account_id','update','personal')";
+		      $activity = $dbCon->prepare($activity_sql);
+		      $activity->execute();
+            //end of activity log
         	  if($input->accountPicture != '')
         	  {
         	  	  $name = '';
         	  	  $data = $input->accountPicture;
-        	  	  $data = explode(",",$data);
-        	  	  if(!empty($data) && isset($data[1]))
-        	  	  {
-			        $data = base64_decode($data[1]);
-			        $path = '../beta/test/';
+        	  	  //$data = explode(",",$data);
+        	  	  //if(!empty($data) && isset($data[1]))
+        	  	  //{
+			        $data = base64_decode($data);
+			        $path = '../uploads/accountImages/';
 			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
 			        $name = "profile".$account_id.'.jpeg';
 			        $file = $path . $name;
 			        $success = file_put_contents($file, $data);
-		        }
+		        //}
 		        
         	  }
 	        $account = array(
 	                      'accountFirstName' => $input->accountFirstName,
 	                      'accountMiddleName' => $input->accountMiddleName,
 	                      'accountLastName' => $input->accountLastName,
-	                      'accountGender' => $input->gender,
-	                      'accountPicture' => $name,
+	                      'accountGender' => $input->gender	                     
 	                   );
+                if($input->accountPicture)
+                {
+                   $account['accountPicture'] = $name;
+                }
+
 	        $update_acc = "update Account set accountFirstName='".$account['accountFirstName']."', accountMiddleName='".$account['accountMiddleName']."',
 	                       accountLastName='".$account['accountLastName']."', accountGender='".$account['accountGender']."', accountPicture='".$account['accountPicture']."'
 	                       where accountId = '$account_id'";
@@ -902,6 +1079,11 @@ $app->post('/editSigninfo',function() {
         	  	  $acc_upd = $dbCon->prepare($update);
         	     $res = $acc_upd->execute();
         	     if($res){
+                        //for activity log
+		        $activity_sql = "insert into ActivityLog(accountId,action,title) values ('$account_id','update','signing')";
+			$activity = $dbCon->prepare($activity_sql);
+			$activity->execute();
+			//end of activity log
         	     	 echo json_encode(array(
 		            "status" => 'true',
 		            "message" => "Signing info updated successfully"
@@ -945,24 +1127,57 @@ $app->post('/editProfile', function(){
         $profile_id = $input->profileId;
         if($account_id !='')
         {
-        	
+        	 $profilename = '';
         	 if($input->profilePicture != '')
-        	  {
-        	  	  $profilename = '';
+        	  {        	  	  
         	  	  $data = $input->profilePicture;
-        	  	  $data = explode(",",$data);
-        	  	  if(!empty($data) && isset($data[1]))
-        	  	  {
+        	  	  //$data = explode(",",$data);
+        	  	  //if(!empty($data) && isset($data[1]))
+        	  	  //{
         	  	  	  if(!$profile_id){
         	  	  	  	$profile_id = date('Y-m-d_H:i:s');
         	  	  	  }
-			        $data = base64_decode($data[1]);
-			        $path = '../beta/test/';
+                           if(strlen($data) > 100)
+                            {
+			        $data = base64_decode($data);
+			        $path = '../uploads/profileImages/';
 			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
 			        $profilename = "profile".$profile_id.'.jpeg';
 			        $file = $path . $profilename;
 			        $success = file_put_contents($file, $data);
-		        }
+                            }
+                         else
+                         {
+                                $array = explode('/',$data);
+                                $profilename = end($array);
+                         }
+		        //}
+		      }
+                  $SchoolLogo = '';
+           if($input->profileSchoolLogo != '')
+        	  {        	  	  
+        	  	  $data = $input->profileSchoolLogo;
+        	  	  //$data = explode(",",$data);
+        	  	  //if(!empty($data) && isset($data[1]))
+        	  	  //{
+        	  	  	  if(!$profile_id){
+        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+        	  	  	  }
+                           if(strlen($data) > 100)
+                            {
+			        $data = base64_decode($data);
+			        $path = '../uploads/profileImages/';
+			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+			        $SchoolLogo = "school".$profile_id.'.jpeg';
+			        $file = $path . $SchoolLogo;
+			        $success = file_put_contents($file, $data);
+                            }
+                         else
+                         {
+                                $array = explode('/',$data);
+                                $SchoolLogo = end($array);
+                         }
+		        //}
 		      }
         	  
 	        $profile = array(
@@ -979,12 +1194,18 @@ $app->post('/editProfile', function(){
 	                      'profileAddressCity' => $input->profileAddressCity,
 	                      'profileAddressStateId' => $input->profileAddressState,
 	                      'profileAddressZip' => $input->profileAddressZip,
-	                      'profileAddressCountryId' => $input->profileAddressCountry,
-	                      'profilePicture' => $profilename,
-	                      'profileSchoolName' => $input->profileSchoolName,
-	                      'profileSchoolLogo' => $input->profileSchoolLogo,
-	                      'profileSchoolGrade' => $input->profileSchoolGrade,
+	                      'profileAddressCountryId' => $input->profileAddressCountry,	                      
+	                      'profileSchoolName' => $input->profileSchoolName,	                      
+	                      'profileSchoolGrade' => $input->profileSchoolGrade
 	                   );
+               if($input->profilePicture)
+               {
+                  $profile['profilePicture'] = $profilename;
+               } 
+               if($input->profileSchoolLogo)
+               {
+                  $profile['profileSchoolLogo'] = $SchoolLogo;
+               } 
 	       if($profile_id){
 	        $update_pro = "update Profile set profileFirstName='".$profile['profileFirstName']."', 
 	                                          profileMiddleName='".$profile['profileMiddleName']."',
@@ -1000,9 +1221,9 @@ $app->post('/editProfile', function(){
 	                                          profileAddressStateId='".$profile['profileAddressStateId']."',
 	                                          profileAddressZip='".$profile['profileAddressZip']."',
 	                                          profileAddressCountryId='".$profile['profileAddressCountryId']."',
-	                                          profilePicture='".$profile['profilePicture']."',
+	                                          profilePicture= '$profilename',
 	                                          profileSchoolName='".$profile['profileSchoolName']."',
-	                                          profileSchoolLogo='".$profile['profileSchoolLogo']."'	,                                          
+	                                          profileSchoolLogo='".$SchoolLogo."',                                          
 	                                          profileSchoolGrade='".$profile['profileSchoolGrade']."'	                                          
 	                       where profileId = '$profile_id'";
 	      }else{ //new profile creation
@@ -1010,7 +1231,7 @@ $app->post('/editProfile', function(){
 	                       ('$account_id','$input->profileFirstName','$input->profileMiddleName','$input->profileLastName','$input->profileDateOfBirth','$input->gender','$input->profileMobilePhone','$input->profileMobileEx','$input->profileEmail','$input->profilePicture','$input->profileAddressFirstLine','$input->profileAddressSecondLine','$input->profileAddressCity', '$input->profileAddressState','$input->profileAddressZip','$input->profileAddressCountry','$input->profileSchoolName','$input->profileSchoolLogo', '$input->profileSchoolGrade')";
 	                       
 	      }               
-	        //echo $update_acc; //exit;
+	        //echo $update_pro; exit;
 	        foreach($input->Emergency as $emer)
 	        {
 	        	 $emergency[] = "(:profileid,'$emer->emergencyContactFirstName','$emer->emergencyContactMiddleName','$emer->emergencyContactLastName',
@@ -1027,7 +1248,62 @@ $app->post('/editProfile', function(){
 	        
 	        foreach($input->Insurance as $ins)
 	        {
-	        	 $insurance[] = "(:profileid,'$ins->providerName','$ins->planId','$ins->groupId','$ins->payerId','$ins->expMonth','$ins->expYear','$ins->expDay','$ins->scanCopyFront','$ins->scanCopyBack')";
+                   $front = '';
+                   if($ins->scanCopyFront != '')
+        	  {
+        	  	  
+        	  	  $data = $ins->scanCopyFront;
+        	  	  //$data = explode(",",$data);
+        	  	  //if(!empty($data) && isset($data[1]))
+        	  	  //{
+        	  	  	  if(!$profile_id){
+        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+        	  	  	  }
+                      
+                       if(strlen($data) > 100)
+                         {
+			        $data = base64_decode($data);
+			        $path = '../uploads/insurance/front/';
+			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+			        $front = "front".uniqid().$profile_id.'.jpeg';
+			        $file = $path . $front;
+			        $success = file_put_contents($file, $data);
+                         }
+                         else
+                         {
+                                $array = explode('/',$data);
+                                $front = end($array);
+                         }
+		        //}
+		  }
+                  $back = '';
+                  if($ins->scanCopyBack != '')
+        	  {
+        	  	  
+        	  	  $data = $ins->scanCopyBack;
+        	  	  //$data = explode(",",$data);
+        	  	  //if(!empty($data) && isset($data[1]))
+        	  	  //{
+        	  	  	  if(!$profile_id){
+        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+        	  	  	  }
+                          if(strlen($data) > 100)
+                          {
+			        $data = base64_decode($data);
+			        $path = '../uploads/insurance/back/';
+			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+			        $back = "back".uniqid().$profile_id.'.jpeg';
+			        $file = $path . $back;
+			        $success = file_put_contents($file, $data);
+                           }
+                           else
+                         {
+                                $array = explode('/',$data);
+                                $back = end($array);
+                         }
+		        //}
+		   } 
+	        	 $insurance[] = "(:profileid,'$ins->providerName','$ins->planId','$ins->groupId','$ins->payerId','$ins->expMonth','$ins->expYear','$ins->expDay','$front','$back')";
 	        }
 	        $emer_arr = implode(",",$emergency);    
 	        $doc_arr = implode(",",$doctor);  
@@ -1038,9 +1314,10 @@ $app->post('/editProfile', function(){
 	        $insert_emergency = "insert into EmergencyContacts (profileId,emergencyContactFirstName,emergencyContactMiddleName,emergencyContactLastName,emergencyPhoneType,emergencyContactNumber,emergencyPhoneExtn,emergencyContactRelationship) values ".$emer_arr."";
 	        $insert_doctor = "insert into DoctorDetails (profileId,doctorFirstName,doctorMiddleName,doctorLastName,doctorPhoneType,doctorPhoneNumber,doctorPhoneExtn,doctorAddressType,doctorAddressFirstline,doctorAddressSecondline,doctorCity,doctorState,doctorZip,doctorCountry) values ".$doc_arr."";
 	        $insert_insurance = "insert into Insurance (profileId,providerName,planId,groupId,payerId,expMonth,expYear,expDay,scanCopyFront,scanCopyBack) values ".$ins_arr."";
-	        /*echo $insert_phone;
-	        echo $insert_email;
-	        echo $insert_address; exit;*/
+	       /* echo $update_pro;
+	        echo $insert_emergency;
+                echo $insert_insurance;
+	        echo $insert_doctor; exit;*/
 	        try {
 	        	
 	        	if($profile_id){
@@ -1051,7 +1328,11 @@ $app->post('/editProfile', function(){
 	            $pro1->execute();
 	            $profile_id = $dbCon->lastInsertId();
 	        	}
-              
+        //for activity log
+	$activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','$activity_action','profile')";
+	$activity = $dbCon->prepare($activity_sql);
+	$activity->execute();
+	//end of activity log
 	           $del1 = $dbCon->prepare($emer_del);
 	           $del1->bindParam("profileid", $profile_id);
 	           $del1->execute();
@@ -1102,32 +1383,28 @@ $app->post('/editAllergy', function(){
         $dbCon = getConnection();
         if($profile_id){
         //	var_dump($input->allergies); exit;
+        $del_mild = "delete PM from `ProfileSymtomsMild` as PM JOIN `Allergy` as A ON A.allergyId = PM.allergyId WHERE A.profileId = '".$profile_id."'";
+        $mild_del = $dbCon->prepare($del_mild);
+	     $mild_del->execute(); 
+ 	         
+	     $del_severe = "delete PS from `ProfileSymtomsSevere` as PS JOIN `Allergy` as A ON A.allergyId = PS.allergyId WHERE A.profileId = '".$profile_id."'";           
+        $severe_del = $dbCon->prepare($del_severe);
+	     $severe_del->execute();
+        
+	            
         $del_aller = "delete from Allergy where profileId = '".$profile_id."'";
         $allergy_del = $dbCon->prepare($del_aller);
-	     $sucs1 = $allergy_del->execute();
-        foreach($input->allergies as $key => $row){
-        	 echo $row->allergyId;
-        }exit;
+	$sucs1 = $allergy_del->execute();
+        
         foreach($input->allergies as $key => $row){
                       
             //get old allergy id and delete it
-            $old_allergy_id = $row->allergyId;
-            
-            
-     
-	         $del_mild = "delete from ProfileSymtomsMild where allergyId = '".$old_allergy_id."'";
-           	         
-	         $del_severe = "delete from ProfileSymtomsSevere where allergyId = '".$old_allergy_id."'";           
+            $old_allergy_id = $row->allergyId;         
 	        
             $allergyNameId = $row->allergyNameId;
             $allergyTypeId = $row->allergyTypeId;
             
-            try{            	
-            	
-	            $mild_del = $dbCon->prepare($del_mild);
-	            $mild_del->execute();
-	            $severe_del = $dbCon->prepare($del_severe);
-	            $severe_del->execute();
+            try{           	
 	            
             	$sql_a = "insert into Allergy(profileId,AllergyNameId,AllergyTypeId) values ('$profile_id','$allergyNameId','$allergyTypeId')";
             	$allergy = $dbCon->prepare($sql_a);
@@ -1172,6 +1449,12 @@ $app->post('/editAllergy', function(){
          $incident = $dbCon->prepare($sql);
 	      $incident->execute();
       }
+      //for activity log
+      $activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','update','allergy')";
+      $activity = $dbCon->prepare($activity_sql);
+      $activity->execute();
+      //end of activity log
+
     echo json_encode(array(
 		            "status" => true,
 		            "message" => 'Allergy details updated successfully'
@@ -1223,6 +1506,12 @@ $app->post('/editSharingInfo', function(){
         	              
         }
         if($success){
+//for activity log
+	         $account_id = get_account_id($profile_id);
+		 $activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','update','infosharing')";
+		 $activity = $dbCon->prepare($activity_sql);
+		 $activity->execute();
+		//end of activity log
         	echo json_encode(array(
 		            "status" => false,
 		            "message" => 'Information sharing updated successfully'
@@ -1250,18 +1539,182 @@ $app->post('/photo', function(){
         $dbCon = getConnection();
         
         $data = $input->image;
-        //$data = str_replace('data:image/jpg;base64,', '', $data);
+       //$data = str_replace('data:image/jpg;base64,', '', $data);
         //$data = str_replace(' ', '+', $data);
-        $data = explode(",",$data);
-        $data = base64_decode($data[1]);
-        $path = '../beta/test/';
+        //$data = explode(",",$data);
+       // $res = base64_decode($data,true);
+       echo strlen($data); exit;
+        $path = '../uploads/profileImages/';
         //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
-        $name = "profile";
+        $name = "profile.jpeg";
         $file = $path . $name;
         $success = file_put_contents($file, $data);
         echo $name;
+ 
         
 });
+
+$app->post('/signUp', function(){
+	global $app;
+        $request = $app->request();
+        $body = $request->getBody();
+        $input = json_decode($body);
+        $base_url = 'http://myvalert.com/';
+        //var_dump($input); echo $input->signup->accountFirstName; exit;
+      if(!empty($input)){
+        $error = 0;
+        $errorCodes = array(); 
+        $accountdetails = array(
+	        'accountFirstName' => $input->signup->accountFirstName,
+	        'accountMiddleName' => $input->signup->accountMiddleName,
+	        'accountLastName' => $input->signup->accountLastName,
+	        'accountMobilePhone' => $input->signup->accountMobilePhone,
+	        'countryExtn' => $input->signup->countryExtn,
+	        'accountGender' => $input->signup->accountGender,
+	        'accountEmail' => $input->signup->accountEmail,
+	        'password' => $input->signup->password,
+	        'rPassword' => $input->signup->rPassword,
+	        'profileFirstName' => $input->signup->profileFirstName,
+	        'profileMiddleName' => $input->signup->profileMiddleName,
+	        'profileLastName' => $input->signup->profileLastName,
+	        'profileDateOfBirth' => $input->signup->profileDateOfBirth,
+	        'profileGenderId' => $input->signup->profileGenderId,
+	        'profileMobilePhone' => $input->signup->profileMobilePhone,
+	        'profileMobileEx' => $input->signup->profileMobileEx,
+	        'profileEmail' => $input->signup->profileEmail,
+                'accountCountry' => $input->signup->accountCountry
+        );
+       //var_dump($accountdetails); exit;
+       //validation process
+       foreach($accountdetails as $key=>$value){
+       	if($key != 'accountMiddleName' && $key != 'profileMiddleName' && $value == ''){
+       		$error = 1;
+       	}
+       }
+   
+       if(!$error){
+       	if(!filter_var($accountdetails['accountEmail'], FILTER_VALIDATE_EMAIL) || !filter_var($accountdetails['profileEmail'], FILTER_VALIDATE_EMAIL)) {
+            $errorCodes = array('statusCode'=>'101','errorMessage'=>'Invalid email format');
+  	         goto res;
+         }
+     
+         $phone_pattern = '/^[+]?([\d]{0,3})?[\(\.\-\s]?([\d]{3})[\)\.\-\s]*([\d]{3})[\.\-\s]?([\d]{4})$/';
+         if(!preg_match($phone_pattern, $accountdetails['accountMobilePhone'] ) || !preg_match($phone_pattern, $accountdetails['profileMobilePhone'] )){
+         	$errorCodes = array('statusCode'=>'102','errorMessage'=>'Invalid valid phone number');
+  	         goto res;
+         }
+     
+         $uppercase = preg_match('@[A-Z]@', $accountdetails['password']);
+         $lowercase = preg_match('@[a-z]@', $accountdetails['password']);
+         $number    = preg_match('@[0-9]@', $accountdetails['password']);
+			if(!$uppercase || !$lowercase || !$number || strlen($accountdetails['password']) < 8) {
+			   $errorCodes = array('statusCode'=>'103','errorMessage'=>'Password should have atleast 1 uppercase, 1 lowercase, 1 digit and more than 8 character');
+  	         goto res;
+			}
+		   
+		   if($accountdetails['password'] != $accountdetails['rPassword']){
+		   	$errorCodes = array('statusCode'=>'104','errorMessage'=>'Passwords are not same');
+  	         goto res;
+		   }
+	      if(preg_match('/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/', $accountdetails['profileDateOfBirth'])){
+	         $current_date = date('Y-m-d');
+	         if($accountdetails['profileDateOfBirth'] > $current_date){
+	         	$errorCodes = array('statusCode'=>'105','errorMessage'=>'Invalid date');
+  	            goto res;
+	         }
+	      }else{
+	      	$errorCodes = array('statusCode'=>'105','errorMessage'=>'Invalid date');
+  	         goto res;
+	      }
+	  
+	  //validation ends if not error process continues to execute
+	      if(!$error){
+	      	$dbCon = getConnection();
+	      	$sql = "select * from Account where accountEmail='".$accountdetails['accountEmail']."'";
+	      	try{         
+        	         $email = $dbCon->prepare($sql);
+       	         $email->execute();
+       	         $exist = $email->rowCount();
+	               if(!$exist){
+	               	$unique_key = time();
+	               	$enc_pwd = base64_encode($accountdetails['password']);
+	               	$afirstname = $accountdetails['accountFirstName'];
+	               	$amiddlename = $accountdetails['accountMiddleName'];
+	               	$alastname = $accountdetails['accountLastName'];
+	               	$amobile = $accountdetails['accountMobilePhone'];
+	               	$aextn = $accountdetails['countryExtn'];
+	               	$aemail = $accountdetails['accountEmail'];
+	               	$agender = $accountdetails['accountGender'];
+                        $country = $accountdetails['accountCountry'];
+	               	$arole = '2';
+	               	$astatus = '0';
+	               	$akey = md5($unique_key);
+	               	$ins_acc_sql = "insert into Account (`loginPassword`, `accountFirstName`, `accountMiddleName`, `accountLastName`, `accountMobilePhone`, `amn_ex`, `accountEmail`, `accountGender`,`accountCountry`, `userRole`, `status`, `uniqueKey`) values 
+	               	                ('$enc_pwd','$afirstname','$amiddlename','$alastname','$amobile','$aextn','$aemail','$agender','$country','$arole','$astatus','$akey')";
+	               	$account = $dbCon->prepare($ins_acc_sql);
+       	            $account->execute();
+       	            $account_id = $dbCon->lastInsertId();
+       	            
+       	            $pfirstname = $accountdetails['profileFirstName'];
+	               	$pmiddlename = $accountdetails['profileMiddleName'];
+	               	$plastname = $accountdetails['profileLastName'];
+	               	$pmobile = $accountdetails['profileMobilePhone'];
+	               	$pextn = $accountdetails['profileMobileEx'];
+	               	$pemail = $accountdetails['profileEmail'];
+	               	$pgender = $accountdetails['profileGenderId'];
+	               	$dob = $accountdetails['profileDateOfBirth'];
+	               	$ins_pro_sql = "insert into Profile ( `accountId`, `profileFirstName`, `profileMiddleName`, `profileLastName`, `profileDateOfBirth`, `profileGenderId`, `profileMobilePhone`, `profileMobileEx`, `profileEmail`) values 
+	               	                ('$account_id','$pfirstname','$pmiddlename','$plastname','$dob','$pgender','$pmobile','$pextn','$pemail')";
+	               	$profile = $dbCon->prepare($ins_pro_sql);
+       	            $profile->execute();
+       	            
+       	            //success mail
+       	            $toMail = $aemail;
+   		            $url = $base_url.'login/verify/'.urlencode($aemail).'/'.urlencode($unique_key);
+   		            $mailContant = array(
+   		                   'subject' => 'vAlert Registration',
+   		                   'body' => "Dear ".$afirstname." ".$alastname.",<br>Thanks for registering in vAlert. Please activate your vAlert account by clicking the following link.<br><br>
+   		                              ".$url."<br><br>Thanks." 
+   		                 );
+   		            sendMail('vAlert',$toMail,$mailContant,$attach = NULL,$ccEmail = NULL);
+       	            
+	               	$errorCodes = array('statusCode'=>'99','errorMessage'=>'');
+  	                  goto res;
+	               }else{
+	               	$errorCodes = array('statusCode'=>'106','errorMessage'=>'Email id already exists');
+  	                  goto res;
+	               }
+            }
+            catch(PDOException $e){
+            	$errorCodes = array('statusCode'=>'110','errorMessage'=>'Database error');
+  	            goto res;
+	         }
+	       }else{
+	       	$errorCodes = array('statusCode'=>'100','errorMessage'=>'Enter all mandatory fields');
+  	         goto res;
+	       }
+    }else{
+	       	$errorCodes = array('statusCode'=>'100','errorMessage'=>'Enter all mandatory fields');
+  	         goto res;
+	       }
+  }else{
+  	 $errorCodes = array('statusCode'=>'107','errorMessage'=>'API require inputs to handle');
+  	 goto res;
+  }
+  res:
+  echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+//common function to accountId
+function get_account_id($profileId) {
+	$dbCon = getConnection();
+	$get_sql = "select accountId from Profile where profileId='".$profileId."'";
+	$profile = $dbCon->prepare($get_sql);
+	$profile->execute();
+	$fetch = $profile->fetchAll(PDO::FETCH_ASSOC);
+	return $fetch[0]['accountId']; 
+}
+
 $app->run();
 
 ?>

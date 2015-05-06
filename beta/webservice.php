@@ -6,8 +6,27 @@ require 'mail.php';
 \Slim\Slim::registerAutoloader();
 
 $app = new \Slim\Slim();
-$app->get('/hello/:name', function ($name) {
-    echo "Hello, $name";
+
+function is_json($string) {
+     $data = json_decode($string);
+     return (json_last_error() == JSON_ERROR_NONE);
+}
+
+$app->notFound(function () {
+   $errorCodes = array('statusCode'=>'404','errorMessage'=>'Page not found');
+   echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+$app->get('/', function () {
+	$errorCodes = array('statusCode'=>'404','errorMessage'=>'Page not found');
+   echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
+$app->post('/hello', function () {
+	global $app;
+        $request = $app->request();
+        $body = $request->getBody();
+    echo is_json($body);
 });
 
 $app->get('/users/:id',function($id) {
@@ -898,14 +917,17 @@ $app->get('/defaultInputs',function() {
     $rs = '';
     try {
         $dbCon = getConnection();
+        //$app->headers->set("Content-type", "application/json;charset=utf-8"); 
+        //$dbCon->set_charset('utf8');
         for($i=0;$i < 10;$i++)
         {
         	  $prepare[$i] = $dbCon->prepare($input[$i]);
         	  $prepare[$i]->execute();
         	  $result[$i] = array($header[$i] => $prepare[$i] -> fetchAll(PDO::FETCH_OBJ));        	  
         }
-     
+     //var_dump($result); exit;
         $dbCon = null;
+        
         echo json_encode(array('default'=>$result));	    
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -931,9 +953,9 @@ $app->post('/editPersonal',function() {
         $count = $acc_chk->fetchAll();
         if(count($count))
         {
-             //for activity log
-		   $activity_sql = "insert into ActivityLog(accountId,action,title) values ('$account_id','update','personal')";
-		   $activity = $dbCon->prepare($activity_sql);
+            //for activity log
+		      $activity_sql = "insert into ActivityLog(accountId,action,title) values ('$account_id','update','personal')";
+		      $activity = $dbCon->prepare($activity_sql);
 		      $activity->execute();
             //end of activity log
         	  if($input->accountPicture != '')
@@ -1132,7 +1154,7 @@ $app->post('/editProfile', function(){
 		        //}
 		      }
                   $SchoolLogo = '';
-                  if($input->profileSchoolLogo != '')
+           if($input->profileSchoolLogo != '')
         	  {        	  	  
         	  	  $data = $input->profileSchoolLogo;
         	  	  //$data = explode(",",$data);
@@ -1363,11 +1385,11 @@ $app->post('/editAllergy', function(){
         //	var_dump($input->allergies); exit;
         $del_mild = "delete PM from `ProfileSymtomsMild` as PM JOIN `Allergy` as A ON A.allergyId = PM.allergyId WHERE A.profileId = '".$profile_id."'";
         $mild_del = $dbCon->prepare($del_mild);
-	$mild_del->execute(); 
+	     $mild_del->execute(); 
  	         
-	$del_severe = "delete PS from `ProfileSymtomsSevere` as PS JOIN `Allergy` as A ON A.allergyId = PS.allergyId WHERE A.profileId = '".$profile_id."'";           
+	     $del_severe = "delete PS from `ProfileSymtomsSevere` as PS JOIN `Allergy` as A ON A.allergyId = PS.allergyId WHERE A.profileId = '".$profile_id."'";           
         $severe_del = $dbCon->prepare($del_severe);
-	$severe_del->execute();
+	     $severe_del->execute();
         
 	            
         $del_aller = "delete from Allergy where profileId = '".$profile_id."'";

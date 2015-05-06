@@ -77,7 +77,7 @@ class Admin_model extends CI_Model {
  	$this->db->join('Account A','A.accountId=L.accountId','left');
  	$this->db->order_by('loginLogId','desc');
  	$query = $this->db->get();
- 	//debug_last_query();
+ 	debug_last_query();
  	if($opt == 'record'){
  		return $query->result_array();	 
  	}else{
