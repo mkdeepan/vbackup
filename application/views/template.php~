@@ -32,7 +32,8 @@
 		<!-- start: CLIP-TWO CSS -->
 		<!--<link rel="stylesheet" href="assets/css/styles.css">-->
 		<link href="<?php echo base_url();?>source/vendor/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" media="screen">
-		<link href="<?php echo base_url();?>source/vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
+		<link href="vendor/bootstrap-datepicker/bootstrap-datepicker3.standalone.min.css" rel="stylesheet" media="screen">
+		
       <link rel="stylesheet" href="<?php echo base_url();?>source/assets/css/styles-nova.css">
 		<link rel="stylesheet" href="<?php echo base_url();?>source/assets/css/plugins.css">
       <link rel="stylesheet" href="<?php echo base_url();?>source/vendor/bootstrap-rating/bootstrap-rating.css">
@@ -148,7 +149,7 @@
 		<!-- start: MAIN JAVASCRIPTS -->
 		
 		<script src="<?php echo base_url();?>source/vendor/bootstrap/js/bootstrap.min.js"></script>
-       <script src="<?php echo base_url();?>source/vendor/bootstrap-rating/bootstrap-rating.js"></script>
+                <script src="<?php echo base_url();?>source/vendor/bootstrap-rating/bootstrap-rating.js"></script>
 		<script src="<?php echo base_url();?>source/vendor/modernizr/modernizr.js"></script>
 		<script src="<?php echo base_url();?>source/vendor/jquery-cookie/jquery.cookie.js"></script>
 		<script src="<?php echo base_url();?>source/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>

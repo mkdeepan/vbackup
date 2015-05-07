@@ -34,6 +34,18 @@
 <div class="container-fluid container-fullw bg-white">
    <div class="row">
    <form class="" name="search" id="search" method="get" >
+   <div class="col-md-6"> 
+	<div class="form-group">
+		<label for="form-field-mask-1">
+			Search by Date <small class="text-success">Range</small>
+		</label>		
+		<div class="input-group input-daterange datepicker">
+			<input type="text" value="<?php echo (isset($_GET) && isset($_GET['first']))?$_GET['first']:'';?>" name="first" id="first" class="form-control">
+			<span class="input-group-addon bg-primary">to</span>
+			<input type="text" value="<?php echo (isset($_GET) && isset($_GET['last']))?$_GET['last']:'';?>" name="last" id="last" class="form-control">
+		</div>
+	</div>
+	</div>
    <div class="col-md-4"> 
 
    <div class="form-group">
@@ -52,18 +64,7 @@
 	</div>
 	
 	</div>
-	<div class="col-md-6"> 
-	<div class="form-group">
-		<label for="form-field-mask-1">
-			Search by Date <small class="text-success">Range</small>
-		</label>		
-		<div class="input-group input-daterange datepicker">
-			<input type="text" class="form-control">
-			<span class="input-group-addon bg-primary">to</span>
-			<input type="text" class="form-control">
-		</div>
-	</div>
-	</div>
+	
    </form>
    </div>
   <!-- </div>-->
@@ -111,3 +112,11 @@
 	</div>
 </div>
 </div>
+<script>
+$(document).ready(function(){
+	$('.datepicker').datepicker({
+			autoclose: true,
+			todayHighlight: true
+		});
+});
+</script>

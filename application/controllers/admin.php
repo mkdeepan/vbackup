@@ -208,6 +208,14 @@ class Admin extends CI_Controller {
   	  	 $q = $_GET['q'];
   	  	 $options['key'] = $q;
   	  }
+     /*if(isset($_GET) && isset($_GET['first']))
+  	  {
+  	  	 $options['first'] = $_GET['first'];  	  	 
+  	  }
+     if(isset($_GET) && isset($_GET['last']))
+  	  {
+  	  	 $options['last'] = $_GET['last']; 
+  	  }*/
      $config["base_url"] = base_url()."admin/loginReport";
      $config['first_url'] = base_url()."admin/loginReport?q=".$q;
      $config["suffix"] = "?q=".$q;	  
