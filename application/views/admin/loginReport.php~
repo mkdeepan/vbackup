@@ -34,19 +34,20 @@
 <div class="container-fluid container-fullw bg-white">
    <div class="row">
    <form class="" name="search" id="search" method="get" >
-   <div class="col-md-6"> 
+   
+	<div class="col-md-6"> 
 	<div class="form-group">
 		<label for="form-field-mask-1">
 			Search by Date <small class="text-success">Range</small>
 		</label>		
 		<div class="input-group input-daterange datepicker">
-			<input type="text" value="<?php echo (isset($_GET) && isset($_GET['first']))?$_GET['first']:'';?>" name="first" id="first" class="form-control">
+			<input type="text" id="first" name="first" value="<?php echo (isset($_GET) && isset($_GET['first']))?$_GET['first']:'';?>" class="form-control">
 			<span class="input-group-addon bg-primary">to</span>
-			<input type="text" value="<?php echo (isset($_GET) && isset($_GET['last']))?$_GET['last']:'';?>" name="last" id="last" class="form-control">
+			<input type="text" id="last" name="last" value="<?php echo (isset($_GET) && isset($_GET['last']))?$_GET['last']:'';?>" class="form-control">
 		</div>
 	</div>
 	</div>
-   <div class="col-md-4"> 
+	<div class="col-md-4"> 
 
    <div class="form-group">
 		<label for="form-field-mask-1">
@@ -64,12 +65,10 @@
 	</div>
 	
 	</div>
-	
    </form>
    </div>
   <!-- </div>-->
-   </div>
-   </div>
+
 	<div class="row">	   
 		<div class="col-md-12">
 			<div class="table-responsive">
@@ -113,10 +112,12 @@
 </div>
 </div>
 <script>
-$(document).ready(function(){
-	$('.datepicker').datepicker({
+$(document).ready(function() {
+	   $('.datepicker').datepicker({
 			autoclose: true,
-			todayHighlight: true
+			todayHighlight: true,
+			format:  "yyyy-mm-dd",
 		});
+		
 });
 </script>

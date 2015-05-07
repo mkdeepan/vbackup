@@ -67,11 +67,17 @@ class Admin_model extends CI_Model {
  	if(isset($options['offset']) && isset($options['limit']))
  	   $this->db->limit($options['limit'],$options['offset']);
  	
- 	if(isset($options['key']) && $options['key']!='')
- 	{
+ 	if(isset($options['key']) && $options['key']!='') 	{
  		$this->db->like('A.accountFirstName',$options['key']);
+ 		$this->db->or_like('A.accountLastName',$options['key']);
  	}
-  	
+   if(isset($options['first']) && $options['first']!='') 	{
+ 		$this->db->where("date_format(L.timeIn,'%Y-%m-%d')>=",$options['first']);
+ 	}
+   if(isset($options['last']) && $options['last']!='') 	{
+ 		$this->db->where("date_format(L.timeIn,'%Y-%m-%d')<=",$options['last']);
+ 	}
+ 
  	$this->db->select('L.*,A.accountFirstName,A.accountLastName');
  	$this->db->from('LoginLog L');
  	$this->db->join('Account A','A.accountId=L.accountId','left');
@@ -88,7 +94,18 @@ class Admin_model extends CI_Model {
   function location_report($options = array(),$opt='record')
   {
  	if(isset($options['offset']) && isset($options['limit']))
- 	   $this->db->limit($options['limit'],$options['offset']);	   
+ 	   $this->db->limit($options['limit'],$options['offset']);
+ 	
+ 	if(isset($options['key']) && $options['key']!='') 	{
+ 		$this->db->like('A.accountFirstName',$options['key']);
+ 		$this->db->or_like('A.accountLastName',$options['key']);
+ 	}
+   if(isset($options['first']) && $options['first']!='') 	{
+ 		$this->db->where("date_format(L.scannedTime,'%Y-%m-%d')>=",$options['first']);
+ 	}
+   if(isset($options['last']) && $options['last']!='') 	{
+ 		$this->db->where("date_format(L.scannedTime,'%Y-%m-%d')<=",$options['last']);
+ 	}
  	
  	$this->db->select('L.*,A.accountFirstName,A.accountLastName');
  	$this->db->from('LocationLog L');
@@ -120,6 +137,17 @@ class Admin_model extends CI_Model {
   {
   	if(isset($options['offset']) && isset($options['limit']))
  	   $this->db->limit($options['limit'],$options['offset']);
+ 	
+ 	if(isset($options['key']) && $options['key']!='') 	{
+ 		$this->db->like('A.accountFirstName',$options['key']);
+ 		$this->db->or_like('A.accountLastName',$options['key']);
+ 	}
+   if(isset($options['first']) && $options['first']!='') 	{
+ 		$this->db->where("date_format(AL.activityTime,'%Y-%m-%d')>=",$options['first']);
+ 	}
+   if(isset($options['last']) && $options['last']!='') 	{
+ 		$this->db->where("date_format(AL.activityTime,'%Y-%m-%d')<=",$options['last']);
+ 	}
  	    	
  	$this->db->select('AL.*,A.accountFirstName,A.accountLastName');
  	$this->db->from('ActivityLog AL');

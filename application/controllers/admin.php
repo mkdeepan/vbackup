@@ -197,7 +197,7 @@ class Admin extends CI_Controller {
   	  $data = array('title' => 'Admin - Log', 'page' => 'admin/loginReport', 'errorCls' => NULL,'page_params' => NULL);
   	  $config = array();
   	  $options = array();
-  	  $q = '';
+  	  $q = '';$f = '';$l = '';
   	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
   	  if(isset($_GET) && isset($_GET['qsearch']))
   	  {
@@ -208,17 +208,19 @@ class Admin extends CI_Controller {
   	  	 $q = $_GET['q'];
   	  	 $options['key'] = $q;
   	  }
-     /*if(isset($_GET) && isset($_GET['first']))
+     if(isset($_GET) && isset($_GET['first']))
   	  {
+  	  	 $f = $_GET['first'];
   	  	 $options['first'] = $_GET['first'];  	  	 
   	  }
      if(isset($_GET) && isset($_GET['last']))
   	  {
+  	  	 $l = $_GET['last'];
   	  	 $options['last'] = $_GET['last']; 
-  	  }*/
+  	  }
      $config["base_url"] = base_url()."admin/loginReport";
-     $config['first_url'] = base_url()."admin/loginReport?q=".$q;
-     $config["suffix"] = "?q=".$q;	  
+     $config['first_url'] = base_url()."admin/loginReport?q=".$q."&first=".$f."&last=".$l;
+     $config["suffix"] = "?q=".$q."&first=".$f."&last=".$l; 
 	  $config["per_page"] = 5;
      $config["uri_segment"] = 3;
 	  $config["total_rows"] = $this->admin_model->login_report($options,'count');
@@ -242,10 +244,30 @@ class Admin extends CI_Controller {
   	  $data = array('title' => 'Admin -dashboard', 'page' => 'admin/activityLog', 'errorCls' => NULL,'page_params' => NULL);
   	  $config = array();
   	  $options = array();
+     $q = '';$f = '';$l = '';
+  	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+  	  if(isset($_GET) && isset($_GET['qsearch']))
+  	  {
+  	  	 $page = 0;
+  	  }
+  	  if(isset($_GET) && isset($_GET['q']))
+  	  {
+  	  	 $q = $_GET['q'];
+  	  	 $options['key'] = $q;
+  	  }
+     if(isset($_GET) && isset($_GET['first']))
+  	  {
+  	  	 $f = $_GET['first'];
+  	  	 $options['first'] = $_GET['first'];  	  	 
+  	  }
+     if(isset($_GET) && isset($_GET['last']))
+  	  {
+  	  	 $l = $_GET['last'];
+  	  	 $options['last'] = $_GET['last']; 
+  	  }
      $config["base_url"] = base_url()."admin/activityLog";
-     $config['first_url'] = base_url()."admin/activityLog";
-     $config["suffix"] ="";
-	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+     $config['first_url'] = base_url()."admin/activityLog?q=".$q."&first=".$f."&last=".$l;
+     $config["suffix"] = "?q=".$q."&first=".$f."&last=".$l; 
 	  $config["per_page"] = 5;
      $config["uri_segment"] = 3;
 	  $config["total_rows"] = $this->admin_model->activity_log($options,'count');
@@ -269,10 +291,30 @@ class Admin extends CI_Controller {
   	  $data = array('title' => 'Admin -dashboard', 'page' => 'admin/locationLog', 'errorCls' => NULL,'page_params' => NULL);
   	  $config = array();
   	  $options = array();
+     $q = '';$f = '';$l = '';
+  	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+  	  if(isset($_GET) && isset($_GET['qsearch']))
+  	  {
+  	  	 $page = 0;
+  	  }
+  	  if(isset($_GET) && isset($_GET['q']))
+  	  {
+  	  	 $q = $_GET['q'];
+  	  	 $options['key'] = $q;
+  	  }
+     if(isset($_GET) && isset($_GET['first']))
+  	  {
+  	  	 $f = $_GET['first'];
+  	  	 $options['first'] = $_GET['first'];  	  	 
+  	  }
+     if(isset($_GET) && isset($_GET['last']))
+  	  {
+  	  	 $l = $_GET['last'];
+  	  	 $options['last'] = $_GET['last']; 
+  	  }
      $config["base_url"] = base_url()."admin/locationLog";
-     $config['first_url'] = base_url()."admin/locationLog";
-     $config["suffix"] ="";
-	  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+     $config['first_url'] = base_url()."admin/locationLog?q=".$q."&first=".$f."&last=".$l;
+     $config["suffix"] = "?q=".$q."&first=".$f."&last=".$l; 
 	  $config["per_page"] = 5;
      $config["uri_segment"] = 3;
 	  $config["total_rows"] = $this->admin_model->location_report($options,'count');

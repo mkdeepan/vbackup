@@ -34,7 +34,20 @@
 <div class="container-fluid container-fullw bg-white">
    <div class="row">
    <form class="" name="search" id="search" method="get" >
-   <div class="col-md-4"> 
+   
+	<div class="col-md-6"> 
+	<div class="form-group">
+		<label for="form-field-mask-1">
+			Search by Date <small class="text-success">Range</small>
+		</label>		
+		<div class="input-group input-daterange datepicker">
+			<input type="text" id="first" name="first" value="<?php echo (isset($_GET) && isset($_GET['first']))?$_GET['first']:'';?>" class="form-control">
+			<span class="input-group-addon bg-primary">to</span>
+			<input type="text" id="last" name="last" value="<?php echo (isset($_GET) && isset($_GET['last']))?$_GET['last']:'';?>" class="form-control">
+		</div>
+	</div>
+	</div>
+	<div class="col-md-4"> 
 
    <div class="form-group">
 		<label for="form-field-mask-1">
@@ -52,23 +65,10 @@
 	</div>
 	
 	</div>
-	<div class="col-md-6"> 
-	<div class="form-group">
-		<label for="form-field-mask-1">
-			Search by Date <small class="text-success">Range</small>
-		</label>		
-		<div class="input-group input-daterange datepicker">
-			<input type="text" class="form-control">
-			<span class="input-group-addon bg-primary">to</span>
-			<input type="text" class="form-control">
-		</div>
-	</div>
-	</div>
    </form>
    </div>
   <!-- </div>-->
-   </div>
-   </div>
+
 	<div class="row">	   
 		<div class="col-md-12">
 			<div class="table-responsive">
