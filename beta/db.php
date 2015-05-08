@@ -1,5 +1,9 @@
 <?php
-$base_url = 'http://myvalert.com/';
+
+function base_url(){
+	return 'http://myvalert.com/';
+}
+
 function getConnection() {
     try {
         $db_username = "root";
