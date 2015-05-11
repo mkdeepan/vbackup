@@ -16,7 +16,9 @@ $app->post('/hello', function () {
 	global $app;
         $request = $app->request();
         $body = $request->getBody();
-    echo is_json($body);
+        $input = json_decode($body); 	
+        var_dump($input); exit;
+       
 });
 
 $app->notFound(function () {
@@ -1217,260 +1219,323 @@ $app->post('/editProfile', function(){
 	global $app;
         $request = $app->request();
         $body = $request->getBody();
-        $input = json_decode($body);
-        $dbCon = getConnection();
-        $emergency = array();
-        $insurance = array();
-        $doctor = array();     
-        
-        //var_dump($input); exit;
-        $account_id = $input->accountId;
-        $profile_id = $input->profileId;
-        if($account_id !='')
-        {
-        	 $profilename = '';
-        	 if($input->profilePicture != '')
-        	  {        	  	  
-        	  	  $data = $input->profilePicture;
-        	  	  //$data = explode(",",$data);
-        	  	  //if(!empty($data) && isset($data[1]))
-        	  	  //{
-        	  	  	  if(!$profile_id){
-        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
-        	  	  	  }
-                           if(strlen($data) > 100)
-                            {
-			        $data = base64_decode($data);
-			        $path = '../uploads/profileImages/';
-			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
-			        $profilename = "profile".$profile_id.'.jpeg';
-			        $file = $path . $profilename;
-			        $success = file_put_contents($file, $data);
-                            }
-                         else
-                         {
-                                $array = explode('/',$data);
-                                $profilename = end($array);
-                         }
-		        //}
-		      }
-                  $SchoolLogo = '';
-           if($input->profileSchoolLogo != '')
-        	  {        	  	  
-        	  	  $data = $input->profileSchoolLogo;
-        	  	  //$data = explode(",",$data);
-        	  	  //if(!empty($data) && isset($data[1]))
-        	  	  //{
-        	  	  	  if(!$profile_id){
-        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
-        	  	  	  }
-                           if(strlen($data) > 100)
-                            {
-			        $data = base64_decode($data);
-			        $path = '../uploads/profileImages/';
-			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
-			        $SchoolLogo = "school".$profile_id.'.jpeg';
-			        $file = $path . $SchoolLogo;
-			        $success = file_put_contents($file, $data);
-                            }
-                         else
-                         {
-                                $array = explode('/',$data);
-                                $SchoolLogo = end($array);
-                         }
-		        //}
-		      }
-        	  
-	        $profile = array(
-	                      'profileFirstName' => $input->profileFirstName,
-	                      'profileMiddleName' => $input->profileMiddleName,
-	                      'profileLastName' => $input->profileLastName,
-	                      'profileDateOfBirth' => $input->profileDateOfBirth,
-	                      'profileGenderId' => $input->gender,
-	                      'profileMobilePhone' => $input->profileMobilePhone,
-	                      'profileMobileEx' => $input->profileMobileEx,
-	                      'profileEmail' => $input->profileEmail,
-	                      'profileAddressFirstLine' => $input->profileAddressFirstLine,
-	                      'profileAddressSecondLine' => $input->profileAddressSecondLine,
-	                      'profileAddressCity' => $input->profileAddressCity,
-	                      'profileAddressStateId' => $input->profileAddressState,
-	                      'profileAddressZip' => $input->profileAddressZip,
-	                      'profileAddressCountryId' => $input->profileAddressCountry,	                      
-	                      'profileSchoolName' => $input->profileSchoolName,	                      
-	                      'profileSchoolGrade' => $input->profileSchoolGrade
-	                   );
-               if($input->profilePicture)
-               {
-                  $profile['profilePicture'] = $profilename;
-               } 
-               if($input->profileSchoolLogo)
-               {
-                  $profile['profileSchoolLogo'] = $SchoolLogo;
-               } 
-	       if($profile_id){
-	        $update_pro = "update Profile set profileFirstName='".$profile['profileFirstName']."', 
-	                                          profileMiddleName='".$profile['profileMiddleName']."',
-	                                          profileLastName='".$profile['profileLastName']."', 
-	                                          profileDateOfBirth='".$profile['profileDateOfBirth']."', 
-	                                          profileGenderId='".$profile['profileGenderId']."',
-	                                          profileEmail='".$profile['profileEmail']."',
-	                                          profileMobilePhone='".$profile['profileMobilePhone']."',
-	                                          profileMobileEx='".$profile['profileMobileEx']."',
-	                                          profileAddressFirstLine='".$profile['profileAddressFirstLine']."',
-	                                          profileAddressSecondLine='".$profile['profileAddressSecondLine']."',
-	                                          profileAddressCity='".$profile['profileAddressCity']."',
-	                                          profileAddressStateId='".$profile['profileAddressStateId']."',
-	                                          profileAddressZip='".$profile['profileAddressZip']."',
-	                                          profileAddressCountryId='".$profile['profileAddressCountryId']."',
-	                                          profilePicture= '$profilename',
-	                                          profileSchoolName='".$profile['profileSchoolName']."',
-	                                          profileSchoolLogo='".$SchoolLogo."',                                          
-	                                          profileSchoolGrade='".$profile['profileSchoolGrade']."'	                                          
-	                       where profileId = '$profile_id'";
-	      }else{ //new profile creation
-	        $update_pro = "insert into Profile(`accountId`, `profileFirstName`, `profileMiddleName`, `profileLastName`, `profileDateOfBirth`, `profileGenderId`, `profileMobilePhone`, `profileMobileEx`, `profileEmail`, `profilePicture`, `profileAddressFirstLine`, `profileAddressSecondLine`, `profileAddressCity`, `profileAddressStateId`, `profileAddressZip`, `profileAddressCountryId`, `profileSchoolName`, `profileSchoolLogo`, `profileSchoolGrade`) values
-	                       ('$account_id','$input->profileFirstName','$input->profileMiddleName','$input->profileLastName','$input->profileDateOfBirth','$input->gender','$input->profileMobilePhone','$input->profileMobileEx','$input->profileEmail','$input->profilePicture','$input->profileAddressFirstLine','$input->profileAddressSecondLine','$input->profileAddressCity', '$input->profileAddressState','$input->profileAddressZip','$input->profileAddressCountry','$input->profileSchoolName','$input->profileSchoolLogo', '$input->profileSchoolGrade')";
-	                       
-	      }               
-	        //echo $update_pro; exit;
-	        foreach($input->Emergency as $emer)
-	        {
-	        	 $emergency[] = "(:profileid,'$emer->emergencyContactFirstName','$emer->emergencyContactMiddleName','$emer->emergencyContactLastName',
-	        	                  '$emer->emergencyPhoneType','$emer->emergencyContactNumber','$emer->emergencyPhoneExtn','$emer->emergencyContactRelationship')";
-	        }   
-	        
-	        foreach($input->Doctor as $doc)
-	        {
-	        	 $doctor[] = "(:profileid,'$doc->doctorFirstName','$doc->doctorMiddleName','$doc->doctorLastName',
-	        	               '$doc->doctorPhoneType','$doc->doctorPhoneNumber','$doc->doctorPhoneExtn','$doc->doctorAddressType',
-	        	               '$doc->doctorAddressFirstline','$doc->doctorAddressSecondline','$doc->doctorCity','$doc->doctorState',
-	        	               '$doc->doctorZip','$doc->doctorCountry')";
-	        }
-	        
-	        foreach($input->Insurance as $ins)
-	        {
-                   $front = '';
-                   if($ins->scanCopyFront != '')
-        	  {
-        	  	  
-        	  	  $data = $ins->scanCopyFront;
-        	  	  //$data = explode(",",$data);
-        	  	  //if(!empty($data) && isset($data[1]))
-        	  	  //{
-        	  	  	  if(!$profile_id){
-        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
-        	  	  	  }
-                      
-                       if(strlen($data) > 100)
-                         {
-			        $data = base64_decode($data);
-			        $path = '../uploads/insurance/front/';
-			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
-			        $front = "front".uniqid().$profile_id.'.jpeg';
-			        $file = $path . $front;
-			        $success = file_put_contents($file, $data);
-                         }
-                         else
-                         {
-                                $array = explode('/',$data);
-                                $front = end($array);
-                         }
-		        //}
-		  }
-                  $back = '';
-                  if($ins->scanCopyBack != '')
-        	  {
-        	  	  
-        	  	  $data = $ins->scanCopyBack;
-        	  	  //$data = explode(",",$data);
-        	  	  //if(!empty($data) && isset($data[1]))
-        	  	  //{
-        	  	  	  if(!$profile_id){
-        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
-        	  	  	  }
-                          if(strlen($data) > 100)
-                          {
-			        $data = base64_decode($data);
-			        $path = '../uploads/insurance/back/';
-			        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
-			        $back = "back".uniqid().$profile_id.'.jpeg';
-			        $file = $path . $back;
-			        $success = file_put_contents($file, $data);
-                           }
-                           else
-                         {
-                                $array = explode('/',$data);
-                                $back = end($array);
-                         }
-		        //}
-		   } 
-	        	 $insurance[] = "(:profileid,'$ins->providerName','$ins->planId','$ins->groupId','$ins->payerId','$ins->expMonth','$ins->expYear','$ins->expDay','$front','$back')";
-	        }
-	        $emer_arr = implode(",",$emergency);    
-	        $doc_arr = implode(",",$doctor);  
-	        $ins_arr = implode(",",$insurance);   
-	        $emer_del = "delete from EmergencyContacts where profileId=:profileid";
-	        $doc_del = "delete from DoctorDetails where profileId=:profileid";
-	        $ins_del = "delete from Insurance where profileId=:profileid";
-	        $insert_emergency = "insert into EmergencyContacts (profileId,emergencyContactFirstName,emergencyContactMiddleName,emergencyContactLastName,emergencyPhoneType,emergencyContactNumber,emergencyPhoneExtn,emergencyContactRelationship) values ".$emer_arr."";
-	        $insert_doctor = "insert into DoctorDetails (profileId,doctorFirstName,doctorMiddleName,doctorLastName,doctorPhoneType,doctorPhoneNumber,doctorPhoneExtn,doctorAddressType,doctorAddressFirstline,doctorAddressSecondline,doctorCity,doctorState,doctorZip,doctorCountry) values ".$doc_arr."";
-	        $insert_insurance = "insert into Insurance (profileId,providerName,planId,groupId,payerId,expMonth,expYear,expDay,scanCopyFront,scanCopyBack) values ".$ins_arr."";
-	       /* echo $update_pro;
-	        echo $insert_emergency;
-                echo $insert_insurance;
-	        echo $insert_doctor; exit;*/
-	        try {
-	        	
-	        	if($profile_id){
-	        		$pro1 = $dbCon->prepare($update_pro);
-	            $pro1->execute();	        		
-	        	}else{
-	        		$pro1 = $dbCon->prepare($update_pro);
-	            $pro1->execute();
-	            $profile_id = $dbCon->lastInsertId();
-	        	}
-        //for activity log
-	$activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','$activity_action','profile')";
-	$activity = $dbCon->prepare($activity_sql);
-	$activity->execute();
-	//end of activity log
-	           $del1 = $dbCon->prepare($emer_del);
-	           $del1->bindParam("profileid", $profile_id);
-	           $del1->execute();
-	           $del2 = $dbCon->prepare($doc_del);
-	           $del2->bindParam("profileid", $profile_id);
-	           $del2->execute();
-	           $del3 = $dbCon->prepare($ins_del);
-	           $del3->bindParam("profileid", $profile_id);
-	           $del3->execute();
-	           $insert1 = $dbCon->prepare($insert_emergency);
-	           $insert1->bindParam("profileid", $profile_id);
-	           $insert1->execute();
-	           $insert2 = $dbCon->prepare($insert_doctor);
-	           $insert2->bindParam("profileid", $profile_id);
-	           $insert2->execute();
-	           $insert3 = $dbCon->prepare($insert_insurance);
-	           $insert3->bindParam("profileid", $profile_id);
-	           $insert3->execute();
-	           
-	           echo json_encode(array(
-	            "status" => 'true',
-	            "message" => "Personal info updated successfully"
-	            ));
-           }catch(PDOException $e) {
-           	  echo json_encode(array(
-		            "status" => false,
-		            "message" => $e->getMessage()
-	           ));              
-           }
-        }
-      else
-        {
-        	  echo json_encode(array(
-	            "status" => false,
-	            "message" => "Account Id is missing."
-	        ));
-        }        
+        $error = 0;
+	     $errorCodes = array();
+        if(is_json($body)){
+		   $input = json_decode($body);
+		   if(!empty($input)){  
+		        $dbCon = getConnection();
+		        $emergency = array();
+		        $insurance = array();
+		        $doctor = array();     
+		        
+		        //var_dump($input); exit;
+		        $account_id = $input->accountId;
+		        $profile_id = $input->profileId;
+		        $dob = $input->profileDateOfBirth;
+		        $date = '';
+		        if($dob){
+		        	$temp = explode('-',$dob);
+		        	if(!empty($temp)){
+		        		$date = $temp[1].'/'.$temp[2].'/'.$temp[0];
+		        	}
+		        }
+		        
+		        $username = $input->profileEmail;
+		        if($account_id !='')
+		        {
+		        	  if(!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+			            $errorCodes = array('statusCode'=>'1002','errorMessage'=>'Invalid email address format.');
+			  	         goto res;
+			        }
+			        if(!preg_match("/^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/",$date))
+					  {
+					      $errorCodes = array('statusCode'=>'1001','errorMessage'=>'Invalid date format');
+						  	goto res;
+					  }
+				     else{
+				     	$current_date = date('Y-m-d');
+				     	if($current_date < $dob){
+				     		$errorCodes = array('statusCode'=>'1001','errorMessage'=>'Invalid date format');
+						  	goto res;
+				     	}
+				     }
+			        if(0){
+			        	   $errorCodes = array('statusCode'=>'1004','errorMessage'=>'Invalid phone number.');
+			  	         goto res;
+			        }	
+			        if(0){
+			        	   $errorCodes = array('statusCode'=>'1014','errorMessage'=>'Invalid country extension');
+			  	         goto res;
+			        }	      
+		        	 $profilename = '';
+		        	 if($input->profilePicture != '')
+		        	  {        	  	  
+		        	  	  $data = $input->profilePicture;
+		        	  	  
+		        	  	  	  if(!$profile_id){
+		        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+		        	  	  	  }
+		                           if(strlen($data) > 100)
+		                            {
+					        $data = base64_decode($data);
+					        $path = '../uploads/profileImages/';
+					        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+					        $profilename = "profile".$profile_id.'.jpeg';
+					        $file = $path . $profilename;
+					        $success = file_put_contents($file, $data);
+		                            }
+		                         else
+		                         {
+		                                $array = explode('/',$data);
+		                                $profilename = end($array);
+		                         }
+				        //}
+				      }
+		                  $SchoolLogo = '';
+		           if($input->profileSchoolLogo != '')
+		        	  {        	  	  
+		        	  	  $data = $input->profileSchoolLogo;
+		        	  
+		        	  	  	  if(!$profile_id){
+		        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+		        	  	  	  }
+		                           if(strlen($data) > 100)
+		                            {
+					        $data = base64_decode($data);
+					        $path = '../uploads/profileImages/';
+					        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+					        $SchoolLogo = "school".$profile_id.'.jpeg';
+					        $file = $path . $SchoolLogo;
+					        $success = file_put_contents($file, $data);
+		                            }
+		                         else
+		                         {
+		                                $array = explode('/',$data);
+		                                $SchoolLogo = end($array);
+		                         }
+				        //}
+				      }
+		        	  $activity_action = 'new';
+			        $profile = array(
+			                      'profileFirstName' => $input->profileFirstName,
+			                      'profileMiddleName' => $input->profileMiddleName,
+			                      'profileLastName' => $input->profileLastName,
+			                      'profileDateOfBirth' => $input->profileDateOfBirth,
+			                      'profileGenderId' => $input->gender,
+			                      'profileMobilePhone' => $input->profileMobilePhone,
+			                      'profileMobileEx' => $input->profileMobileEx,
+			                      'profileEmail' => $input->profileEmail,
+			                      'profileAddressFirstLine' => $input->profileAddressFirstLine,
+			                      'profileAddressSecondLine' => $input->profileAddressSecondLine,
+			                      'profileAddressCity' => $input->profileAddressCity,
+			                      'profileAddressStateId' => $input->profileAddressState,
+			                      'profileAddressZip' => $input->profileAddressZip,
+			                      'profileAddressCountryId' => $input->profileAddressCountry,	                      
+			                      'profileSchoolName' => $input->profileSchoolName,	                      
+			                      'profileSchoolGrade' => $input->profileSchoolGrade
+			                   );
+		               if($input->profilePicture)
+		               {
+		                  $profile['profilePicture'] = $profilename;
+		               } 
+		               if($input->profileSchoolLogo)
+		               {
+		                  $profile['profileSchoolLogo'] = $SchoolLogo;
+		               } 
+			       if($profile_id){
+			        $activity_action = 'update';
+			        $update_pro = "update Profile set profileFirstName='".$profile['profileFirstName']."', 
+			                                          profileMiddleName='".$profile['profileMiddleName']."',
+			                                          profileLastName='".$profile['profileLastName']."', 
+			                                          profileDateOfBirth='".$profile['profileDateOfBirth']."', 
+			                                          profileGenderId='".$profile['profileGenderId']."',
+			                                          profileEmail='".$profile['profileEmail']."',
+			                                          profileMobilePhone='".$profile['profileMobilePhone']."',
+			                                          profileMobileEx='".$profile['profileMobileEx']."',
+			                                          profileAddressFirstLine='".$profile['profileAddressFirstLine']."',
+			                                          profileAddressSecondLine='".$profile['profileAddressSecondLine']."',
+			                                          profileAddressCity='".$profile['profileAddressCity']."',
+			                                          profileAddressStateId='".$profile['profileAddressStateId']."',
+			                                          profileAddressZip='".$profile['profileAddressZip']."',
+			                                          profileAddressCountryId='".$profile['profileAddressCountryId']."',
+			                                          profilePicture= '$profilename',
+			                                          profileSchoolName='".$profile['profileSchoolName']."',
+			                                          profileSchoolLogo='".$SchoolLogo."',                                          
+			                                          profileSchoolGrade='".$profile['profileSchoolGrade']."'	                                          
+			                       where profileId = '$profile_id'";
+			      }else{ //new profile creation
+			        $update_pro = "insert into Profile(`accountId`, `profileFirstName`, `profileMiddleName`, `profileLastName`, `profileDateOfBirth`, `profileGenderId`, `profileMobilePhone`, `profileMobileEx`, `profileEmail`, `profilePicture`, `profileAddressFirstLine`, `profileAddressSecondLine`, `profileAddressCity`, `profileAddressStateId`, `profileAddressZip`, `profileAddressCountryId`, `profileSchoolName`, `profileSchoolLogo`, `profileSchoolGrade`) values
+			                       ('$account_id','$input->profileFirstName','$input->profileMiddleName','$input->profileLastName','$input->profileDateOfBirth','$input->gender','$input->profileMobilePhone','$input->profileMobileEx','$input->profileEmail','$input->profilePicture','$input->profileAddressFirstLine','$input->profileAddressSecondLine','$input->profileAddressCity', '$input->profileAddressState','$input->profileAddressZip','$input->profileAddressCountry','$input->profileSchoolName','$input->profileSchoolLogo', '$input->profileSchoolGrade')";
+			                       
+			      }               
+			        //echo $update_pro; exit;
+			        foreach($input->Emergency as $emer)
+			        {
+			        	  if(0){
+				        	   $errorCodes = array('statusCode'=>'1004','errorMessage'=>'Invalid phone number.');
+				  	         goto res;
+				        }	
+				        if(0){
+				        	   $errorCodes = array('statusCode'=>'1014','errorMessage'=>'Invalid country extension');
+				  	         goto res;
+				        }	      
+			        	 $emergency[] = "(:profileid,'$emer->emergencyContactFirstName','$emer->emergencyContactMiddleName','$emer->emergencyContactLastName',
+			        	                  '$emer->emergencyPhoneType','$emer->emergencyContactNumber','$emer->emergencyPhoneExtn','$emer->emergencyContactRelationship')";
+			        }   
+			        
+			        foreach($input->Doctor as $doc)
+			        {
+			        	 if(0){
+				        	   $errorCodes = array('statusCode'=>'1004','errorMessage'=>'Invalid phone number.');
+				  	         goto res;
+				        }	
+				        if(0){
+				        	   $errorCodes = array('statusCode'=>'1014','errorMessage'=>'Invalid country extension');
+				  	         goto res;
+				        }	      
+			        	 $doctor[] = "(:profileid,'$doc->doctorFirstName','$doc->doctorMiddleName','$doc->doctorLastName',
+			        	               '$doc->doctorPhoneType','$doc->doctorPhoneNumber','$doc->doctorPhoneExtn','$doc->doctorAddressType',
+			        	               '$doc->doctorAddressFirstline','$doc->doctorAddressSecondline','$doc->doctorCity','$doc->doctorState',
+			        	               '$doc->doctorZip','$doc->doctorCountry')";
+			        }
+			        
+			        foreach($input->Insurance as $ins)
+			        {
+			        	  
+			        	   $date = $ins->expMonth.'/'.$ins->expDay.'/'.$ins->expYear;
+			        	   
+			        	   	if (!preg_match("/^((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))$/",$date))
+							    {
+							       $errorCodes = array('statusCode'=>'1001','errorMessage'=>'Invalid date format');
+								  	 goto res;
+							    }else{
+							    	$current_date = date('m/d/Y');
+							    	if($current_date > $date){
+							    		$errorCodes = array('statusCode'=>'1001','errorMessage'=>'Invalid date format');
+						  	         goto res;
+							    	}
+							    }
+					      
+	                   $front = '';
+	                   if($ins->scanCopyFront != '')
+				        	  {
+				        	  	  
+				        	  	  $data = $ins->scanCopyFront;
+				        	  	  
+				        	  	  	  if(!$profile_id){
+				        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+				        	  	  	  }
+				                      
+				                       if(strlen($data) > 100)
+				                         {
+							        $data = base64_decode($data);
+							        $path = '../uploads/insurance/front/';
+							        //$name = uniqid() . date('Y-m-dH:i:s') . '.jpeg';
+							        $front = "front".uniqid().$profile_id.'.jpeg';
+							        $file = $path . $front;
+							        $success = file_put_contents($file, $data);
+				                         }
+				                         else
+				                         {
+				                                $array = explode('/',$data);
+				                                $front = end($array);
+				                         }
+						        //}
+						     }
+               $back = '';
+               if($ins->scanCopyBack != '')
+		        	  {
+		        	  	  
+		        	  	  $data = $ins->scanCopyBack;
+		        	  	 
+		        	  	  	  if(!$profile_id){
+		        	  	  	  	$profile_id = date('Y-m-d_H:i:s');
+		        	  	  	  }
+		                          if(strlen($data) > 100)
+		                          {
+					        $data = base64_decode($data);
+					        $path = '../uploads/insurance/back/';
+					      
+					        $back = "back".uniqid().$profile_id.'.jpeg';
+					        $file = $path . $back;
+					        $success = file_put_contents($file, $data);
+		                           }
+		                           else
+		                         {
+		                                $array = explode('/',$data);
+		                                $back = end($array);
+		                         }
+				        
+				   } 
+			        	 $insurance[] = "(:profileid,'$ins->providerName','$ins->planId','$ins->groupId','$ins->payerId','$ins->expMonth','$ins->expYear','$ins->expDay','$front','$back')";
+			     }
+			        $emer_arr = implode(",",$emergency);    
+			        $doc_arr = implode(",",$doctor);  
+			        $ins_arr = implode(",",$insurance);   
+			        $emer_del = "delete from EmergencyContacts where profileId=:profileid";
+			        $doc_del = "delete from DoctorDetails where profileId=:profileid";
+			        $ins_del = "delete from Insurance where profileId=:profileid";
+			        $insert_emergency = "insert into EmergencyContacts (profileId,emergencyContactFirstName,emergencyContactMiddleName,emergencyContactLastName,emergencyPhoneType,emergencyContactNumber,emergencyPhoneExtn,emergencyContactRelationship) values ".$emer_arr."";
+			        $insert_doctor = "insert into DoctorDetails (profileId,doctorFirstName,doctorMiddleName,doctorLastName,doctorPhoneType,doctorPhoneNumber,doctorPhoneExtn,doctorAddressType,doctorAddressFirstline,doctorAddressSecondline,doctorCity,doctorState,doctorZip,doctorCountry) values ".$doc_arr."";
+			        $insert_insurance = "insert into Insurance (profileId,providerName,planId,groupId,payerId,expMonth,expYear,expDay,scanCopyFront,scanCopyBack) values ".$ins_arr."";
+			     
+			        try {
+			        	
+			        	if($profile_id){
+			        		$pro1 = $dbCon->prepare($update_pro);
+			            $pro1->execute();	        		
+			        	}else{
+			        		$pro1 = $dbCon->prepare($update_pro);
+			            $pro1->execute();
+			            $profile_id = $dbCon->lastInsertId();
+			        	}
+		   //for activity log
+			$activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','$activity_action','profile')";
+			$activity = $dbCon->prepare($activity_sql);
+			$activity->execute();
+			//end of activity log
+			           $del1 = $dbCon->prepare($emer_del);
+			           $del1->bindParam("profileid", $profile_id);
+			           $del1->execute();
+			           $del2 = $dbCon->prepare($doc_del);
+			           $del2->bindParam("profileid", $profile_id);
+			           $del2->execute();
+			           $del3 = $dbCon->prepare($ins_del);
+			           $del3->bindParam("profileid", $profile_id);
+			           $del3->execute();
+			           $insert1 = $dbCon->prepare($insert_emergency);
+			           $insert1->bindParam("profileid", $profile_id);
+			           $insert1->execute();
+			           $insert2 = $dbCon->prepare($insert_doctor);
+			           $insert2->bindParam("profileid", $profile_id);
+			           $insert2->execute();
+			           $insert3 = $dbCon->prepare($insert_insurance);
+			           $insert3->bindParam("profileid", $profile_id);
+			           $insert3->execute();
+			           
+			           $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+	                 goto res;    
+		           }catch(PDOException $e) {
+		           	  $errorCodes = array('statusCode'=>'1011','errorMessage'=>'Error connecting to the database.');
+  	                 goto res;      
+		           }
+		        }
+		      else
+		        {
+		        	 $errorCodes = array('statusCode'=>'1000','errorMessage'=>'Please enter all mandatory fields.');
+		  	       goto res;
+		        }   
+		 }else{
+			$errorCodes = array('statusCode'=>'1012','errorMessage'=>'API parameter missing');
+		  	goto res;
+     }
+  }else{
+  	 $errorCodes = array('statusCode'=>'1017','errorMessage'=>'JSON format error');
+	 goto res;
+  } 
+  res:
+  echo '{"Result":'. json_encode($errorCodes).'}';          
 	
 });
 
@@ -1837,7 +1902,6 @@ $app->post('/signUp', function(){
   res:
   echo '{"Result":'. json_encode($errorCodes).'}';
 });
-
 //common function to accountId
 function get_account_id($profileId) {
 	$dbCon = getConnection();
@@ -1847,6 +1911,44 @@ function get_account_id($profileId) {
 	$fetch = $profile->fetchAll(PDO::FETCH_ASSOC);
 	return $fetch[0]['accountId']; 
 }
+
+$app->post('/feedback',function(){
+	global $app;
+	$request = $app->request();
+   $body = $request->getBody();
+	if(is_json($body)){
+     $input = json_decode($body);   
+     //var_dump($input); exit;
+      if(!empty($input)){
+      	if($input->rating == '' || $input->category == '' || $input->comments == ''){
+      		$errorCodes = array('statusCode'=>'1000','errorMessage'=>'Please enter all mandatory fields.');
+  	         goto res;
+      	}else{
+      		$insert = "insert into Feedback(accountId,rating,category,comments) values ('$input->accountId','$input->rating','$input->category','$input->comments')";
+      		//echo $insert; exit;
+      		try{
+      			$dbCon = getConnection();
+               $stmt = $dbCon->prepare($insert);
+               $stmt->execute();
+                $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+  	             goto res;
+      		}catch(PDOException $e){
+      			$errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
+  	            goto res;
+      		}
+      	}
+      }else{
+      	 $errorCodes = array('statusCode'=>'1012','errorMessage'=>'API parameter missing');
+		  	 goto res;
+      }
+   }else{
+   	$errorCodes = array('statusCode'=>'1017','errorMessage'=>'JSON format error');
+	   goto res;
+   }
+  res:
+  echo '{"Result":'. json_encode($errorCodes).'}';
+	
+});
 
 $app->run();
 
