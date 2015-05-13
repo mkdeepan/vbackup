@@ -161,6 +161,30 @@ class Admin_model extends CI_Model {
  		return $query->num_rows();
  	}
   }
+  
+  function master($options = array(),$opt='record')
+  {
+  	if(isset($options['offset']) && isset($options['limit']))
+ 	   $this->db->limit($options['limit'],$options['offset']);
+ 	
+ 	if(isset($options['key']) && $options['key']!='') 	{
+ 	  foreach($options['like'] as $key=>$like){
+ 	  	if(!$key)
+ 		  $this->db->like($like,$options['key']);
+ 	     $this->db->or_like($like,$options['key']);
+ 	  }
+ 	}
+  	    	
+ 	$this->db->select('*');
+ 	$this->db->from($options['table']);
+ 	$query = $this->db->get();
+ 	//debug_last_query();
+ 	if($opt == 'record'){
+ 		return $query->result_array();	 
+ 	}else{
+ 		return $query->num_rows();
+ 	}
+  }
 
 }
 

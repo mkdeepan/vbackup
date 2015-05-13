@@ -69,6 +69,7 @@ class Admin_model extends CI_Model {
  	
  	if(isset($options['key']) && $options['key']!='') 	{
  		$this->db->like('A.accountFirstName',$options['key']);
+ 		$this->db->or_like('A.accountLastName',$options['key']);
  	}
    if(isset($options['first']) && $options['first']!='') 	{
  		$this->db->where("date_format(L.timeIn,'%Y-%m-%d')>=",$options['first']);
@@ -139,6 +140,7 @@ class Admin_model extends CI_Model {
  	
  	if(isset($options['key']) && $options['key']!='') 	{
  		$this->db->like('A.accountFirstName',$options['key']);
+ 		$this->db->or_like('A.accountLastName',$options['key']);
  	}
    if(isset($options['first']) && $options['first']!='') 	{
  		$this->db->where("date_format(AL.activityTime,'%Y-%m-%d')>=",$options['first']);
@@ -149,6 +151,32 @@ class Admin_model extends CI_Model {
  	    	
  	$this->db->select('AL.*,A.accountFirstName,A.accountLastName');
  	$this->db->from('ActivityLog AL');
+ 	$this->db->join('Account A','A.accountId=AL.accountId','left');
+ 	$this->db->order_by('activityTime','desc');
+ 	$query = $this->db->get();
+ 	//debug_last_query();
+ 	if($opt == 'record'){
+ 		return $query->result_array();	 
+ 	}else{
+ 		return $query->num_rows();
+ 	}
+  }
+  
+  function master($options = array(),$opt='record')
+  {
+  	if(isset($options['offset']) && isset($options['limit']))
+ 	   $this->db->limit($options['limit'],$options['offset']);
+ 	
+ 	if(isset($options['key']) && $options['key']!='') 	{
+ 	  foreach($options['like'] as $key=>$like){
+ 	  	if(!$key)
+ 		  $this->db->like($like,$options['key']);
+ 	     $this->db->or_like($like,$options['key']);
+ 	  }
+ 	}
+  	    	
+ 	$this->db->select('*');
+ 	$this->db->from($options['table']);
  	$this->db->join('Account A','A.accountId=AL.accountId','left');
  	$this->db->order_by('activityTime','desc');
  	$query = $this->db->get();

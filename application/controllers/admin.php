@@ -531,6 +531,60 @@ class Admin extends CI_Controller {
 			
 		}
 	}
+  function update($option='allergyname')
+  {
+  	switch($option){
+  		case 'allergyname':
+  		   $values = array('allergyNameDescription'=>$this->input->post('desc'));
+  		   $where = array('allergyNameId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('AllergyName',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
+  	}
+  }
+  function master($option='allergyname')
+  {
+  	  if(!$this->session->userdata('isLogin'))
+		redirect('login');
+	  if($this->session->userdata('account_role') == '2')
+		redirect('user');
+  	  $config = array();
+  	  $options = array();
+  	  $page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+  	  $q='';
+  	  if(isset($_GET) && isset($_GET['q']))
+  	  {
+  	  	 $q = $_GET['q'];
+  	  	 $options['key'] = $q;
+  	  }
+     $config["base_url"] = base_url()."admin/master/".$option;
+     $config['first_url'] = base_url()."admin/master/".$option."?q=".$q;
+     $config["suffix"] = "?q=".$q; 
+	  $config["per_page"] = 5;
+     $config["uri_segment"] = 4;
+     switch($option) {
+     	case 'allergyname':
+     	 $data = array('title' => 'Admin - Allergy Name', 'page' => 'admin/allergyName', 'errorCls' => NULL,'page_params' => NULL);
+     	  $options['table'] = 'AllergyName';
+     	  $options['like'] = '';
+     	  $config["total_rows"] = $this->admin_model->master($options,'count');
+		  $options['limit'] = $config["per_page"];  
+		  $options['offset'] = $page;  
+		  $data["result_set"] = $this->admin_model->master($options,'record');
+		  $data['offset'] = $page; 
+		  $this->pagination->initialize($config);
+	     $data["links"] = $this->pagination->create_links();
+	     break;
+	     //var_dump($data['log_report']); exit;
+     }	  
+     
+     $data = $data + $this->data;
+     $this->load->view($data['template'],$data);
+  }
    
 }
 ?>

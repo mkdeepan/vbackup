@@ -236,7 +236,7 @@
 								</a>	
 								<ul class="sub-menu" <?php echo ($open)? "style='display:block'":"";?>>
 									<li>
-										<a href="<?php echo site_url('admin/loginReport');?>">
+										<a href="<?php echo site_url('admin/master/allergyname');?>">
 											<span class="title">Allergy Name</span>
 										</a>
 									</li>
