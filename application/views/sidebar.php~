@@ -247,7 +247,7 @@
 									</li>
 									<li>
 										<a href="<?php echo site_url('admin/locationLog');?>">
-											<span class="title">Allergy Symptoms</span>
+											<span class="title">Location Log</span>
 										</a>
 									</li>
 								</ul>					
