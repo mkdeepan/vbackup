@@ -10,6 +10,7 @@ var Main = function() {
 	};
 	$(".current-year").text((new Date).getFullYear());
 	//sidebar
+ var host_name = window.location.hostname;
 	var sidebarHandler = function() {
 		var eventObject = isTouch() ? 'click' : 'mouseenter', elem = $('#sidebar'), ul = "", menuTitle, _this;
 
@@ -233,7 +234,7 @@ var Main = function() {
 		app.hasClass("app-sidebar-fixed") ? $('#fixed-sidebar').prop('checked', true) : $('#fixed-sidebar').prop('checked', false);
 		app.hasClass("app-sidebar-closed") ? $('#closed-sidebar').prop('checked', true) : $('#closed-sidebar').prop('checked', false);
 		app.hasClass("app-footer-fixed") ? $('#fixed-footer').prop('checked', true) : $('#fixed-footer').prop('checked', false);
-		$('#skin_color').attr("href", "http://192.168.1.58/vbackup/source/assets/css/themes/" + appSetting.theme + ".css");
+		$('#skin_color').attr("href", "http://"+host_name+"/vbackup/source/assets/css/themes/" + appSetting.theme + ".css");
 		$('input[name="setting-theme"]').each(function() {
 			$(this).val() == appSetting.theme ? $(this).prop('checked', true) : $(this).prop('checked', false);
 		});
@@ -241,7 +242,7 @@ var Main = function() {
 
 		$('input[name="setting-theme"]').change(function() {
 			var selectedTheme = $(this).val();
-			$('#skin_color').attr("href", "http://192.168.1.58/vbackup/source/assets/css/themes/" + selectedTheme + ".css");
+			$('#skin_color').attr("href", "http://"+host_name+"/vbackup/source/assets/css/themes/" + selectedTheme + ".css");
 			switchLogo(selectedTheme);
 			appSetting.theme = selectedTheme;
 			$.cookie("clip-setting", JSON.stringify(appSetting));
@@ -275,11 +276,11 @@ var Main = function() {
 				case "theme-5":
 				case "theme-6":
 				case "theme-7":
-					$(".navbar-brand img").attr("src", "http://192.168.1.58/vbackup/source/assets/images/alert-logo.jpg");
+					$(".navbar-brand img").attr("src", "http://"+host_name+"/vbackup/source/assets/images/alert-logo.jpg");
 					break;
 
 				default:
-					$(".navbar-brand img").attr("src", "http://192.168.1.58/vbackup/source/assets/images/alert-logo.jpg");
+					$(".navbar-brand img").attr("src", "http://"+host_name+"/vbackup/source/assets/images/alert-logo.jpg");
 					break;
 			};
 		};
@@ -288,8 +289,8 @@ var Main = function() {
 			$('#fixed-sidebar').prop('checked', true);
 			$('#closed-sidebar').prop('checked', false);
 			$('#fixed-footer').prop('checked', false);
-			$('#skin_color').attr("href", "http://192.168.1.58/vbackup/source/assets/css/themes/theme-1.css");
-			$(".navbar-brand img").attr("src", "http://192.168.1.58/vbackup/source/assets/images/alert-logo.jpg");
+			$('#skin_color').attr("href", "http://"+host_name+"/vbackup/source/assets/css/themes/theme-1.css");
+			$(".navbar-brand img").attr("src", "http://"+host_name+"/vbackup/source/assets/images/alert-logo.jpg");
 
 		};
 	};

@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.1.58/vbackup/';
+$config['base_url']	= 'http://'.$_SERVER["HTTP_HOST"].'/vbackup/';
 
 /*
 |--------------------------------------------------------------------------
