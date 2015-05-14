@@ -10,6 +10,7 @@ var FormWizard = function () {
     var wizardContent = $('#wizard');
     var wizardForm = $('#form');
     var numberOfSteps = $('.swMain > ul > li').length;
+     var host_name = window.location.hostname;
     var initWizard = function () {
         // function to initiate Wizard Form
         wizardContent.smartWizard({
@@ -24,7 +25,7 @@ var FormWizard = function () {
     
     $('#terms_cond').click(function(){
     	if($('#terms_cond').is(':checked')){
-    		$("#reg-submit").attr("disabled", true);
+    		$("#reg-submit").removeAttr("disabled");
     	}else{
     		$("#reg-submit").attr("disabled", true);
     	}
@@ -69,7 +70,7 @@ var FormWizard = function () {
                     required: true,
                     email: true,
                     remote:{
-								url: "http://192.168.1.58/vbackup/login/checkEmail",
+								url: "http://"+host_name+"/vbackup/login/checkEmail",
 								type: "post",
 								data: {
 									username: function() {
