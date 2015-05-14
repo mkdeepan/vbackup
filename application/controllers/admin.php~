@@ -539,14 +539,25 @@ class Admin extends CI_Controller {
   		   $where = array('allergyNameId'=>$this->input->post('cid'));
   		   $res = $this->common_model->update_data('AllergyName',$values,$where);
   		   if($res){
-  		      return true;
+  		      return 'true';
   		   }else{
-  		   	return false;
+  		   	return 'false';
+  		   }
+  	      break;
+  	   case 'allergytype':
+  		   $values = array('allergyTypeDescription'=>$this->input->post('desc'));
+  		   $where = array('allergyTypeId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('AllergyType',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
   		   }
   	      break;
   	}
   }
-  function master($option='allergyname')
+  
+  function master($pagename='allergyname',$option='')
   {
   	  if(!$this->session->userdata('isLogin'))
 		redirect('login');
@@ -561,25 +572,144 @@ class Admin extends CI_Controller {
   	  	 $q = $_GET['q'];
   	  	 $options['key'] = $q;
   	  }
-     $config["base_url"] = base_url()."admin/master/".$option;
-     $config['first_url'] = base_url()."admin/master/".$option."?q=".$q;
+     $config["base_url"] = base_url()."admin/master/".$pagename;
+     $config['first_url'] = base_url()."admin/master/".$pagename."?q=".$q;
      $config["suffix"] = "?q=".$q; 
 	  $config["per_page"] = 5;
      $config["uri_segment"] = 4;
-     switch($option) {
+     switch($pagename) {
      	case 'allergyname':
-     	 $data = array('title' => 'Admin - Allergy Name', 'page' => 'admin/allergyName', 'errorCls' => NULL,'page_params' => NULL);
-     	  $options['table'] = 'AllergyName';
-     	  $options['like'] = '';
-     	  $config["total_rows"] = $this->admin_model->master($options,'count');
-		  $options['limit'] = $config["per_page"];  
-		  $options['offset'] = $page;  
-		  $data["result_set"] = $this->admin_model->master($options,'record');
-		  $data['offset'] = $page; 
-		  $this->pagination->initialize($config);
-	     $data["links"] = $this->pagination->create_links();
-	     break;
-	     //var_dump($data['log_report']); exit;
+		     	if($option=='add'){     		
+		     		$values = array('allergyNameDescription'=>$this->input->post('allergy_name_desc'));
+		  	   	$res = $this->common_model->insert_db('AllergyName',$values);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Allergy name added successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Allergy name addition failed');
+		  	   	}
+		  	      redirect('admin/master/allergyname');
+		     	}elseif($option == 'delete'){
+		     		$where = array('allergyNameId'=>$this->input->post('allergynameid'));
+		  	   	$res = $this->common_model->delete_from('AllergyName',$where);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Allergy name deleted successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Allergy name delete failed');
+		  	   	}
+		  	      redirect('admin/master/allergyname');
+		     	}else{
+		     	   $data = array('title' => 'Admin - Allergy Name', 'page' => 'admin/allergyName', 'errorCls' => NULL,'page_params' => NULL);
+		     	   $options['table'] = 'AllergyName';
+		     	   $options['like'] = '';
+		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
+				   $options['limit'] = $config["per_page"];  
+				   $options['offset'] = $page;  
+				   $data["result_set"] = $this->admin_model->master($options,'record');
+				   $data['offset'] = $page; 
+				   $this->pagination->initialize($config);
+			      $data["links"] = $this->pagination->create_links();
+			      //var_dump($data['log_report']); exit;
+			   }
+		      break;      
+     case 'allergytype':
+		     	if($option=='add'){     		
+		     		$values = array('allergyTypeDescription'=>$this->input->post('allergy_type_desc'));
+		  	   	$res = $this->common_model->insert_db('AllergyType',$values);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Allergy type added successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Allergy type addition failed');
+		  	   	}
+		  	      redirect('admin/master/allergytype');
+		     	}elseif($option == 'delete'){
+		     		$where = array('allergyTypeId'=>$this->input->post('allergyTypeId'));
+		  	   	$res = $this->common_model->delete_from('AllergyType',$where);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Allergy Type deleted successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Allergy Type delete failed');
+		  	   	}
+		  	      redirect('admin/master/allergytype');
+		     	}else{
+		     	   $data = array('title' => 'Admin - Allergy Type', 'page' => 'admin/allergyType', 'errorCls' => NULL,'page_params' => NULL);
+		     	   $options['table'] = 'AllergyType';
+		     	   $options['like'] = '';
+		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
+				   $options['limit'] = $config["per_page"];  
+				   $options['offset'] = $page;  
+				   $data["result_set"] = $this->admin_model->master($options,'record');
+				   $data['offset'] = $page; 
+				   $this->pagination->initialize($config);
+			      $data["links"] = $this->pagination->create_links();
+			      //var_dump($data['log_report']); exit;
+			   }
+		      break;
+		  case 'symptomssevere':
+		     	if($option=='add'){     		
+		     		$values = array('symtomSevereDescription'=>$this->input->post('severe_desc'));
+		  	   	$res = $this->common_model->insert_db('SymtomsSevere',$values);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Symptoms severe added successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Symptoms severe addition failed');
+		  	   	}
+		  	      redirect('admin/master/symptomssevere');
+		     	}elseif($option == 'delete'){
+		     		$where = array('symtomSevereId'=>$this->input->post('severeid'));
+		  	   	$res = $this->common_model->delete_from('SymtomsSevere',$where);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Symptoms severe deleted successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Symptoms severe delete failed');
+		  	   	}
+		  	      redirect('admin/master/allergyname');
+		     	}else{
+		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomssevere', 'errorCls' => NULL,'page_params' => NULL);
+		     	   $options['table'] = 'SymptomsSevere';
+		     	   $options['like'] = '';
+		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
+				   $options['limit'] = $config["per_page"];  
+				   $options['offset'] = $page;  
+				   $data["result_set"] = $this->admin_model->master($options,'record');
+				   $data['offset'] = $page; 
+				   $this->pagination->initialize($config);
+			      $data["links"] = $this->pagination->create_links();
+			      //var_dump($data['log_report']); exit;
+			   }
+		      break;
+		  case 'symptomsmild':
+		     	if($option=='add'){     		
+		     		$values = array('symtomMildDescription'=>$this->input->post('mild_desc'));
+		  	   	$res = $this->common_model->insert_db('SymtomsMild',$values);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Symptoms mild added successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Symptoms mild addition failed');
+		  	   	}
+		  	      redirect('admin/master/symptomsmild');
+		     	}elseif($option == 'delete'){
+		     		$where = array('symtomMildId'=>$this->input->post('mildid'));
+		  	   	$res = $this->common_model->delete_from('SymtomsMild',$where);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Symptoms mild deleted successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Symptoms mild delete failed');
+		  	   	}
+		  	      redirect('admin/master/symptomsmild');
+		     	}else{
+		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomsmild', 'errorCls' => NULL,'page_params' => NULL);
+		     	   $options['table'] = 'SymptomsMild';
+		     	   $options['like'] = '';
+		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
+				   $options['limit'] = $config["per_page"];  
+				   $options['offset'] = $page;  
+				   $data["result_set"] = $this->admin_model->master($options,'record');
+				   $data['offset'] = $page; 
+				   $this->pagination->initialize($config);
+			      $data["links"] = $this->pagination->create_links();
+			      //var_dump($data['log_report']); exit;
+			   }
+		      break;
      }	  
      
      $data = $data + $this->data;

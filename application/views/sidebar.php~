@@ -236,12 +236,12 @@
 								</a>	
 								<ul class="sub-menu" <?php echo ($open)? "style='display:block'":"";?>>
 									<li>
-										<a href="<?php echo site_url('admin/master');?>">
+										<a href="<?php echo site_url('admin/master/allergyname');?>">
 											<span class="title">Allergy Name</span>
 										</a>
 									</li>
 									<li>
-										<a href="<?php echo site_url('admin/activityLog');?>">
+										<a href="<?php echo site_url('admin/master/allergytype');?>">
 											<span class="title">Allergy Type</span>
 										</a>
 									</li>

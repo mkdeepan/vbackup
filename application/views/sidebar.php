@@ -241,13 +241,18 @@
 										</a>
 									</li>
 									<li>
-										<a href="<?php echo site_url('admin/activityLog');?>">
+										<a href="<?php echo site_url('admin/master/allergytype');?>">
 											<span class="title">Allergy Type</span>
 										</a>
 									</li>
 									<li>
-										<a href="<?php echo site_url('admin/locationLog');?>">
-											<span class="title">Allergy Symptoms</span>
+										<a href="<?php echo site_url('admin/master/symptomssevere');?>">
+											<span class="title">Symptoms Severe</span>
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('admin/master/symptomsmild');?>">
+											<span class="title">Symptoms Mild</span>
 										</a>
 									</li>
 								</ul>					

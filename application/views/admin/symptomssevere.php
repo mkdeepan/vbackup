@@ -10,8 +10,8 @@
 <section id="page-title">
 <div class="row">
 	<div class="col-sm-8">
-		<h1 class="mainTitle">Allergy Name</h1>
-		<span class="mainDescription">Master table for allergy names.</span>
+		<h1 class="mainTitle">Symptoms Severe</h1>
+		<span class="mainDescription">Master table for Symptoms Severe.</span>
 	</div>
 	<ol class="breadcrumb">
 		<li>
@@ -42,7 +42,7 @@
 	<div class="row">
 		<div class="col-md-12">
 		<div class="">
-			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addalgname">
+			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addsevere">
 				Add New
 			   </button>
 	  </div>
@@ -60,14 +60,11 @@
 												foreach($result_set as $key=>$alg){ ?>
 												<tr>												
 												<td><?=$key+1?></td>
-												<td id="desc_<?php echo $alg['allergyNameId'];?>"><?=$alg['allergyNameDescription'];?></td>																																																							
-												<td id="action_<?php echo $alg['allergyNameId'];?>"><!--<a href="#" class="edit" data-toggle="modal" data-target="#addalgname" 
-		                                data-row-id='<?php echo $alg["allergyNameId"]; ?>'		                              
-		                                data-row-desc='<?php echo $alg["allergyNameDescription"]; ?>'                         		                                                        
-		                                title="Edit"><i class="glyphicon glyphicon-edit"></i></a>-->
-		                                <a href="#" class="edit" id="edit_<?php echo $alg['allergyNameId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+												<td id="desc_<?php echo $alg['symtomSevereId'];?>"><?=$alg['symtomSevereDescription'];?></td>																																																							
+												<td id="action_<?php echo $alg['symtomSevereId'];?>">
+		                                <a href="#" class="edit" id="edit_<?php echo $alg['symtomSevereId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
 		                                <a href="#" class="delete" data-toggle="modal" data-target="#deltag" 
-		                                data-row-did='<?php echo $alg["allergyNameId"]; ?>'		                                                         
+		                                data-row-did='<?php echo $alg["symtomSevereId"]; ?>'		                                                         
 		                                title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
 		                              </td>		                              
 											
@@ -96,14 +93,14 @@
 						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Allergy Name</span></h4>
 					</div>
 					<form role="form" method="post" enctype="multipart/form-data" id="allergy_form" action="<?php echo base_url('admin/master/allergyname/add');?>">
-					<input type="hidden" name="allergyNameId" id="allergyNameId" value=""/> 
+					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
 					<div class="modal-body">
 					<div class="row">
 					   <div class="col-md-12 col-xs-12">				      
 					   
 					      <div class="form-group">				
 							<label>Allergy Name Description</label>
-							<input type="text" class="form-control" name="allergy_name_desc" id="allergy_name_desc" value=""/>		
+							<input type="text" class="form-control" name="symtomsevere" id="symtomsevere" value=""/>		
 							</div>						
 					      
 					   </div>													   	
@@ -114,7 +111,7 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							Close
 						</button>
-						<input type="submit" name="save_allergy_name" id="save_allergy_name" value="Save" class="btn btn-primary" />
+						<input type="submit" name="save_symtomsevere" id="save_symtomsevere" value="Save" class="btn btn-primary" />
 						
 					</div>
 					</form>
@@ -131,7 +128,7 @@
 						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Allergy Name Delete</span></h4>
 					</div>
 					<form role="form" method="post" id="edit_form" action="<?php echo base_url('admin/master/allergyname/delete');?>">
-					<input type="hidden" name="allergynameid" id="allergynameid" value=""/> 
+					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
 					<div class="modal-body">
 						
 						<h5>Are you sure want to delete? </h5>														
@@ -204,7 +201,7 @@ $(document).ready(function(){
 	
 	$(".delete").on('click', function(){
 	 	var did = $(this).data('row-did');
-	 	$('#allergynameid').val(did);
+	 	$('#symtomSevereId').val(did);
 	});
 	 
 	$('body').on('hidden.bs.modal', '.modal', function () {
@@ -212,7 +209,7 @@ $(document).ready(function(){
    	$('span.help-block').remove();
    	$(this).find('input').removeClass('help-block');
    	$(this).find('select').removeClass('help-block');
-   	   $('#allergynameid').val('');
+   	   $('#symtomSevereId').val('');
          $('#allergy_name_desc').val('');
      
    });
