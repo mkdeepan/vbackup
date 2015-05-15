@@ -61,6 +61,8 @@ class Admin_model extends CI_Model {
  		return $query->num_rows();
  	}
   }
+
+
   
   function login_report($options = array(),$opt='record')
   {
@@ -184,6 +186,19 @@ class Admin_model extends CI_Model {
  	}else{
  		return $query->num_rows();
  	}
+  }
+
+  function getIngredientName($id)
+  {
+    $name='';
+    $this->db->select('ingredientName');
+    $this->db->where('ingredientId',$id);
+    $query= $this->db->get('Ingredients');
+    foreach($query->result_array() as $row)
+    {
+      $name = $row['ingredientName'];
+    }
+    return $name;
   }
 
 }

@@ -1616,7 +1616,7 @@ $dday = @$date[2];
 											<label class="control-label"></label>
 											<div class="name_other">
 												<span class="input-icon">
-													<input type="text" class="form-control clear pphones" name="allergy_name_others" id="allergy_name_others" placeholder="">
+													<input type="text" class="form-control clear " name="allergy_name_others" id="allergy_name_others" placeholder="">
 											    </span>
 											</div>
 										</div>
@@ -1627,7 +1627,7 @@ $dday = @$date[2];
 											<label class="control-label"></label>
 											<div class="type_other">
 												<span class="input-icon">
-													<input type="text" class="form-control clear pphones" name="allergy_type_others" id="allergy_type_others" placeholder="">
+													<input type="text" class="form-control clear " name="allergy_type_others" id="allergy_type_others" placeholder="">
 											    </span>
 											</div>
 										</div>
@@ -1678,7 +1678,7 @@ $dday = @$date[2];
 											<label class="control-label"></label>
 											<div class="severe_other">
 												<span class="input-icon">
-													<input type="text" class="form-control clear pphones" name="symptoms_severe_others" id="symptoms_severe_others" placeholder="">
+													<input type="text" class="form-control clear " name="symptoms_severe_others" id="symptoms_severe_others" placeholder="">
 											    </span>
 											</div>
 										</div>
@@ -1690,7 +1690,7 @@ $dday = @$date[2];
 											<label class="control-label"></label>
 											<div class="mild_other">
 												<span class="input-icon">
-													<input type="text" class="form-control clear pphones" name="symptoms_mild_others" id="symptoms_mild_others" placeholder="">
+													<input type="text" class="form-control clear " name="symptoms_mild_others" id="symptoms_mild_others" placeholder="">
 											    </span>
 											</div>
 										</div>
@@ -1856,7 +1856,7 @@ $dday = @$date[2];
 											<label class="control-label"></label>
 											<!-- <div class="others"> -->
 												<span class="input-icon">
-													<input type="text" class="form-control clears pphones" name="inci_allergy_type_others" id="inci_allergy_type_others" placeholder="">
+													<input type="text" class="form-control clears " name="inci_allergy_type_others" id="inci_allergy_type_others" placeholder="">
 											    </span>
 											<!-- </div> -->
 										</div>
@@ -1947,6 +1947,14 @@ $(document).ready(function(){
 	    		error = 1;
 	    		msg = "Required"; 
 	    	}else{
+	    		if($('#allergy_name').val() == 'others')
+			      {
+			      	$('.name_other').show();
+			      }
+			      else
+			      {
+			      	$('.name_other').hide();
+			      }
 	      if($(this).attr('id') == 'allergy_name_others' && $('#allergy_name').val() == 'others')
 	      {	
     		   	var patt=/[^a-zA-Z0-9 ._-]/;
@@ -1955,6 +1963,14 @@ $(document).ready(function(){
  	      		    msg = 'No special characters';
  	      		  }	 
 	      }
+	      if($('#allergy_type').val() == 'others')
+	      {
+	      	$('.type_other').show();
+	      }
+	      else
+	      {
+	      	$('.type_other').hide();
+	      }
 	  if($(this).attr('id') == 'allergy_type_others' && $('#allergy_type').val() == 'others')
 	      {	
     		   	var patt=/[^a-zA-Z0-9 ._-]/;
@@ -1962,6 +1978,14 @@ $(document).ready(function(){
 			          error = 1;		           
  	      		    msg = 'No special characters';
  	      		  }	   
+	      }
+	      if($.inArray('others',$('#symptoms_severe').val()) != -1)
+	      {
+	      	$('.severe_other').show();
+	      }
+	      else
+	      {
+	      	$('.severe_other').hide();
 	      }
 	  if($(this).attr('id') == 'symptoms_severe_others' && $.inArray('others',$('#symptoms_severe').val()) != -1)	
 	      {	
@@ -1972,6 +1996,14 @@ $(document).ready(function(){
  	      		    msg = 'No special characters';
  	      		  }	   
 	      }
+	      if($.inArray('others',$('#symptoms_mild').val()) != -1)
+	      {
+	      	$('.mild_other').show();
+	      } 
+	   else
+	   {
+	   	$('.mild_other').hide();
+	   } 
 	  if($(this).attr('id') == 'symptoms_mild_others' && $.inArray('others',$('#symptoms_mild').val()) != -1 )
 	      {	
 	          var patt=/[^a-zA-Z0-9 ._-]/;
@@ -2070,6 +2102,14 @@ $(document).ready(function(){
     		error = 1;
     		msg = "Required"; 
     	}else{
+    		if($('#allergy_name').val() == 'others')
+		      {
+		      	$('.name_other').show();
+		      }
+		      else
+		      {
+		      	$('.name_other').hide();
+		      }
     		 if($(this).attr('id') == 'allergy_name_others' && $('#allergy_name').val() == 'others')
 	      {	
     		   	var patt=/[^a-zA-Z0-9 ._-]/;
@@ -2078,6 +2118,15 @@ $(document).ready(function(){
  	      		    msg = 'No special characters';
  	      		  }	 
 	      }
+
+	      if($('#allergy_type').val() == 'others')
+	      {
+	      	$('.type_other').show();
+	      }
+	      else
+	      {
+	      	$('.type_other').hide();
+	      }
 	  if($(this).attr('id') == 'allergy_type_others' && $('#allergy_type').val() == 'others')
 	      {	
     		   	var patt=/[^a-zA-Z0-9 ._-]/;
@@ -2085,6 +2134,15 @@ $(document).ready(function(){
 			          error = 1;		           
  	      		    msg = 'No special characters';
  	      		  }	   
+	      }
+
+	      if($.inArray('others',$('#symptoms_severe').val()) != -1)
+	      {
+	      	$('.severe_other').show();
+	      }
+	      else
+	      {
+	      	$('.severe_other').hide();
 	      }
 	  if($(this).attr('id') == 'symptoms_severe_others' && $.inArray('others',$('#symptoms_severe').val()) != -1)	
 	      {	
@@ -2095,6 +2153,15 @@ $(document).ready(function(){
  	      		    msg = 'No special characters';
  	      		  }	   
 	      }
+
+	      if($.inArray('others',$('#symptoms_mild').val()) != -1)
+	      {
+	      	$('.mild_other').show();
+	      } 
+	   else
+	   {
+	   	$('.mild_other').hide();
+	   }   
 	  if($(this).attr('id') == 'symptoms_mild_others' && $.inArray('others',$('#symptoms_mild').val()) != -1 )
 	      {	
 	          var patt=/[^a-zA-Z0-9 ._-]/;
@@ -2266,6 +2333,14 @@ $(document).ready(function(){
     		      error = 1;   		 
     		      msg = "Required";
     	      }else{
+    	      	if($('#inci_allergy_type').val() == 'others')
+			      {
+			      	$('.inci_allergy_others').show();
+			      } 
+			     else
+			     {
+			     	$('.inci_allergy_others').hide();
+			     }
     	      	if($(this).attr('id') == 'inci_allergy_type_others' && $('#inci_allergy_type').val() == 'others')
 				      {	
 			    		   	var patt=/[^a-zA-Z0-9 ._-]/;
@@ -2364,6 +2439,14 @@ $(document).ready(function(){
     		      	error = 1;   		 
     		         msg = "Required";    		     
     	      }else{
+    	      	if($('#inci_allergy_type').val() == 'others')
+				      {
+				      	$('.inci_allergy_others').show();
+				      } 
+				    else
+				     {
+				     	$('.inci_allergy_others').hide();
+				     }
     	      	if($(this).attr('id') == 'inci_allergy_type_others' && $('#inci_allergy_type').val() == 'others')
 				      {	
 			    		   	var patt=/[^a-zA-Z0-9 ._-]/;

@@ -205,6 +205,34 @@
 										</div>
 									</div>
 								</a>							
+							</li>
+							<li <?php $open = '';
+                                $methods = array('food','ingredients');
+                                if($controller == 'admin' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
+								<a href="javascript:void(0)">
+							      <div class="item-content">
+										<div class="item-media">
+											<i class="ti-apple"></i>
+										</div>
+										<div class="item-inner">
+											<span class="title"> Food & Ingredients </span><i class="icon-arrow"></i>
+										</div>
+									</div>
+									
+								</a>	
+								<ul class="sub-menu" <?php echo ($open)? "style='display:block'":"";?>>
+									<li>
+										<a href="<?php echo site_url('admin/ingredients');?>">
+											<span class="title">Ingredients</span>
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('admin/food');?>">
+											<span class="title">Food</span>
+										</a>
+									</li>
+									
+								</ul>					
 							</li>	
 							<li>
 							<a href="<?php echo site_url('admin/paypalAddon');?>">
