@@ -554,6 +554,26 @@ class Admin extends CI_Controller {
   		   	return 'false';
   		   }
   	      break;
+  	   case 'severe':
+  		   $values = array('symtomSevereDescription'=>$this->input->post('desc'));
+  		   $where = array('symtomSevereId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('SymtomsSevere',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
+  	   case 'mild':
+  		   $values = array('symtomMildDescription'=>$this->input->post('desc'));
+  		   $where = array('symtomMildId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('SymtomsMild',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
   	}
   }
   
@@ -644,25 +664,25 @@ class Admin extends CI_Controller {
 			      //var_dump($data['log_report']); exit;
 			   }
 		      break;
-		  case 'symptomssevere':
-		     	if($option=='add'){     		
-		     		$values = array('symtomSevereDescription'=>$this->input->post('severe_desc'));
+		  case 'severe':
+		     	if($option=='add' && $this->input->post('save_symtomsevere')){     		
+		     		$values = array('symtomSevereDescription'=>$this->input->post('symtomsevere'));
 		  	   	$res = $this->common_model->insert_db('SymtomsSevere',$values);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms severe added successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms severe addition failed');
 		  	   	}
-		  	      redirect('admin/master/symptomssevere');
-		     	}elseif($option == 'delete'){
-		     		$where = array('symtomSevereId'=>$this->input->post('severeid'));
+		  	      redirect('admin/master/severe');
+		     	}elseif($option == 'delete' && $this->input->post('delete_severe')){
+		     		$where = array('symtomSevereId'=>$this->input->post('symtomSevereId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsSevere',$where);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms severe deleted successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms severe delete failed');
 		  	   	}
-		  	      redirect('admin/master/allergyname');
+		  	      redirect('admin/master/severe');
 		     	}else{
 		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomssevere', 'errorCls' => NULL,'page_params' => NULL);
 		     	   $options['table'] = 'SymtomsSevere';
@@ -677,25 +697,25 @@ class Admin extends CI_Controller {
 			      //var_dump($data['log_report']); exit;
 			   }
 		      break;
-		  case 'symptomsmild':
-		     	if($option=='add'){     		
-		     		$values = array('symtomMildDescription'=>$this->input->post('mild_desc'));
+		  case 'mild':
+		     	if($option=='add' && $this->input->post('save_symtommild')){     		
+		     		$values = array('symtomMildDescription'=>$this->input->post('symtommild'));
 		  	   	$res = $this->common_model->insert_db('SymtomsMild',$values);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms mild added successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms mild addition failed');
 		  	   	}
-		  	      redirect('admin/master/symptomsmild');
-		     	}elseif($option == 'delete'){
-		     		$where = array('symtomMildId'=>$this->input->post('mildid'));
+		  	      redirect('admin/master/mild');
+		     	}elseif($option == 'delete' && $this->input->post('delete_mild')){
+		     		$where = array('symtomMildId'=>$this->input->post('symtomMildId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsMild',$where);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms mild deleted successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms mild delete failed');
 		  	   	}
-		  	      redirect('admin/master/symptomsmild');
+		  	      redirect('admin/master/mild');
 		     	}else{
 		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomsmild', 'errorCls' => NULL,'page_params' => NULL);
 		     	   $options['table'] = 'SymtomsMild';

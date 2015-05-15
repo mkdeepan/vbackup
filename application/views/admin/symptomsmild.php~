@@ -10,8 +10,8 @@
 <section id="page-title">
 <div class="row">
 	<div class="col-sm-8">
-		<h1 class="mainTitle">Symptoms Severe</h1>
-		<span class="mainDescription">Master table for Symptoms Severe.</span>
+		<h1 class="mainTitle">Symptoms Mild</h1>
+		<span class="mainDescription">Master table for Symptoms Mild.</span>
 	</div>
 	<ol class="breadcrumb">
 		<li>
@@ -42,7 +42,7 @@
 	<div class="row">
 		<div class="col-md-12">
 		<div class="">
-			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addsevere">
+			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addmild">
 				Add New
 			   </button>
 	  </div>
@@ -60,11 +60,11 @@
 												foreach($result_set as $key=>$alg){ ?>
 												<tr>												
 												<td><?=$key+1?></td>
-												<td id="desc_<?php echo $alg['symtomSevereId'];?>"><?=$alg['symtomSevereDescription'];?></td>																																																							
-												<td id="action_<?php echo $alg['symtomSevereId'];?>">
-		                                <a href="#" class="edit" id="edit_<?php echo $alg['symtomSevereId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-		                                <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" 
-		                                data-row-did='<?php echo $alg["symtomSevereId"]; ?>'		                                                         
+												<td id="desc_<?php echo $alg['symtomMildId'];?>"><?=$alg['symtomMildDescription'];?></td>																																																							
+												<td id="action_<?php echo $alg['symtomMildId'];?>">
+		                                <a href="#" class="edit" id="edit_<?php echo $alg['symtomMildId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+		                                <a href="#" class="delete" data-toggle="modal" data-target="#delmild" 
+		                                data-row-did='<?php echo $alg["symtomMildId"]; ?>'		                                                         
 		                                title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
 		                              </td>		                              
 											
@@ -83,23 +83,24 @@
 	</div>
 </div>
 </div>
-        <div class="modal fade" id="addsevere" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addmild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe</span></h4>
+						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Mild</span></h4>
 					</div>
-					<form role="form" method="post" enctype="multipart/form-data" id="allergy_form" action="<?php echo base_url('admin/master/severe/add');?>">
+					<form role="form" method="post" enctype="multipart/form-data" id="mild_form" action="<?php echo base_url('admin/master/mild/add');?>">
+				
 					<div class="modal-body">
 					<div class="row">
 					   <div class="col-md-12 col-xs-12">				      
 					   
 					      <div class="form-group">				
-							<label>Symptoms Severe Description</label>
-							<input type="text" class="form-control" name="symtomsevere" id="symtomsevere" value=""/>		
+							<label>Symptoms Mild Description</label>
+							<input type="text" class="form-control" name="symtommild" id="symtommild" value=""/>		
 							</div>						
 					      
 					   </div>													   	
@@ -110,24 +111,24 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							Close
 						</button>
-						<input type="submit" name="save_symtomsevere" id="save_symtomsevere" value="Save" class="btn btn-primary" />
+						<input type="submit" name="save_symtommild" id="save_symtommild" value="Save" class="btn btn-primary" />
 						
 					</div>
 					</form>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="delsevere" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="delmild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe Delete</span></h4>
+						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Mild Delete</span></h4>
 					</div>
-					<form role="form" method="post" id="severe_form" action="<?php echo base_url('admin/master/severe/delete');?>">
-					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
+					<form role="form" method="post" id="delmild_form" action="<?php echo base_url('admin/master/mild/delete');?>">
+					<input type="hidden" name="symtomMildId" id="symtomMildId" value=""/> 
 					<div class="modal-body">
 						
 						<h5>Are you sure want to delete? </h5>														
@@ -138,7 +139,7 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							No
 						</button>
-						<input type="submit" name="delete_severe" id="delete_severe" value="Yes" class="btn btn-primary" />
+						<input type="submit" name="delete_mild" id="delete_mild" value="Yes" class="btn btn-primary" />
 						
 					</div>
 					</form>
@@ -178,7 +179,7 @@ $(document).ready(function(){
 		var desc_val = $('#descrip_'+id).val();
 		$('#desc_'+id).html(desc_val);
 		$.ajax({
-			url:"<?php echo base_url('admin/update/severe');?>",
+			url:"<?php echo base_url('admin/update/mild');?>",
 			data:{cid:id,desc:desc_val},
 			type:'post',
 			async:false,
@@ -187,7 +188,7 @@ $(document).ready(function(){
 				 alert('update failed');
 			}			
 		});
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delmild" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");
@@ -195,13 +196,13 @@ $(document).ready(function(){
 		var desc_hid_val = $('#descrip_hid_'+id).val();
 		//alert(desc_hid_val);
 		$('#desc_'+id).html(desc_hid_val);
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delmild" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	
 	$("body").on('click','.delete', function(){
 	 	var did = $(this).data('row-did');
-	 	//alert(did);
-	 	$('#symtomSevereId').val(did);
+	 	alert(did);
+	 	$('#symtomMildId').val(did);
 	});
 	 
 	$('body').on('hidden.bs.modal', '.modal', function () {
@@ -209,18 +210,18 @@ $(document).ready(function(){
    	$('span.help-block').remove();
    	$(this).find('input').removeClass('help-block');
    	$(this).find('select').removeClass('help-block');
-   	   $('#symtomSevereId').val('');
-         $('#symtomsevere').val('');
+   	   $('#symtomMildId').val('');
+         $('#symtommild').val('');
      
    });
-   $('#severe_form').validate({
+   $('#mild_form').validate({
 		rules:{
-			symtomsevere:{
+			symtommild:{
 				required: true				
 			}
 		},
 		messages:{
-			symtomsevere:{
+			symtommild:{
 				required:"You can't leave this empty"
 			}
 		}
