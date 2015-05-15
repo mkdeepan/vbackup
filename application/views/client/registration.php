@@ -364,7 +364,8 @@ Middle Name">
 															<div class="row">
 																<div class="col-md-4 col-sm-4">
 																	<div class="form-group">
-<input type="text" name="pbmonth" id="pbmonth" maxlength="2" class="form-control" placeholder="Month" />																		<!--<select name="pbmonth" id="pbmonth" class="">
+<!--<input type="text" name="pbmonth" id="pbmonth" maxlength="2" class="form-control" placeholder="Month" />-->			
+                                            <select name="pbmonth" id="pbmonth" class="form-control">
 																			<option value="">Month</option>
 																			<option value="1">January</option>
 																			<option value="2">February</option>
@@ -378,17 +379,29 @@ Middle Name">
 																			<option value="10">October</option>
 																			<option value="11">November</option>
 																			<option value="12">December</option>
-																		</select>-->
+																		</select>
 																	</div>
 																</div>
 																<div class="col-md-4 col-sm-4">
 																	<div class="form-group">
-																	<input type="text" maxlength="2" class="form-control" id="pbday" name="pbday" placeholder="Day">
+																	<select name="pbday" id="pbday" class="form-control">
+																			<option value="">Day</option>
+																			<?php for($day = 1;$day<=31;$day++){
+																				echo "<option value='".$day."'>".$day."</option>";
+																			}?>
+																	</select>
+																	<!--<input type="text" maxlength="2" class="form-control" id="pbday" name="pbday" placeholder="Day">-->
 																	</div>
 															   </div>
 																<div class="col-md-4 col-sm-4">
 																	<div class="form-group">
-																		<input type="text" maxlength="4" placeholder="Year" class="form-control" id="pbyear" name="pbyear"/>
+																		<!--<input type="text" maxlength="4" placeholder="Year" class="form-control" id="pbyear" name="pbyear"/>-->
+																		<select name="pbyear" id="pbyear" class="form-control">
+																			<option value="">Year</option>
+																			<?php for($yr = 1970;$yr<=date('Y');$yr++){
+																				echo "<option value='".$yr."'>".$yr."</option>";
+																			}?>
+																	   </select>
 																	</div>
 																</div>
 															</div>

@@ -73,7 +73,7 @@
 												
 												</tr>
 											<?php } } else {
-												echo "<td align='center' colspan='6'>No records found</td>";
+												echo "<td align='center' colspan='3'>No records found</td>";
 											} ?>
 											</tbody>
 										</table>

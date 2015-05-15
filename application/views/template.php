@@ -50,10 +50,10 @@ utilsScript:"<?php echo base_url().'source/assets/js/utils.js';?>"
 var val ='';
 $(document).on('keypress ','.nova-mobile', function(event){
 value = $(this).val();
-if(value.replace(/[^0-9]/g,"").length === 15){
+if(value.replace(/[^0-9]/g,"").length === 10){
 val = $(this).val();
 }
-if(value.replace(/[^0-9]/g,"").length > 15){
+if(value.replace(/[^0-9]/g,"").length > 10){
 $(this).val(val);
 event.preventDefault();
 }

@@ -11,16 +11,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Allergy Type</h1>
-		<span class="mainDescription">Master table for allergy types.</span>
+		<!--<span class="mainDescription">Master table for allergy types.</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Master</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>

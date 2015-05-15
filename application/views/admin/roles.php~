@@ -202,7 +202,7 @@ $(document).ready(function(){
 	$("body").on('click','.delete', function(){
 	 	var did = $(this).data('row-did');
 	 	//alert(did);
-	 	$('#symtomMildId').val(did);
+	 	$('#roleId').val(did);
 	});
 	 
 	$('body').on('hidden.bs.modal', '.modal', function () {
