@@ -42,7 +42,7 @@ $app->get('/tips', function () {
         $dbCon = null;
         $errorCodes = array(
                          'statusCode'=>'99',
-                         'errorMessage'=>'OK',
+                         'errorMessage'=>'',
                          'tips' => $tips                         
                       );
         echo '{"Result": ' . json_encode($errorCodes) . '}';
@@ -126,7 +126,7 @@ $app->post('/validateUser',function() {
 					        $dbCon = null;
 					        $errorCodes = array(
 					                   'statusCode'=>'99',
-					                   'errorMessage'=>'OK',
+					                   'errorMessage'=>'',
 					                   'accountId'=>$vals[0]->accountId,
 					                   'accountPicture'=> base_url().'uploads/accountImages/'.$vals[0]->accountPicture,
 					                );
@@ -243,7 +243,7 @@ $app->post('/accountInformation',function() {
 			        $dbCon = null;
 			        $errorCodes = array(
 					                   'statusCode'=>'99',
-					                   'errorMessage'=>'OK',
+					                   'errorMessage'=>'',
 					                   'accountInformation'=>$account_info
 					                );
 					  goto res;
@@ -335,7 +335,7 @@ $app->post('/accountInformationById',function() {
 			        $dbCon = null;
 			        $errorCodes = array(
 					                   'statusCode'=>'99',
-					                   'errorMessage'=>'OK',
+					                   'errorMessage'=>'',
 					                   'accountInformation'=>$account_info
 					                );
 					  goto res;
@@ -567,7 +567,7 @@ $app->post('/getProfiles',function() {
 		       
 		        $errorCodes = array(
 					                   'statusCode'=>'99',
-					                   'errorMessage'=>'OK',
+					                   'errorMessage'=>'',
 					                   'profiles'=>$merged
 					                );
 				  goto res;
@@ -696,7 +696,7 @@ $app->post('/getProfileDetails',function() {
 			         $dbCon = null;
 				      $errorCodes = array(
 						                   'statusCode'=>'99',
-						                   'errorMessage'=>'OK',
+						                   'errorMessage'=>'',
 						                   'profileDetail'=>$user
 						                );
 						goto res;
@@ -740,7 +740,7 @@ $app->get('/allergyCounts',function() {
                   );
         $errorCodes = array(
 			                   'statusCode'=>'99',
-			                   'errorMessage'=>'OK',
+			                   'errorMessage'=>'',
 			                   'allergy'=>$counts
 			                );
 		  echo '{"Result":'. json_encode($errorCodes).'}';
@@ -765,7 +765,7 @@ $app->get('/allergies',function() {
         $dbCon = null;
         $errorCodes = array(
 			                   'statusCode'=>'99',
-			                   'errorMessage'=>'OK',
+			                   'errorMessage'=>'',
 			                   'allergies'=>$handicap
 			                );
 		  echo '{"Result":'. json_encode($errorCodes).'}';
@@ -874,7 +874,7 @@ $app->post('/getProfileHistory',function() {
 			        $dbCon = null;
 			        $errorCodes = array(
 						                   'statusCode'=>'99',
-						                   'errorMessage'=>'OK',
+						                   'errorMessage'=>'',
 						                   'profile'=>$profile,
 						                   'history'=> $history,
 						                   'allergies'=> $aller_arr
@@ -932,7 +932,7 @@ $app->post('/getInformationSharing',function() {
 		         }	  
 		         $errorCodes = array(
 						                   'statusCode'=>'99',
-						                   'errorMessage'=>'OK',
+						                   'errorMessage'=>'',
 						                   'informationsharing' => $info
 						                );
 					  goto res;
@@ -981,7 +981,7 @@ $app->get('/defaultInputs',function() {
 		        $dbCon = null;
 		        $errorCodes = array(
 			                   'statusCode'=>'99',
-			                   'errorMessage'=>'OK',
+			                   'errorMessage'=>'',
 			                   'default'=>$result
 			                );
 		        echo json_encode($errorCodes);
@@ -1107,7 +1107,7 @@ $app->post('/editPersonal',function() {
 			           $insert3 = $dbCon->prepare($insert_address);
 			           $insert3->execute();
 			           
-			           $errorCodes = array('statusCode'=>'99','errorMessage:'=>'OK');
+			           $errorCodes = array('statusCode'=>'99','errorMessage:'=>'');
                     goto res;
 		           }catch(PDOException $e) {
 		           	  $errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
@@ -1185,7 +1185,7 @@ $app->post('/editSigninfo',function() {
 						     $activity = $dbCon->prepare($activity_sql);
 						     $activity->execute();
 						     //end of activity log
-			        	     $errorCodes = array('statusCode'=>'99','errorMessage'=>'OK');
+			        	     $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	  	                 goto res;
 		        	     }else {
 		        	     	  $errorCodes = array('statusCode'=>'403','errorMessage'=>'Forbidden');
@@ -1514,7 +1514,7 @@ $app->post('/editProfile', function(){
 			           $insert3->bindParam("profileid", $profile_id);
 			           $insert3->execute();
 			           
-			           $errorCodes = array('statusCode'=>'99','errorMessage'=>'OK');
+			           $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	                 goto res;    
 		           }catch(PDOException $e) {
 		           	  $errorCodes = array('statusCode'=>'1011','errorMessage'=>'Error connecting to the database.');
@@ -1654,7 +1654,7 @@ $app->post('/editAllergy', function(){
 			      $activity = $dbCon->prepare($activity_sql);
 			      $activity->execute();
 			      //end of activity log			
-			      $errorCodes = array('statusCode'=>'99','errorMessage'=>'OK');
+			      $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	            goto res;    
 			 }else{
 			 	$errorCodes = array('statusCode'=>'1000','errorMessage'=>'Please enter all mandatory fields');
@@ -1726,7 +1726,7 @@ $app->post('/editSharingInfo', function(){
 			 $activity = $dbCon->prepare($activity_sql);
 			 $activity->execute();
 			 //end of activity log
-        	 $errorCodes = array('statusCode'=>'99','errorMessage'=>'OK');
+        	 $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
   	       goto res;          
         }else{
         	  $errorCodes = array('statusCode'=>'403','errorMessage'=>'Forbidden');
@@ -1930,7 +1930,7 @@ $app->post('/feedback',function(){
       			$dbCon = getConnection();
                $stmt = $dbCon->prepare($insert);
                $stmt->execute();
-                $errorCodes = array('statusCode'=>'99','errorMessage'=>'OK');
+                $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
   	             goto res;
       		}catch(PDOException $e){
       			$errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');

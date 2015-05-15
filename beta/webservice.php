@@ -984,12 +984,14 @@ $app->get('/defaultInputs',function() {
 			                   'errorMessage'=>'',
 			                   'default'=>$result
 			                );
-		        echo json_encode($errorCodes);
+		        goto res;
 		        //echo json_encode(array('default'=>$result));	    
 		    } catch(PDOException $e) {
 		        $errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
-              echo json_encode($errorCodes);
+              goto res;
 		    }
+	res:
+   echo '{"Result":'. json_encode($errorCodes).'}';
 		
 });
 

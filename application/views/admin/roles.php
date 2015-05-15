@@ -10,8 +10,8 @@
 <section id="page-title">
 <div class="row">
 	<div class="col-sm-8">
-		<h1 class="mainTitle">Symptoms Mild</h1>
-		<span class="mainDescription">Master table for Symptoms Mild.</span>
+		<h1 class="mainTitle">User Roles</h1>
+		<span class="mainDescription">Master table for User Roles.</span>
 	</div>
 	<ol class="breadcrumb">
 		<li>
@@ -42,7 +42,7 @@
 	<div class="row">
 		<div class="col-md-12">
 		<div class="">
-			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addmild">
+			   <button class="btn btn-primary btn-o" data-toggle="modal" data-target="#addrole">
 				Add New
 			   </button>
 	  </div>
@@ -51,7 +51,7 @@
 											<thead>
 												<tr>
 													<th>S.No</th>													
-													<th>Description</th>													
+													<th>Role Name</th>													
 													<th>Action</th>
 												</tr>
 											</thead>
@@ -60,11 +60,11 @@
 												foreach($result_set as $key=>$alg){ ?>
 												<tr>												
 												<td><?=$key+1?></td>
-												<td id="desc_<?php echo $alg['symtomMildId'];?>"><?=$alg['symtomMildDescription'];?></td>																																																							
-												<td id="action_<?php echo $alg['symtomMildId'];?>">
-		                                <a href="#" class="edit" id="edit_<?php echo $alg['symtomMildId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-		                                <a href="#" class="delete" data-toggle="modal" data-target="#delmild" 
-		                                data-row-did='<?php echo $alg["symtomMildId"]; ?>'		                                                         
+												<td id="desc_<?php echo $alg['roleId'];?>"><?=$alg['roleName'];?></td>																																																							
+												<td id="action_<?php echo $alg['roleId'];?>">
+		                                <a href="#" class="edit" id="edit_<?php echo $alg['roleId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
+		                                <a href="#" class="delete" data-toggle="modal" data-target="#delrole" 
+		                                data-row-did='<?php echo $alg["roleId"]; ?>'		                                                         
 		                                title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
 		                              </td>		                              
 											
@@ -73,7 +73,7 @@
 												
 												</tr>
 											<?php } } else {
-												echo "<td align='center' colspan='6'>No records found</td>";
+												echo "<td align='center' colspan='3'>No records found</td>";
 											} ?>
 											</tbody>
 										</table>
@@ -83,24 +83,24 @@
 	</div>
 </div>
 </div>
-        <div class="modal fade" id="addmild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addrole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Mild</span></h4>
+						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Add Role</span></h4>
 					</div>
-					<form role="form" method="post" enctype="multipart/form-data" id="mild_form" action="<?php echo base_url('admin/master/mild/add');?>">
+					<form role="form" method="post" enctype="multipart/form-data" id="role_form" action="<?php echo base_url('admin/master/roles/add');?>">
 				
 					<div class="modal-body">
 					<div class="row">
 					   <div class="col-md-12 col-xs-12">				      
 					   
 					      <div class="form-group">				
-							<label>Symptoms Mild Description</label>
-							<input type="text" class="form-control" name="symtommild" id="symtommild" value=""/>		
+							<label>Role Name</label>
+							<input type="text" class="form-control" name="rolename" id="rolename" value=""/>		
 							</div>						
 					      
 					   </div>													   	
@@ -111,14 +111,14 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							Close
 						</button>
-						<input type="submit" name="save_symtommild" id="save_symtommild" value="Save" class="btn btn-primary" />
+						<input type="submit" name="save_roles" id="save_roles" value="Save" class="btn btn-primary" />
 						
 					</div>
 					</form>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="delmild" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="delrole" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -127,8 +127,8 @@
 						</button>
 						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Mild Delete</span></h4>
 					</div>
-					<form role="form" method="post" id="delmild_form" action="<?php echo base_url('admin/master/mild/delete');?>">
-					<input type="hidden" name="symtomMildId" id="symtomMildId" value=""/> 
+					<form role="form" method="post" id="delrole_form" action="<?php echo base_url('admin/master/roles/delete');?>">
+					<input type="hidden" name="roleId" id="roleId" value=""/> 
 					<div class="modal-body">
 						
 						<h5>Are you sure want to delete? </h5>														
@@ -179,7 +179,7 @@ $(document).ready(function(){
 		var desc_val = $('#descrip_'+id).val();
 		$('#desc_'+id).html(desc_val);
 		$.ajax({
-			url:"<?php echo base_url('admin/update/mild');?>",
+			url:"<?php echo base_url('admin/update/roles');?>",
 			data:{cid:id,desc:desc_val},
 			type:'post',
 			async:false,
@@ -188,7 +188,7 @@ $(document).ready(function(){
 				 alert('update failed');
 			}			
 		});
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delmild" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delrole" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");
@@ -196,13 +196,13 @@ $(document).ready(function(){
 		var desc_hid_val = $('#descrip_hid_'+id).val();
 		//alert(desc_hid_val);
 		$('#desc_'+id).html(desc_hid_val);
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delmild" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delrole" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	
 	$("body").on('click','.delete', function(){
 	 	var did = $(this).data('row-did');
 	 	//alert(did);
-	 	$('#symtomMildId').val(did);
+	 	$('#roleId').val(did);
 	});
 	 
 	$('body').on('hidden.bs.modal', '.modal', function () {
@@ -210,18 +210,18 @@ $(document).ready(function(){
    	$('span.help-block').remove();
    	$(this).find('input').removeClass('help-block');
    	$(this).find('select').removeClass('help-block');
-   	   $('#symtomMildId').val('');
-         $('#symtommild').val('');
+   	   $('#rolename').val('');
+         $('#roleId').val('');
      
    });
-   $('#mild_form').validate({
+   $('#role_form').validate({
 		rules:{
-			symtommild:{
+			rolename:{
 				required: true				
 			}
 		},
 		messages:{
-			symtommild:{
+			rolename:{
 				required:"You can't leave this empty"
 			}
 		}

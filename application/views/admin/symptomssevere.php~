@@ -92,7 +92,7 @@
 						</button>
 						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe</span></h4>
 					</div>
-					<form role="form" method="post" enctype="multipart/form-data" id="allergy_form" action="<?php echo base_url('admin/master/severe/add');?>">
+					<form role="form" method="post" enctype="multipart/form-data" id="severe_form" action="<?php echo base_url('admin/master/severe/add');?>">
 					<div class="modal-body">
 					<div class="row">
 					   <div class="col-md-12 col-xs-12">				      
@@ -126,7 +126,7 @@
 						</button>
 						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe Delete</span></h4>
 					</div>
-					<form role="form" method="post" id="severe_form" action="<?php echo base_url('admin/master/severe/delete');?>">
+					<form role="form" method="post" id="delsev_form" action="<?php echo base_url('admin/master/severe/delete');?>">
 					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
 					<div class="modal-body">
 						

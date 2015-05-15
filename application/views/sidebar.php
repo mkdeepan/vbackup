@@ -255,6 +255,11 @@
 											<span class="title">Symptoms Mild</span>
 										</a>
 									</li>
+									<li>
+										<a href="<?php echo site_url('admin/master/roles');?>">
+											<span class="title">Roles</span>
+										</a>
+									</li>
 								</ul>					
 							</li>
 						<?php } ?>		
