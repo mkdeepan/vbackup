@@ -63,7 +63,7 @@
 												<td id="desc_<?php echo $alg['symtomSevereId'];?>"><?=$alg['symtomSevereDescription'];?></td>																																																							
 												<td id="action_<?php echo $alg['symtomSevereId'];?>">
 		                                <a href="#" class="edit" id="edit_<?php echo $alg['symtomSevereId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
-		                                <a href="#" class="delete" data-toggle="modal" data-target="#deltag" 
+		                                <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" 
 		                                data-row-did='<?php echo $alg["symtomSevereId"]; ?>'		                                                         
 		                                title="Delete"><i class="glyphicon glyphicon-remove"></i></a>
 		                              </td>		                              
@@ -73,7 +73,7 @@
 												
 												</tr>
 											<?php } } else {
-												echo "<td align='center' colspan='6'>No records found</td>";
+												echo "<td align='center' colspan='3'>No records found</td>";
 											} ?>
 											</tbody>
 										</table>
@@ -83,23 +83,22 @@
 	</div>
 </div>
 </div>
-        <div class="modal fade" id="addalgname" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addsevere" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Allergy Name</span></h4>
+						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe</span></h4>
 					</div>
-					<form role="form" method="post" enctype="multipart/form-data" id="allergy_form" action="<?php echo base_url('admin/master/allergyname/add');?>">
-					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
+					<form role="form" method="post" enctype="multipart/form-data" id="severe_form" action="<?php echo base_url('admin/master/severe/add');?>">
 					<div class="modal-body">
 					<div class="row">
 					   <div class="col-md-12 col-xs-12">				      
 					   
 					      <div class="form-group">				
-							<label>Allergy Name Description</label>
+							<label>Symptoms Severe Description</label>
 							<input type="text" class="form-control" name="symtomsevere" id="symtomsevere" value=""/>		
 							</div>						
 					      
@@ -118,16 +117,16 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="deltag" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="delsevere" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Allergy Name Delete</span></h4>
+						<h4 class="modal-title" id="myModalLabel"><span id="addon_header">Symptom Severe Delete</span></h4>
 					</div>
-					<form role="form" method="post" id="edit_form" action="<?php echo base_url('admin/master/allergyname/delete');?>">
+					<form role="form" method="post" id="delsev_form" action="<?php echo base_url('admin/master/severe/delete');?>">
 					<input type="hidden" name="symtomSevereId" id="symtomSevereId" value=""/> 
 					<div class="modal-body">
 						
@@ -139,7 +138,7 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							No
 						</button>
-						<input type="submit" name="delete_allergyname" id="delete_allergyname" value="Yes" class="btn btn-primary" />
+						<input type="submit" name="delete_severe" id="delete_severe" value="Yes" class="btn btn-primary" />
 						
 					</div>
 					</form>
@@ -179,7 +178,7 @@ $(document).ready(function(){
 		var desc_val = $('#descrip_'+id).val();
 		$('#desc_'+id).html(desc_val);
 		$.ajax({
-			url:"<?php echo base_url('admin/update/allergyname');?>",
+			url:"<?php echo base_url('admin/update/severe');?>",
 			data:{cid:id,desc:desc_val},
 			type:'post',
 			async:false,
@@ -188,7 +187,7 @@ $(document).ready(function(){
 				 alert('update failed');
 			}			
 		});
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deltag" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");
@@ -196,11 +195,12 @@ $(document).ready(function(){
 		var desc_hid_val = $('#descrip_hid_'+id).val();
 		//alert(desc_hid_val);
 		$('#desc_'+id).html(desc_hid_val);
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deltag" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#delsevere" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
 	
-	$(".delete").on('click', function(){
+	$("body").on('click','.delete', function(){
 	 	var did = $(this).data('row-did');
+	 	//alert(did);
 	 	$('#symtomSevereId').val(did);
 	});
 	 
@@ -210,17 +210,17 @@ $(document).ready(function(){
    	$(this).find('input').removeClass('help-block');
    	$(this).find('select').removeClass('help-block');
    	   $('#symtomSevereId').val('');
-         $('#allergy_name_desc').val('');
+         $('#symtomsevere').val('');
      
    });
-   $('#allergy_form').validate({
+   $('#severe_form').validate({
 		rules:{
-			allergy_name_desc:{
+			symtomsevere:{
 				required: true				
 			}
 		},
 		messages:{
-			allergy_name_desc:{
+			symtomsevere:{
 				required:"You can't leave this empty"
 			}
 		}

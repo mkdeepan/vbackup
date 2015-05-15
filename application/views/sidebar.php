@@ -274,13 +274,18 @@
 										</a>
 									</li>
 									<li>
-										<a href="<?php echo site_url('admin/master/symptomssevere');?>">
+										<a href="<?php echo site_url('admin/master/severe');?>">
 											<span class="title">Symptoms Severe</span>
 										</a>
 									</li>
 									<li>
-										<a href="<?php echo site_url('admin/master/symptomsmild');?>">
+										<a href="<?php echo site_url('admin/master/mild');?>">
 											<span class="title">Symptoms Mild</span>
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo site_url('admin/master/roles');?>">
+											<span class="title">Roles</span>
 										</a>
 									</li>
 								</ul>					

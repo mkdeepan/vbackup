@@ -41,8 +41,8 @@ $app->get('/tips', function () {
         $tips = $stmt -> fetchAll(PDO::FETCH_OBJ);
         $dbCon = null;
         $errorCodes = array(
-                         'statusCode'=>'200',
-                         'errorMessage'=>'OK',
+                         'statusCode'=>'99',
+                         'errorMessage'=>'',
                          'tips' => $tips                         
                       );
         echo '{"Result": ' . json_encode($errorCodes) . '}';
@@ -125,8 +125,8 @@ $app->post('/validateUser',function() {
 					        $logs->execute();
 					        $dbCon = null;
 					        $errorCodes = array(
-					                   'statusCode'=>'200',
-					                   'errorMessage'=>'OK',
+					                   'statusCode'=>'99',
+					                   'errorMessage'=>'',
 					                   'accountId'=>$vals[0]->accountId,
 					                   'accountPicture'=> base_url().'uploads/accountImages/'.$vals[0]->accountPicture,
 					                );
@@ -242,8 +242,8 @@ $app->post('/accountInformation',function() {
 			        
 			        $dbCon = null;
 			        $errorCodes = array(
-					                   'statusCode'=>'200',
-					                   'errorMessage'=>'OK',
+					                   'statusCode'=>'99',
+					                   'errorMessage'=>'',
 					                   'accountInformation'=>$account_info
 					                );
 					  goto res;
@@ -334,8 +334,8 @@ $app->post('/accountInformationById',function() {
 			        
 			        $dbCon = null;
 			        $errorCodes = array(
-					                   'statusCode'=>'200',
-					                   'errorMessage'=>'OK',
+					                   'statusCode'=>'99',
+					                   'errorMessage'=>'',
 					                   'accountInformation'=>$account_info
 					                );
 					  goto res;
@@ -566,8 +566,8 @@ $app->post('/getProfiles',function() {
 		        $dbCon = null;
 		       
 		        $errorCodes = array(
-					                   'statusCode'=>'200',
-					                   'errorMessage'=>'OK',
+					                   'statusCode'=>'99',
+					                   'errorMessage'=>'',
 					                   'profiles'=>$merged
 					                );
 				  goto res;
@@ -695,8 +695,8 @@ $app->post('/getProfileDetails',function() {
 			         $user[0]->incidents = $incidents;
 			         $dbCon = null;
 				      $errorCodes = array(
-						                   'statusCode'=>'200',
-						                   'errorMessage'=>'OK',
+						                   'statusCode'=>'99',
+						                   'errorMessage'=>'',
 						                   'profileDetail'=>$user
 						                );
 						goto res;
@@ -739,8 +739,8 @@ $app->get('/allergyCounts',function() {
                     'allergyCount' =>  $allergy[0]->allergycount
                   );
         $errorCodes = array(
-			                   'statusCode'=>'200',
-			                   'errorMessage'=>'OK',
+			                   'statusCode'=>'99',
+			                   'errorMessage'=>'',
 			                   'allergy'=>$counts
 			                );
 		  echo '{"Result":'. json_encode($errorCodes).'}';
@@ -764,8 +764,8 @@ $app->get('/allergies',function() {
         $handicap = $items -> fetchAll(PDO::FETCH_OBJ);
         $dbCon = null;
         $errorCodes = array(
-			                   'statusCode'=>'200',
-			                   'errorMessage'=>'OK',
+			                   'statusCode'=>'99',
+			                   'errorMessage'=>'',
 			                   'allergies'=>$handicap
 			                );
 		  echo '{"Result":'. json_encode($errorCodes).'}';
@@ -873,8 +873,8 @@ $app->post('/getProfileHistory',function() {
 			         }
 			        $dbCon = null;
 			        $errorCodes = array(
-						                   'statusCode'=>'200',
-						                   'errorMessage'=>'OK',
+						                   'statusCode'=>'99',
+						                   'errorMessage'=>'',
 						                   'profile'=>$profile,
 						                   'history'=> $history,
 						                   'allergies'=> $aller_arr
@@ -931,8 +931,8 @@ $app->post('/getInformationSharing',function() {
   	               goto res;
 		         }	  
 		         $errorCodes = array(
-						                   'statusCode'=>'200',
-						                   'errorMessage'=>'OK',
+						                   'statusCode'=>'99',
+						                   'errorMessage'=>'',
 						                   'informationsharing' => $info
 						                );
 					  goto res;
@@ -980,16 +980,18 @@ $app->get('/defaultInputs',function() {
 		     //var_dump($result); exit;
 		        $dbCon = null;
 		        $errorCodes = array(
-			                   'statusCode'=>'200',
-			                   'errorMessage'=>'OK',
+			                   'statusCode'=>'99',
+			                   'errorMessage'=>'',
 			                   'default'=>$result
 			                );
-		        echo json_encode($errorCodes);
+		        goto res;
 		        //echo json_encode(array('default'=>$result));	    
 		    } catch(PDOException $e) {
 		        $errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
-              echo json_encode($errorCodes);
+              goto res;
 		    }
+	res:
+   echo '{"Result":'. json_encode($errorCodes).'}';
 		
 });
 
@@ -1107,7 +1109,7 @@ $app->post('/editPersonal',function() {
 			           $insert3 = $dbCon->prepare($insert_address);
 			           $insert3->execute();
 			           
-			           $errorCodes = array('statusCode'=>'200','errorMessage:'=>'OK');
+			           $errorCodes = array('statusCode'=>'99','errorMessage:'=>'');
                     goto res;
 		           }catch(PDOException $e) {
 		           	  $errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
@@ -1185,7 +1187,7 @@ $app->post('/editSigninfo',function() {
 						     $activity = $dbCon->prepare($activity_sql);
 						     $activity->execute();
 						     //end of activity log
-			        	     $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+			        	     $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	  	                 goto res;
 		        	     }else {
 		        	     	  $errorCodes = array('statusCode'=>'403','errorMessage'=>'Forbidden');
@@ -1514,7 +1516,7 @@ $app->post('/editProfile', function(){
 			           $insert3->bindParam("profileid", $profile_id);
 			           $insert3->execute();
 			           
-			           $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+			           $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	                 goto res;    
 		           }catch(PDOException $e) {
 		           	  $errorCodes = array('statusCode'=>'1011','errorMessage'=>'Error connecting to the database.');
@@ -1654,7 +1656,7 @@ $app->post('/editAllergy', function(){
 			      $activity = $dbCon->prepare($activity_sql);
 			      $activity->execute();
 			      //end of activity log			
-			      $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+			      $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	            goto res;    
 			 }else{
 			 	$errorCodes = array('statusCode'=>'1000','errorMessage'=>'Please enter all mandatory fields');
@@ -1726,7 +1728,7 @@ $app->post('/editSharingInfo', function(){
 			 $activity = $dbCon->prepare($activity_sql);
 			 $activity->execute();
 			 //end of activity log
-        	 $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+        	 $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
   	       goto res;          
         }else{
         	  $errorCodes = array('statusCode'=>'403','errorMessage'=>'Forbidden');
@@ -1930,7 +1932,7 @@ $app->post('/feedback',function(){
       			$dbCon = getConnection();
                $stmt = $dbCon->prepare($insert);
                $stmt->execute();
-                $errorCodes = array('statusCode'=>'200','errorMessage'=>'OK');
+                $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
   	             goto res;
       		}catch(PDOException $e){
       			$errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');

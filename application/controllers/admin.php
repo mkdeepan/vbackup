@@ -554,6 +554,36 @@ class Admin extends CI_Controller {
   		   	return 'false';
   		   }
   	      break;
+  	   case 'severe':
+  		   $values = array('symtomSevereDescription'=>$this->input->post('desc'));
+  		   $where = array('symtomSevereId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('SymtomsSevere',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
+  	   case 'mild':
+  		   $values = array('symtomMildDescription'=>$this->input->post('desc'));
+  		   $where = array('symtomMildId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('SymtomsMild',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
+  	   case 'roles':
+  		   $values = array('roleName'=>$this->input->post('desc'));
+  		   $where = array('roleId'=>$this->input->post('cid'));
+  		   $res = $this->common_model->update_data('Role',$values,$where);
+  		   if($res){
+  		      return 'true';
+  		   }else{
+  		   	return 'false';
+  		   }
+  	      break;
   	}
   }
   
@@ -644,25 +674,25 @@ class Admin extends CI_Controller {
 			      //var_dump($data['log_report']); exit;
 			   }
 		      break;
-		  case 'symptomssevere':
-		     	if($option=='add'){     		
-		     		$values = array('symtomSevereDescription'=>$this->input->post('severe_desc'));
+		  case 'severe':
+		     	if($option=='add' && $this->input->post('save_symtomsevere')){     		
+		     		$values = array('symtomSevereDescription'=>$this->input->post('symtomsevere'));
 		  	   	$res = $this->common_model->insert_db('SymtomsSevere',$values);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms severe added successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms severe addition failed');
 		  	   	}
-		  	      redirect('admin/master/symptomssevere');
-		     	}elseif($option == 'delete'){
-		     		$where = array('symtomSevereId'=>$this->input->post('severeid'));
+		  	      redirect('admin/master/severe');
+		     	}elseif($option == 'delete' && $this->input->post('delete_severe')){
+		     		$where = array('symtomSevereId'=>$this->input->post('symtomSevereId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsSevere',$where);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms severe deleted successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms severe delete failed');
 		  	   	}
-		  	      redirect('admin/master/allergyname');
+		  	      redirect('admin/master/severe');
 		     	}else{
 		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomssevere', 'errorCls' => NULL,'page_params' => NULL);
 		     	   $options['table'] = 'SymtomsSevere';
@@ -677,28 +707,61 @@ class Admin extends CI_Controller {
 			      //var_dump($data['log_report']); exit;
 			   }
 		      break;
-		  case 'symptomsmild':
-		     	if($option=='add'){     		
-		     		$values = array('symtomMildDescription'=>$this->input->post('mild_desc'));
+		  case 'mild':
+		     	if($option=='add' && $this->input->post('save_symtommild')){     		
+		     		$values = array('symtomMildDescription'=>$this->input->post('symtommild'));
 		  	   	$res = $this->common_model->insert_db('SymtomsMild',$values);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms mild added successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms mild addition failed');
 		  	   	}
-		  	      redirect('admin/master/symptomsmild');
-		     	}elseif($option == 'delete'){
-		     		$where = array('symtomMildId'=>$this->input->post('mildid'));
+		  	      redirect('admin/master/mild');
+		     	}elseif($option == 'delete' && $this->input->post('delete_mild')){
+		     		$where = array('symtomMildId'=>$this->input->post('symtomMildId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsMild',$where);
 		  	   	if($res){
 		  	   		$this->session->flashdata('success','Symptoms mild deleted successfully');
 		  	   	}else{
 		  	   		$this->session->flashdata('failure','Symptoms mild delete failed');
 		  	   	}
-		  	      redirect('admin/master/symptomsmild');
+		  	      redirect('admin/master/mild');
 		     	}else{
 		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/symptomsmild', 'errorCls' => NULL,'page_params' => NULL);
 		     	   $options['table'] = 'SymtomsMild';
+		     	   $options['like'] = '';
+		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
+				   $options['limit'] = $config["per_page"];  
+				   $options['offset'] = $page;  
+				   $data["result_set"] = $this->admin_model->master($options,'record');
+				   $data['offset'] = $page; 
+				   $this->pagination->initialize($config);
+			      $data["links"] = $this->pagination->create_links();
+			      //var_dump($data['log_report']); exit;
+			   }
+		      break;
+		   case 'roles':
+		     	if($option=='add' && $this->input->post('save_roles')){     		
+		     		$values = array('roleName'=>$this->input->post('rolename'));
+		  	   	$res = $this->common_model->insert_db('Role',$values);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','New role added successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','New role addition failed');
+		  	   	}
+		  	      redirect('admin/master/roles');
+		     	}elseif($option == 'delete' && $this->input->post('delete_roles')){
+		     		$where = array('roleId'=>$this->input->post('roleId'));
+		  	   	$res = $this->common_model->delete_from('Role',$where);
+		  	   	if($res){
+		  	   		$this->session->flashdata('success','Role deleted successfully');
+		  	   	}else{
+		  	   		$this->session->flashdata('failure','Role delete failed');
+		  	   	}
+		  	      redirect('admin/master/roles');
+		     	}else{
+		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/roles', 'errorCls' => NULL,'page_params' => NULL);
+		     	   $options['table'] = 'Role';
 		     	   $options['like'] = '';
 		     	   $config["total_rows"] = $this->admin_model->master($options,'count');
 				   $options['limit'] = $config["per_page"];  
