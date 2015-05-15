@@ -268,6 +268,82 @@ $app->post('/accountInformation',function() {
   echo '{"Result":'. json_encode($errorCodes).'}';
 });
 
+$app->post('/getTags',function() {
+    global $app;
+        $request = $app->request();
+        $body = $request->getBody();
+        $error = 0;
+			$errorCodes = array();
+		   if(is_json($body)){
+			   $input = json_decode($body); 
+				if(!empty($input)){
+				     $tagsInformation = array();
+				     $acc_id = $input->id; 
+				        //for profiles
+				        $sql_p = "select profileId, profileFirstName, profileLastName from Profile 
+				                  join Account on Account.accountId=Profile.accountId where Account.accountId = '".$acc_id."'";
+				            	
+			
+			        try {
+			        $dbCon = getConnection();
+			        $profile = $dbCon->prepare($sql_p);
+			        $profile->execute();
+			        $profiles = $profile -> fetchAll(PDO::FETCH_OBJ);
+			        foreach($profiles as $pro)
+			        {
+			                //for allergies
+			        	$sql_a = "select distinct AN.allergyNameId, AN.allergyNameDescription
+			        	         from ProfileTagMapping PTM 
+			        	         join Allergy A on A.profileId = PTM.profileId
+			        	         join AllergyName AN on AN.allergyNameId = A.allergyNameId
+						 where PTM.profileId = '".$pro->profileId."'";	
+				        
+				$allergy = $dbCon->prepare($sql_a);
+			        $allergy->execute();
+			        $allergies = $allergy -> fetchAll(PDO::FETCH_OBJ);
+			                //for tags
+				        $sql_t = "select TI.tagId, TT.tagTypeDescription, sum(TI.tagCount) as tagCounts from TagInfo TI 
+				                  join TagList TL on TL.tagListId=TI.tagId 
+				                  join TagType TT on TT.tagTypeId=TL.tagListId
+				                  where profileId = '".$pro->profileId."' group by TI.tagId ";
+				                  
+			        $tag = $dbCon->prepare($sql_t);
+			        $tag->execute();
+			        $tags = $tag -> fetchAll(PDO::FETCH_OBJ);
+			        
+			        $tagsInformation[] = array(
+			                'profileId'=>$pro->profileId,
+			                'profileFirstName'=>$pro->profileFirstName,
+			                'profileLastName'=>$pro->profileLastName,
+			                'allergy'=>$allergies,
+			                'tags'=>$tags
+			                );
+			         }
+			         $dbCon = null;
+			        //$tagsInformation = array_merge((array)$profiles,(array)$tags_aller);
+			        //echo '{"tagInfo": ' . json_encode($tagsInformation) . '}';
+			        $errorCodes = array(
+					                   'statusCode'=>'99',
+					                   'errorMessage'=>'',
+					                   'tagInfo'=>$tagsInformation
+					                );
+					  goto res;
+			    } catch(PDOException $e) {
+			        $errorCodes = array('statusCode'=>'1011','errorMessage:'=>$e->getMessage());
+  	              goto res;
+			    }
+			}else{
+			$errorCodes = array('statusCode'=>'1012','errorMessage'=>'API parameter missing');
+		  	goto res;
+		}
+	}else{
+  	 $errorCodes = array('statusCode'=>'1017','errorMessage'=>'JSON format error');
+	 goto res;
+  } 
+  res:
+  echo '{"Result":'. json_encode($errorCodes).'}';
+});
+
 $app->post('/accountInformationById',function() {
 
    global $app;
@@ -984,12 +1060,14 @@ $app->get('/defaultInputs',function() {
 			                   'errorMessage'=>'',
 			                   'default'=>$result
 			                );
-		        echo json_encode($errorCodes);
+		        goto res;
 		        //echo json_encode(array('default'=>$result));	    
 		    } catch(PDOException $e) {
 		        $errorCodes = array('statusCode'=>'1011','errorMessage:'=>'Error connecting to the database.');
-              echo json_encode($errorCodes);
+              goto res;
 		    }
+	res:
+   echo '{"Result":'. json_encode($errorCodes).'}';
 		
 });
 
@@ -1492,8 +1570,8 @@ $app->post('/editProfile', function(){
 			        	}
 		   //for activity log
 			$activity_sql = "insert into ActivityLog(accountId,profileId,action,title) values ('$account_id','$profile_id','$activity_action','profile')";
-			$activity = $dbCon->prepare($activity_sql);
-			$activity->execute();
+			//$activity = $dbCon->prepare($activity_sql);
+			//$activity->execute();
 			//end of activity log
 			           $del1 = $dbCon->prepare($emer_del);
 			           $del1->bindParam("profileid", $profile_id);
@@ -1504,16 +1582,21 @@ $app->post('/editProfile', function(){
 			           $del3 = $dbCon->prepare($ins_del);
 			           $del3->bindParam("profileid", $profile_id);
 			           $del3->execute();
+			       if(!empty($emer_arr)){
 			           $insert1 = $dbCon->prepare($insert_emergency);
 			           $insert1->bindParam("profileid", $profile_id);
-			           $insert1->execute();
+			           $insert1->execute();			      
+			       }
+			       if(!empty($doc_arr)){
 			           $insert2 = $dbCon->prepare($insert_doctor);
 			           $insert2->bindParam("profileid", $profile_id);
 			           $insert2->execute();
+			       }
+			       if(!empty($ins_arr)){
 			           $insert3 = $dbCon->prepare($insert_insurance);
 			           $insert3->bindParam("profileid", $profile_id);
 			           $insert3->execute();
-			           
+			        }   
 			           $errorCodes = array('statusCode'=>'99','errorMessage'=>'');
 	                 goto res;    
 		           }catch(PDOException $e) {

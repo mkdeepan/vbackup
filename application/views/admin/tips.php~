@@ -42,7 +42,7 @@
                 {title: 'Test template 2', content: 'Test 2'}
         ],
         height:"auto",
-        width:"600px"
+      //  width:"600px"
 
 });
 $(document).ready(function () {

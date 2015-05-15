@@ -4,16 +4,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Location Log</h1>
-		<span class="mainDescription">List out the profiles that are scanned in user's device.</span>
+		<!--<span class="mainDescription">List out the profiles that are scanned in user's device.</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Location Log</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>

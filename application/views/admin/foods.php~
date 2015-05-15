@@ -12,16 +12,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Food & Ingredient</h1>
-		<!--<span class="mainDescription">Master table for Food & Ingredients.</span>-->
+		<span class="mainDescription">Master table for Food & Ingredients.</span>
 	</div>
-	<!--<ol class="breadcrumb">
+	<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Food & Ingredients</span>
 		</li>
-	</ol>-->
+	</ol>
 </div>
 </section>
 <div id="update_message" class="alert alert-success alert-dismissible" role="alert" style="display:none">

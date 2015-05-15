@@ -4,16 +4,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Login Report</h1>
-		<span class="mainDescription">User signing-in information.</span>
+		<!--<span class="mainDescription">User signing-in information.</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Login Report</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>

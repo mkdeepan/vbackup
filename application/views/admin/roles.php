@@ -11,16 +11,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">User Roles</h1>
-		<span class="mainDescription">Master table for User Roles.</span>
+		<!--<span class="mainDescription">Master table for User Roles.</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Master</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>

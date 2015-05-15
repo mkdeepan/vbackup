@@ -78,7 +78,7 @@
 												The Manage Orders tool provides a view of all your orders.
 											</p>-->
 											<p class="cl-effect-1">
-												<a href="<?php echo base_url('tags');?>">
+												<a href="<?php base_url('tags');?.">
 													view more
 												</a>
 											</p>
@@ -95,7 +95,7 @@
 												Store, modify, and extract information from your database.
 											</p>-->
 											<p class="links cl-effect-1">
-												<a href="<?php echo base_url('home/tips');?>">
+												<a href="<?php base_url('home/tips');?>">
 													view more
 												</a>
 											</p>

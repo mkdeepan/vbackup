@@ -200,7 +200,6 @@ $(document).ready(function(){
 	
 	$(".delete").on('click', function(){
 	 	var did = $(this).data('row-did');
-	 	alert(did);
 	 	$('#allergyTypeId').val(did);
 	});
 	 

@@ -11,16 +11,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Ingsredients</h1>
-		<!--<span class="mainDescription">Master table for Ingredients.</span>-->
+		<span class="mainDescription">Master table for Ingredients.</span>
 	</div>
-	<!--<ol class="breadcrumb">
+	<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Ingredients</span>
 		</li>
-	</ol>-->
+	</ol>
 </div>
 </section>
 <div id="update_message" class="alert alert-success alert-dismissible" role="alert" style="display:none">
@@ -108,7 +108,7 @@
 					</div>
 					
 					</div>
-					<a href="#" class="addmore" style="margin-left: 520px;font-weight:bold">Add More</a>
+					<a href="#" class="addmore">Add More</a>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							Close

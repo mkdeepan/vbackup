@@ -155,16 +155,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Roles Setup</h1>
-		<span class="mainDescription">Roles Page</span>
+		<!--<span class="mainDescription">Roles Page</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li class="active">
 		<span>Roles Page</span>
 		</li>
 		<li class="active">
 		<span>Admin</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>

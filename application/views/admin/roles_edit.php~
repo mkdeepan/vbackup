@@ -228,7 +228,7 @@
 										  foreach($access_read as $key=>$page){
 										  $pagename = common_model::select_from('Pages',array('pageName'),array('pageId'=>$page));
 										  	echo ($key)?', '.$pagename[0]['pageName']:$pagename[0]['pageName'];
-										   } ?>										  
+										   }}?>										  
 										 </td>
 										 
 										 <td>										 
