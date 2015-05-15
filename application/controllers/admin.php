@@ -715,6 +715,121 @@ class Admin extends CI_Controller {
      $data = $data + $this->data;
      $this->load->view($data['template'],$data);
   }
+
+  function ingredients($action='')
+  {
+    $data = array('title' => 'Admin - Ingredients', 'page' => 'admin/ingredients', 'errorCls' => NULL,'page_params' => NULL);
+    
+    switch($action)
+    {
+      case 'add':
+      {
+            //var_dump($_POST);
+            $ingdata = array();
+            foreach($_POST['ingredient'] as $ingre)
+            {
+               $ingdata[] = array('ingredientName' => $ingre);
+            }
+           // var_dump($ingdata);exit;
+            //$datas = array('ingredientName' => $this->input->post('ingredient'));
+            $res = $this->common_model->insert_batch_rec('Ingredients',$ingdata);
+            if($res){
+              $this->session->set_flashdata('success','Ingredients added successfully');
+            }else{
+              $this->session->set_flashdata('failure','Ingredient addition failed');
+            }
+             redirect('admin/ingredients');
+
+      }
+      case 'update':
+      {
+           // var_dump($_POST);exit;
+            $datas = array('ingredientName' => $this->input->post('name'));
+            $where = array('ingredientId' => $this->input->post('ingid'));
+            $res = $this->common_model->update_data('Ingredients',$datas,$where);
+            if($res){
+              echo 'true';
+              exit;
+            }else{
+              echo 'false';
+              exit;
+            }
+            break;
+      }
+      case 'delete':
+      {
+           // var_dump($_POST);exit;
+            $where = array('ingredientId' => $this->input->post('delingredientId'));
+            $res = $this->common_model->delete_from('Ingredients',$where);
+            if($res){
+              $this->session->set_flashdata('success','Ingredient deleted successfully');
+            }else{
+              $this->session->set_flashdata('failure','Ingredient deletion failed');
+            }
+             redirect('admin/ingredients');
+            
+      }
+
+    }
+    $data['ingredient'] = $this->common_model->select_from('Ingredients','*');
+    $data = $data + $this->data;
+    $this->load->view($data['template'],$data);
+  }
+
+  function food($action='')
+  {
+    $data = array('title' => 'Admin - Ingredients', 'page' => 'admin/foods', 'errorCls' => NULL,'page_params' => NULL);
+    
+    switch($action)
+    {
+      case 'add':
+      {
+          // var_dump($_POST);
+            $datas = array('foodTitle' => $this->input->post('food_title'),
+                           'foodIngredient' => implode(',',$this->input->post('ingredients')));
+            $res = $this->common_model->insert_db('FoodDetail',$datas);
+            if($res){
+              $this->session->set_flashdata('success','Food Detail added successfully');
+            }else{
+              $this->session->set_flashdata('failure','Food Detail addition failed');
+            }
+             redirect('admin/food');
+
+      }
+      case 'update':
+      {
+           //var_dump($_POST);exit;
+            $datas = array('foodTitle' => $this->input->post('efood_title'),
+                           'foodIngredient' => implode(',',$this->input->post('eingredients')));
+            $where = array('foodId' => $this->input->post('ehidid'));
+            $res = $this->common_model->update_data('FoodDetail',$datas,$where);
+            if($res){
+              $this->session->set_flashdata('success','Food Detail updated successfully');
+            }else{
+              $this->session->set_flashdata('failure','Food Detail addition failed');
+            }
+             redirect('admin/food');
+      }
+      case 'delete':
+      {
+           // var_dump($_POST);exit;
+            $where = array('FoodId' => $this->input->post('delfoodId'));
+            $res = $this->common_model->delete_from('FoodDetail',$where);
+            if($res){
+              $this->session->set_flashdata('success','Food Detail deleted successfully');
+            }else{
+              $this->session->set_flashdata('failure','Food Detail deletion failed');
+            }
+             redirect('admin/food');
+            
+      }
+
+    }
+    $data['ingredient'] = $this->common_model->select_from('Ingredients','*');
+    $data['food_detail'] = $this->common_model->select_from('FoodDetail','*');
+    $data = $data + $this->data;
+    $this->load->view($data['template'],$data);
+  }
    
 }
 ?>

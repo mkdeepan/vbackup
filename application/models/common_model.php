@@ -23,12 +23,13 @@ class Common_model extends CI_Model {
    
    function insert_batch_rec($table='',$values = array(),$where=array())
    { 	
+   
    	if(!empty($where))
    	  $this->db->where($where);
    	  
    	if(!empty($values))
    	  $result = $this->db->insert_batch($table,$values);
-   	  //debug_last_query();
+   	 // debug_last_query();
    	if($result)
    	  return true;
    	 else 
