@@ -201,5 +201,36 @@ class Admin_model extends CI_Model {
     return $name;
   }
 
+  function fetch_ingredients($options = array(),$opt='record')
+  {
+  if(isset($options['offset']) && isset($options['limit']))
+     $this->db->limit($options['limit'],$options['offset']);
+     
+  $this->db->select('*');  
+  $this->db->from('Ingredients');
+  $query = $this->db->get();
+  //debug_last_query();
+  if($opt == 'record'){
+    return $query->result_array();   
+  }else{
+    return $query->num_rows();
+  }
+  }
+  function fetch_food($options = array(),$opt='record')
+  {
+  if(isset($options['offset']) && isset($options['limit']))
+     $this->db->limit($options['limit'],$options['offset']);
+     
+  $this->db->select('*');  
+  $this->db->from('FoodDetail');
+  $query = $this->db->get();
+  //debug_last_query();
+  if($opt == 'record'){
+    return $query->result_array();   
+  }else{
+    return $query->num_rows();
+  }
+  }
+
 }
 

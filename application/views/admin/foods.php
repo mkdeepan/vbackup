@@ -94,7 +94,7 @@
 											} ?>
 											</tbody>
 										</table>
-										<?php //echo $links; ?>
+										<?php echo $links; ?>
 			</div>
 		</div>
 	</div>

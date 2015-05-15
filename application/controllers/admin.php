@@ -834,7 +834,22 @@ class Admin extends CI_Controller {
       }
 
     }
-    $data['ingredient'] = $this->common_model->select_from('Ingredients','*');
+    $config = array();
+    $options = array();
+    $config["base_url"] = base_url()."admin/ingredients";
+    $config['first_url'] = base_url()."admin/ingredients";
+    $config["suffix"] ="";
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+    $config["per_page"] = 5;
+    $config["uri_segment"] = 3;
+    $config["total_rows"] = $this->admin_model->fetch_ingredients($options,'count');
+    $options['limit'] = $config["per_page"];  
+    $options['offset'] = $page;  
+    $data["ingredient"] = $this->admin_model->fetch_ingredients($options,'record');
+    $data['offset'] = $page; 
+    $this->pagination->initialize($config);
+    $data["links"] = $this->pagination->create_links();
+   
     $data = $data + $this->data;
     $this->load->view($data['template'],$data);
   }
@@ -889,7 +904,21 @@ class Admin extends CI_Controller {
 
     }
     $data['ingredient'] = $this->common_model->select_from('Ingredients','*');
-    $data['food_detail'] = $this->common_model->select_from('FoodDetail','*');
+    $config = array();
+    $options = array();
+    $config["base_url"] = base_url()."admin/food";
+    $config['first_url'] = base_url()."admin/food";
+    $config["suffix"] ="";
+    $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+    $config["per_page"] = 5;
+    $config["uri_segment"] = 3;
+    $config["total_rows"] = $this->admin_model->fetch_food($options,'count');
+    $options['limit'] = $config["per_page"];  
+    $options['offset'] = $page;  
+    $data["food_detail"] = $this->admin_model->fetch_food($options,'record');
+    $data['offset'] = $page; 
+    $this->pagination->initialize($config);
+    $data["links"] = $this->pagination->create_links();
     $data = $data + $this->data;
     $this->load->view($data['template'],$data);
   }

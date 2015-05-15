@@ -77,7 +77,7 @@
 											} ?>
 											</tbody>
 										</table>
-										<?php //echo $links; ?>
+										<?php echo $links; ?>
 			</div>
 		</div>
 	</div>
@@ -108,7 +108,7 @@
 					</div>
 					
 					</div>
-					<a href="#" class="addmore">Add More</a>
+					<a href="#" class="addmore" style="margin-left: 520px;font-weight:bold">Add More</a>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							Close
