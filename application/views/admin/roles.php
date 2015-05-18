@@ -139,7 +139,7 @@
 						<button type="button" class="btn btn-primary btn-o" data-dismiss="modal">
 							No
 						</button>
-						<input type="submit" name="delete_mild" id="delete_mild" value="Yes" class="btn btn-primary" />
+						<input type="submit" name="delete_roles" id="delete_roles" value="Yes" class="btn btn-primary" />
 						
 					</div>
 					</form>

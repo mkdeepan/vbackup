@@ -32,7 +32,7 @@ var FormWizard = function () {
     });
      
     var initValidator = function () {
-        
+        console.log('succces');
         $.validator.setDefaults({
             errorElement: "span", // contain the error msg in a span tag
             errorClass: 'help-block',
@@ -80,13 +80,13 @@ var FormWizard = function () {
 							}
                 },
                 apassword: {
-                    minlength: 6,
+                    minlength: 8,
                     required: true,
                     pwcheck:true
                 },
                 apassword2: {
                     required: true,
-                    minlength: 6,
+                    minlength: 8,
                     equalTo: "#apassword"
                 },
                 pfname: {

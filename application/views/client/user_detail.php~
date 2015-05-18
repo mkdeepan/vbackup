@@ -1043,7 +1043,7 @@ function checkForError()
 	 	   error = 0;
 	 	   var msg = '';
     		val = cur_obj.val();
-    		if(val != '' && val.replace(/[^0-9]/g,"").length > 10)
+    		if(val != '' && val.replace(/[^0-9]/g,"").length > 15)
     		{
     			error = 1;
     			msg = 'Enter valid mobile number';

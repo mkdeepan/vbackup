@@ -32,7 +32,7 @@ var FormWizard = function () {
     });
      
     var initValidator = function () {
-        
+        console.log('succces');
         $.validator.setDefaults({
             errorElement: "span", // contain the error msg in a span tag
             errorClass: 'help-block',
