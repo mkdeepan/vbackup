@@ -1,6 +1,6 @@
 <style>
 .delete{
-	pointer-events: none;
+	pointer-events:none;
 }
 </style>
 <div class="wrap-content container" id="container">

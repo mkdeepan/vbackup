@@ -613,18 +613,18 @@ class Admin extends CI_Controller {
 		     		$values = array('allergyNameDescription'=>$this->input->post('allergy_name_desc'));
 		  	   	$res = $this->common_model->insert_db('AllergyName',$values);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Allergy name added successfully');
+		  	   		$this->session->set_flashdata('success','Allergy name added successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Allergy name addition failed');
+		  	   		$this->session->set_flashdata('failure','Allergy name addition failed');
 		  	   	}
 		  	      redirect('admin/master/allergyname');
 		     	}elseif($option == 'delete'){
 		     		$where = array('allergyNameId'=>$this->input->post('allergynameid'));
 		  	   	$res = $this->common_model->delete_from('AllergyName',$where);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Allergy name deleted successfully');
+		  	   		$this->session->set_flashdata('success','Allergy name deleted successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Allergy name delete failed');
+		  	   		$this->session->set_flashdata('failure','Allergy name delete failed');
 		  	   	}
 		  	      redirect('admin/master/allergyname');
 		     	}else{
@@ -646,18 +646,18 @@ class Admin extends CI_Controller {
 		     		$values = array('allergyTypeDescription'=>$this->input->post('allergy_type_desc'));
 		  	   	$res = $this->common_model->insert_db('AllergyType',$values);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Allergy type added successfully');
+		  	   		$this->session->set_flashdata('success','Allergy type added successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Allergy type addition failed');
+		  	   		$this->session->set_flashdata('failure','Allergy type addition failed');
 		  	   	}
 		  	      redirect('admin/master/allergytype');
 		     	}elseif($option == 'delete'){
 		     		$where = array('allergyTypeId'=>$this->input->post('allergyTypeId'));
 		  	   	$res = $this->common_model->delete_from('AllergyType',$where);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Allergy Type deleted successfully');
+		  	   		$this->session->set_flashdata('success','Allergy Type deleted successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Allergy Type delete failed');
+		  	   		$this->session->set_flashdata('failure','Allergy Type delete failed');
 		  	   	}
 		  	      redirect('admin/master/allergytype');
 		     	}else{
@@ -679,18 +679,18 @@ class Admin extends CI_Controller {
 		     		$values = array('symtomSevereDescription'=>$this->input->post('symtomsevere'));
 		  	   	$res = $this->common_model->insert_db('SymtomsSevere',$values);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Symptoms severe added successfully');
+		  	   		$this->session->set_flashdata('success','Symptoms severe added successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Symptoms severe addition failed');
+		  	   		$this->session->set_flashdata('failure','Symptoms severe addition failed');
 		  	   	}
 		  	      redirect('admin/master/severe');
 		     	}elseif($option == 'delete' && $this->input->post('delete_severe')){
 		     		$where = array('symtomSevereId'=>$this->input->post('symtomSevereId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsSevere',$where);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Symptoms severe deleted successfully');
+		  	   		$this->session->set_flashdata('success','Symptoms severe deleted successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Symptoms severe delete failed');
+		  	   		$this->session->set_flashdata('failure','Symptoms severe delete failed');
 		  	   	}
 		  	      redirect('admin/master/severe');
 		     	}else{
@@ -712,18 +712,18 @@ class Admin extends CI_Controller {
 		     		$values = array('symtomMildDescription'=>$this->input->post('symtommild'));
 		  	   	$res = $this->common_model->insert_db('SymtomsMild',$values);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Symptoms mild added successfully');
+		  	   		$this->session->set_flashdata('success','Symptoms mild added successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Symptoms mild addition failed');
+		  	   		$this->session->set_flashdata('failure','Symptoms mild addition failed');
 		  	   	}
 		  	      redirect('admin/master/mild');
 		     	}elseif($option == 'delete' && $this->input->post('delete_mild')){
 		     		$where = array('symtomMildId'=>$this->input->post('symtomMildId'));
 		  	   	$res = $this->common_model->delete_from('SymtomsMild',$where);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','Symptoms mild deleted successfully');
+		  	   		$this->session->set_flashdata('success','Symptoms mild deleted successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','Symptoms mild delete failed');
+		  	   		$this->session->set_flashdata('failure','Symptoms mild delete failed');
 		  	   	}
 		  	      redirect('admin/master/mild');
 		     	}else{
@@ -745,19 +745,28 @@ class Admin extends CI_Controller {
 		     		$values = array('roleName'=>$this->input->post('rolename'));
 		  	   	$res = $this->common_model->insert_db('Role',$values);
 		  	   	if($res){
-		  	   		$this->session->flashdata('success','New role added successfully');
+		  	   		$this->session->set_flashdata('success','New role added successfully');
 		  	   	}else{
-		  	   		$this->session->flashdata('failure','New role addition failed');
+		  	   		$this->session->set_flashdata('failure','New role addition failed');
 		  	   	}
 		  	      redirect('admin/master/roles');
 		     	}elseif($option == 'delete' && $this->input->post('delete_roles')){
-		     		$where = array('roleId'=>$this->input->post('roleId'));
-		  	   	$res = $this->common_model->delete_from('Role',$where);
-		  	   	if($res){
-		  	   		$this->session->flashdata('success','Role deleted successfully');
-		  	   	}else{
-		  	   		$this->session->flashdata('failure','Role delete failed');
-		  	   	}
+		     		//check for if any user avail with this role
+		     		$where = array('userRole'=>$this->input->post('roleId'));
+		     		$res = $this->common_model->select_from('Account','',$where);
+		     		//var_dump($res); exit;
+		     		if(empty($res)){
+			     		$where = array('roleId'=>$this->input->post('roleId'));
+			  	   	$res = $this->common_model->delete_from('Role',$where);
+			  	   	$res = $this->common_model->delete_from('RoleAccess',$where);
+			  	   	if($res){
+			  	   		$this->session->set_flashdata('success','Role deleted successfully');
+			  	   	}else{
+			  	   		$this->session->set_flashdata('failure','Role delete failed');
+			  	   	}		  	      
+		  	      }else{
+		  	      	$this->session->set_flashdata('failure','Role cannot be delete.');
+		  	      }
 		  	      redirect('admin/master/roles');
 		     	}else{
 		     	   $data = array('title' => 'Admin - Symptoms', 'page' => 'admin/roles', 'errorCls' => NULL,'page_params' => NULL);
@@ -791,11 +800,15 @@ class Admin extends CI_Controller {
             $ingdata = array();
             foreach($_POST['ingredient'] as $ingre)
             {
+            	if($ingre != '')
                $ingdata[] = array('ingredientName' => $ingre);
             }
            // var_dump($ingdata);exit;
             //$datas = array('ingredientName' => $this->input->post('ingredient'));
+            $res = '';
+            if(!empty($ingdata))
             $res = $this->common_model->insert_batch_rec('Ingredients',$ingdata);
+            
             if($res){
               $this->session->set_flashdata('success','Ingredients added successfully');
             }else{

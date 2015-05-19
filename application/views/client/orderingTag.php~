@@ -189,16 +189,16 @@ $(function() {
 							<div class="row">
 								<div class="col-sm-8">
 									<h1 class="mainTitle">Ordering Tags</h1>
-									<span class="mainDescription">Beautifully simple invoicing and payments. Give clients attractive invoices, estimates, and receipts.</span>
+									<!--<span class="mainDescription">Beautifully simple invoicing and payments. Give clients attractive invoices, estimates, and receipts.</span>-->
 								</div>
-								<ol class="breadcrumb">
+								<!--<ol class="breadcrumb">
 									<li>
 										<span>vAlert</span>
 									</li>
 									<li class="active">
 										<span>Tags</span>
 									</li>
-								</ol>
+								</ol>-->
 							</div>
 						</section>
 						<!-- end: PAGE TITLE -->

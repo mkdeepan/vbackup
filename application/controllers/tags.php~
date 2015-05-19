@@ -524,7 +524,7 @@ class Tags extends CI_Controller {
 							<?php
 							 echo $this->session->set_userdata('grandtotal','');
 							
-						  } else  {
+						} else  {
 							echo '<div style="color:red"><b>GetTransactionDetails failed:</b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
 							/*echo '<pre>';
 							print_r($httpParsedResponseAr);

@@ -321,7 +321,6 @@ class Tags extends CI_Controller {
 			//Grand total including all tax, insurance, shipping cost and discount
 			$GrandTotal = ($ItemTotalPrice + $additionalCost);
 			$additionalDetails['grandTotal'] = $GrandTotal;
-			$this->session->set_userdata('grandtotal',$GrandTotal);
 										
 			/*$paypal_product['assets'] = array('tax_total'=>$TotalTaxAmount, 
 										'handaling_cost'=>$HandalingCost, 
@@ -484,9 +483,6 @@ class Tags extends CI_Controller {
 							}
 							
 							*/
-							//echo '<pre>';
-							//print_r($httpParsedResponseAr);
-							////echo '</pre>'; exit;
 							$update_data = array(
 							                  'paymentDate' => date("Y-m-d H:i:s"),
 							                  'paymentStatus' => '1',
@@ -511,7 +507,7 @@ class Tags extends CI_Controller {
 							<div class="panel-body"> 
 							<img style="float:right;margin-top:-10px" src="<?php echo base_url();?>source/assets/images/paypal-64.png" alt="" />
 							<h4 style="color:#D28039"> Thanks for your order </h4>
-							<h5>Your payment of <?php echo $this->session->userdata('grandtotal');?> USD is now complete.</h5>
+							<h5>Your payment of $<?=$GrandTotal?> USD is now complete.</h5>
 							<h5><?php echo $success_msg;?></h5>
 							<h5><a href="<?php echo base_url('user');?>">Click here </a>to go back to VAlert</h5>
 							</div>
@@ -522,9 +518,10 @@ class Tags extends CI_Controller {
 							</div>
 							</div>
 							<?php
-							 echo $this->session->set_userdata('grandtotal','');
-							
-						  } else  {
+							/*echo '<pre>';
+							print_r($httpParsedResponseAr);
+							echo '</pre>';*/
+						} else  {
 							echo '<div style="color:red"><b>GetTransactionDetails failed:</b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
 							/*echo '<pre>';
 							print_r($httpParsedResponseAr);

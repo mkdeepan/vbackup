@@ -2319,14 +2319,16 @@ $(document).ready(function(){
     var inci_wrapper = $(".inci-wrappers"); //Fields wrapper
     var inci_button = $("#incident_submit"); //Add button ID
     //to clear validation msgs
-    
+    var currentYear = (new Date).getFullYear();
+ 	 var currentMonth = (new Date).getMonth()+1;  
+ 	 var currentDay = (new Date).getDate(); 
     $.each($(".inci-val input[type=text],.inci-val select,.inci-val textarea"),function (key,val) {
     	$(this).on('keydown change keyup blur',function () {
     		$(this).closest("div").find(".error").remove();
 	      $(this).css("border","1px solid #ccc");   //initially to clear all red outside text box
 	    	   var arr_months = {1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};
 	    	   if(parseInt($('#ayear').val()) % 4 == 0 && $('#ayear').val() != ""){ arr_months[2] = 29; }
-	    	   var val = parseInt($(this).val());
+	    	   var val = parseInt($(this).val());	    	   
 	    	   var can_show_err = 1;
 	    	   var msg = "";    	  
     		   if($(this).val() == '' && $(this).attr('id')!='inci_allergy_type_others'){
@@ -2351,13 +2353,34 @@ $(document).ready(function(){
 				      }
     	      	if($(this).attr('id')=='amonth')
     	      	{
-    	      		if(!arr_months.hasOwnProperty(val)) { error = 1; msg = "Invalid"; }
+    	      		if(!arr_months.hasOwnProperty(val) ) 
+    	      		{ error = 1; msg = "Not a valid month"; }
+    	      	   else if(parseInt($('#ayear').val())>currentYear)
+					  	{
+					  		{ error = 1; msg = "Not a valid month"; }
+					  	}
+					   else if(parseInt($('#ayear').val())==currentYear)
+					   {
+					      if (val > currentMonth)
+					      { error = 1; msg = "Not a valid month"; }
+					   }
+    	      	   
     	      	}
     	         if($(this).attr('id')=='aday')
     	      	{
     	      		var mon = parseInt($('#amonth').val());
     	      		if(isNaN($(this).val())) { error = 1; msg = "Only Numbers"; }
-    	      	   if(val <= 0 || val > arr_months[mon]){error = 1; msg = "Invalid day"; }   	      		
+    	      	   if(val <= 0 || val > arr_months[mon]){error = 1; msg = "Invalid day"; }   	  
+    	      	   else if(parseInt($('#ayear').val())>currentYear)
+					  	{
+					  		error = 1; msg = "Not a valid day";
+					  	}
+					   else if(parseInt($('#ayear').val())==currentYear)
+					   {
+					      if (mon >= currentMonth && val > currentDay){
+					        error = 1; msg = "Not a valid day";
+					      }
+					   }    		
     	      	}
     	         if($(this).attr('id')=='ayear')
     	      	{
@@ -2457,13 +2480,34 @@ $(document).ready(function(){
 				      }
     	      	if($(this).attr('id')=='amonth')
     	      	{
-    	      		if(!arr_months.hasOwnProperty(val)) { error = 1; msg = "Invalid"; }
+    	      		if(!arr_months.hasOwnProperty(val) ) 
+    	      		{ error = 1; msg = "Not a valid month"; }
+    	      	   else if(parseInt($('#ayear').val())>currentYear)
+					  	{
+					  		{ error = 1; msg = "Not a valid month"; }
+					  	}
+					   else if(parseInt($('#ayear').val())==currentYear)
+					   {
+					      if (val > currentMonth)
+					      { error = 1; msg = "Not a valid month"; }
+					   }
+    	      	   
     	      	}
     	         if($(this).attr('id')=='aday')
     	      	{
     	      		var mon = parseInt($('#amonth').val());
     	      		if(isNaN($(this).val())) { error = 1; msg = "Only Numbers"; }
-    	      	   if(val <= 0 || val > arr_months[mon]){error = 1; msg = "Invalid day"; }   	      		
+    	      	   if(val <= 0 || val > arr_months[mon]){error = 1; msg = "Invalid day"; }   	  
+    	      	   else if(parseInt($('#ayear').val())>currentYear)
+					  	{
+					  		error = 1; msg = "Not a valid day";
+					  	}
+					   else if(parseInt($('#ayear').val())==currentYear)
+					   {
+					      if (mon >= currentMonth && val > currentDay){
+					        error = 1; msg = "Not a valid day";
+					      }
+					   }    		
     	      	}
     	         if($(this).attr('id')=='ayear')
     	      	{
@@ -2535,7 +2579,7 @@ $(document).ready(function() {
    /*$.validator.addMethod("current_day", function(value, element) {
     return value <= currentDay;
    });*/
-   
+ 
 	$('#profile_reg').validate({
                 ignore:':hidden:not(".prgender")',
 		rules:{

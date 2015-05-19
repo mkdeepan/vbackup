@@ -2,7 +2,9 @@
 .img-rounded{
 	height: 55px !important;
 }
-
+td{
+	vertical-align: top !important;
+}
 </style>
 <?php //var_dump($result_set); ?>
 <div class="wrap-content container" id="container">
@@ -156,32 +158,45 @@ $(document).ready(function(){
 		//alert(id);
 		var value = $('#name_'+id).html();
 		
-		$("#name_"+id).html("<input type='hidden' id='name_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='ename_"+id+"' id='ename_"+id+"' value='"+value+"'/>");
+		$("#name_"+id).html("<input type='hidden' id='name_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='ename_"+id+"' id='ename_"+id+"' value='"+value+"'/><span id='update_message_"+id+"'></span>");
 		$("#action_"+id).html("<input type='button' id='edit_save_"+id+"' class='edit_save' value='save'/><input type='button' id='edit_cancel_"+id+"' class='edit_cancel' value='cancel'/>");
 		
 	});
 	$("body").on('click','.edit_save', function(){
 		var id = $(this).attr('id').replace("edit_save_","");
-		var desc_val = $('#ename_'+id).val();
-		$('#name_'+id).html(desc_val);
-		$.ajax({
-			url:"<?php echo base_url('admin/ingredients/update');?>",
-			data:{ingid:id,name:desc_val},
-			type:'post',
-			async:false,
-			success:function(response){
-				$("#update_message").show();
-				if(response=='false')
-				{
-					$("#update_message").append('Updation Failed');
-				}
-				else
-				{
-					$("#update_message").append('Ingredient Updated Successfully');
-				}
-			}			
-		});
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deling" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		var desc_val = $('#ename_'+id).val();		
+		//alert(desc_val);
+		if(desc_val != '')
+		{
+			$('#name_'+id).html(desc_val);
+			$.ajax({
+				url:"<?php echo base_url('admin/ingredients/update');?>",
+				data:{ingid:id,name:desc_val},
+				type:'post',
+				async:false,
+				success:function(response){
+					$("#update_message").show();
+					if(response=='false')
+					{
+						$("#update_message").html('Updation Failed');
+					}
+					else
+					{
+						$("#update_message").html('Ingredient Updated Successfully');
+					}
+				}			
+			});
+			$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deling" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+	   }
+      else
+      {
+      	//var desc_hid_val = $('#name_hid_'+id).val();
+	   	//$('#name_'+id).html(desc_hid_val);
+	   	//$("#update_message").show();
+      	//$("#update_message").html('You cant leave this empty');
+      	$("#update_message_"+id).html('You cant leave this empty');
+      }
+		
 	});
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");

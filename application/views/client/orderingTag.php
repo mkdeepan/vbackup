@@ -400,12 +400,12 @@ $(function() {
 														<strong>Sub-Total:</strong>  <span class="total_amount"><?php echo (@$taglist['totalAmount']!= '')?'$'.@$taglist['totalAmount']:'$0';?></span>
 			      <input type="hidden" id="total_amount" name="total_amount" value="<?=@$taglist['totalAmount']?>" />
 													</li>
-													<li>
+													<!--<li>
 														<strong>Discount:</strong> 0%
 													</li>
 													<li>
 														<strong>VAT:</strong> 0%
-													</li>
+													</li>-->
 													<li class="text-extra-large text-dark margin-top-15">
 														<strong >Total:</strong> <span class="total_amount"><?php echo (@$taglist['totalAmount'] != '')?'$'.@$taglist['totalAmount']:'$0';?></span>
 													</li>

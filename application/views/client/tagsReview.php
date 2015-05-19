@@ -194,12 +194,12 @@ $(document).on('click','.delete_cart',function(){
 													<li>
 														<strong>Sub-Total:</strong> $<?=$totalamount?>
 													</li>
-													<li>
+													<!--<li>
 														<strong>Discount:</strong> 0%
 													</li>
 													<li>
 														<strong>VAT:</strong> 0%
-													</li>
+													</li>-->
 													<li class="text-extra-large text-dark margin-top-15">
 														<strong >Total:</strong>$<?=$totalamount?>
 													</li>
