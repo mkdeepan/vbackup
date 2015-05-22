@@ -1008,8 +1008,7 @@
 		var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 		var xaxis = new Array();
 		var mysqldate = new Array();
-		for(var i=10;i>0;i--){
-			alert(i);
+		for(var i=10;i>0;i--){			
 			if(i==10){
 				var newdate = new Date(today);
 				xaxis[i]=monthNames[newdate.getMonth()]+"' "+newdate.getDate();
@@ -1018,7 +1017,8 @@
 				newdate.setDate(newdate.getDate() - 1);
 				xaxis[i]=monthNames[newdate.getMonth()]+"' "+newdate.getDate();
 				mysqldate[i] = newdate.getFullYear()+"-"+(newdate.getMonth()+1)+"-"+newdate.getDate();
-			}			
+			}	
+			alert(mysqldate[i]);		
 		}
 	   //var android = new Array();
 	   android = getCount('2015-05-02','Android','10');

@@ -11450,9 +11450,7 @@ table.mceLayout, textarea.tinyMCE {
        width: 600px !important;
     }
 }
-.search{
-	margin: 0 0 -15px !important;
-}
+
 
 
 

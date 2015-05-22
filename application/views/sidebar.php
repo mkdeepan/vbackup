@@ -63,6 +63,33 @@
 								</a>
 							</li>	
 							<li <?php $open = '';
+                          $methods = array('allergists');
+                          if($controller == 'search' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
+							<a href="javascript:void(0)">
+							      <div class="item-content">
+										<div class="item-media">
+											<i class="ti-search"></i>
+										</div>
+										<div class="item-inner">
+											<span class="title"> Search </span><i class="icon-arrow"></i>
+										</div>
+									</div>
+									
+								</a>
+							   <ul class="sub-menu" <?php echo ($open)? "style='display:block'":"";?>>
+									<li>
+										<a href="<?php echo base_url('search/allergists');?>">
+											<span class="title">Allergists</span>
+										</a>
+									</li>
+									<li>
+										<a href="<?php echo base_url('tags/review');?>">
+											<span class="title">Restaurants</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li <?php $open = '';
                           $methods = array('index','review');
                           if($controller == 'tags' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
 							<a href="javascript:void(0)">

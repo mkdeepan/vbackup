@@ -1018,7 +1018,7 @@
 				xaxis[i]=monthNames[newdate.getMonth()]+"' "+newdate.getDate();
 				mysqldate[i] = newdate.getFullYear()+"-"+(newdate.getMonth()+1)+"-"+newdate.getDate();
 			}	
-			alert(mysqldate[i]);		
+			//alert(mysqldate[i]);		
 		}
 	   //var android = new Array();
 	   android = getCount('2015-05-02','Android','10');
