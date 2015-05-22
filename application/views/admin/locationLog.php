@@ -85,7 +85,7 @@
 											<?php if(!empty($location_log)){
 												foreach($location_log as $key=>$location){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?php echo ($location['accountId'])?ucfirst($location['accountFirstName']).' '.$location['accountLastName']:'Anonymous';?></td>												
 												<td><?=$location['latitude']?></td>												
 												<td><?=$location['longitude']?></td>												

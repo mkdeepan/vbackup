@@ -12,7 +12,7 @@ td{
 <section id="page-title">
 <div class="row">
 	<div class="col-sm-8">
-		<h1 class="mainTitle">Ingsredients</h1>
+		<h1 class="mainTitle">Ingredients</h1>
 		<!--<span class="mainDescription">Master table for Ingredients.</span>-->
 	</div>
 	<!--<ol class="breadcrumb">
@@ -66,7 +66,7 @@ td{
 											<?php if(!empty($ingredient)){
 												foreach($ingredient as $key=>$ing){ ?>
 												<tr>												
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td id="name_<?php echo $ing['ingredientId'];?>"><?=$ing['ingredientName'];?></td>																																																							
 												<td id="action_<?php echo $ing['ingredientId'];?>">
 		                               			<a href="#" class="edit" id="edit_<?php echo $ing['ingredientId'];?>" title="Edit"><i class="glyphicon glyphicon-edit"></i></a>
@@ -158,7 +158,7 @@ $(document).ready(function(){
 		//alert(id);
 		var value = $('#name_'+id).html();
 		
-		$("#name_"+id).html("<input type='hidden' id='name_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='ename_"+id+"' id='ename_"+id+"' value='"+value+"'/><span id='update_message_"+id+"'></span>");
+		$("#name_"+id).html("<input type='hidden' id='name_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='ename_"+id+"' id='ename_"+id+"' value='"+value+"'/><span style='color:#a94442' id='update_message_"+id+"'></span>");
 		$("#action_"+id).html("<input type='button' id='edit_save_"+id+"' class='edit_save' value='save'/><input type='button' id='edit_cancel_"+id+"' class='edit_cancel' value='cancel'/>");
 		
 	});

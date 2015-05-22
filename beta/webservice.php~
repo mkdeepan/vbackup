@@ -1030,7 +1030,7 @@ $app->post('/getInformationSharing',function() {
 });
 		
 $app->get('/defaultInputs',function() {
-			 $header = array('country','states','addresstype','emailtype','phonetype','gender','allergyname','allergytype','symptomsmild','symptomssevere');
+			 $header = array('country','states','addresstype','emailtype','phonetype','gender','allergyname','allergytype','symptomsmild','symptomssevere','role');
 		    $input[0] = "select countryId, countryName from Country";
 		    $input[1] = "select stateId, stateName, countryId from State";
 		    $input[2] = "select id as addressTypeId, addressTypeName from AddressType";
@@ -1041,13 +1041,14 @@ $app->get('/defaultInputs',function() {
 		    $input[7] = "select * from AllergyType";  
 		    $input[8] = "select * from SymtomsMild";
 		    $input[9] = "select * from SymtomsSevere";
+		    $input[10] = "select * from Role where roleId <> 1";
 		    
 		    $rs = '';
 		    try {
 		        $dbCon = getConnection();
 		        //$app->headers->set("Content-type", "application/json;charset=utf-8"); 
 		        //$dbCon->set_charset('utf8');
-		        for($i=0;$i < 10;$i++)
+		        for($i=0;$i < 11;$i++)
 		        {
 		        	  $prepare[$i] = $dbCon->prepare($input[$i]);
 		        	  $prepare[$i]->execute();
@@ -1859,7 +1860,8 @@ $app->post('/signUp', function(){
 	        'profileMobilePhone' => $input->signup->profileMobilePhone,
 	        'profileMobileEx' => $input->signup->profileMobileEx,
 	        'profileEmail' => $input->signup->profileEmail,
-           'accountCountry' => $input->signup->accountCountry
+           'accountCountry' => $input->signup->accountCountry,
+           'userRole' => $input->signup->userRole
         );
        //var_dump($accountdetails); exit;
        //validation process
@@ -1922,7 +1924,7 @@ $app->post('/signUp', function(){
 	               	$aextn = $accountdetails['countryExtn'];
 	               	$aemail = $accountdetails['accountEmail'];
 	               	$agender = $accountdetails['accountGender'];
-                        $country = $accountdetails['accountCountry'];
+                     $country = $accountdetails['accountCountry'];
 	               	$arole = '2';
 	               	$astatus = '0';
 	               	$akey = md5($unique_key);

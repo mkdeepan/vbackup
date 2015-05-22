@@ -83,7 +83,7 @@
 											<?php if(!empty($activity_log)){
 												foreach($activity_log as $key=>$act){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?php echo ($act['accountId'])?ucfirst($act['accountFirstName']).' '.$act['accountLastName']:'Anonymous';?></td>																							
 												<td><?php
 												switch($act['title']) {

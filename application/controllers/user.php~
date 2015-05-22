@@ -718,7 +718,7 @@ class User extends CI_Controller {
 						    $upload_profile = $this->scanfront->do_upload('userfile');
 						    if(!$scan_front = $this->scanfront->data())
 						    {
-							   $this->session->set_flashdata('failure','Uploading logo front page failed.');
+							   $this->session->set_flashdata('failure','Uploading scan front page failed.');
 						    }
 						   //var_dump($scan_front);  
 				       }
@@ -739,7 +739,7 @@ class User extends CI_Controller {
 						    $upload_profile = $this->scanback->do_upload('userfile');
 						    if(!$scan_back = $this->scanback->data())
 						    {
-							   $this->session->set_flashdata('failure','Profile picture upload failed.');
+							   $this->session->set_flashdata('failure','Uploading scan back page failed.');
 						    }
 						   //var_dump($scan_back); exit;
 				       }  

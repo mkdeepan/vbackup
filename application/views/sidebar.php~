@@ -249,8 +249,8 @@
 								</a>							
 							</li>	
 							<li <?php $open = '';
-                                                            $methods = array();
-                                                            if($controller == 'admin' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
+                                $methods = array('master');
+                                if($controller == 'admin' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
 								<a href="javascript:void(0)">
 							      <div class="item-content">
 										<div class="item-media">

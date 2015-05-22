@@ -67,9 +67,9 @@ class Home extends CI_Controller {
    				//$result[] = '';
    			}   		 
    		}   
-   		if(!$flag){
+   		 if(!$flag){
    		  	 $result[] = '';
-   		}		
+   		  }		
    	}
    	//var_dump($result);
    	echo json_encode($result);   	

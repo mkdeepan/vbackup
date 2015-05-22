@@ -81,7 +81,7 @@ var Charts = function() {"use strict";
 		//generate the legend
 		var legend = lineChart.generateLegend();
 		//and append it to your page somewhere
-		$('#lineLegend').append(legend);
+		$('#chart1').append(legend);
 	};
 	var barChartHandler = function() {
 		var options = {

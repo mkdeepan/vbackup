@@ -63,8 +63,11 @@
 				<label>Category</label>
 				<select class="form-control" name="category" id="category">
 				<option value="">Select a Feedback Category</option>
-				<option value="1">Option 1</option>
-				<option value="2">Option 2</option>
+				<option value="Report a Problem">Report a Problem</option>
+				<option value="Request a new Feature">Request a new Feature</option>
+				<option value="Share Positive Feedback">Share Positive Feedback</option>
+				<option value="Comment on Ease of Use">Comment on Ease of Use</option>
+				<option value="Other">Other</option>
 				</select>
 		</div>
 		<div class="row">
@@ -96,8 +99,11 @@
 </div>
 </div>
 <script>
-$(document).ready(function(){
-	
+$(document).ready(function(){	
+	   $('#feed_submit').click(function () {
+	   	if($("#feedback_form").valid())
+	       $("#feed_submit").css("pointer-events", "none");
+      });
 		$("#feedback_form").validate({
 	  	 	rules:{
 	  	 		rating:{

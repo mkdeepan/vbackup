@@ -315,7 +315,7 @@ class Tags extends CI_Controller {
 			$paypal_url = '';
 			foreach($additional_payments as $payments){			   
 				$additionalDetails[$payments['description']]=$payments['amount'];
-				$additionalCost += $payments['amount'];
+				$additionalCost += ($payments['description']=='Discount')?'-'.$payments['amount']:$payments['amount'];
 				$paypal_url .= '&PAYMENTREQUEST_0_'.$payments['paypalVariable'].'='.urlencode($payments['amount']);				
 			}
 			//Grand total including all tax, insurance, shipping cost and discount
@@ -524,7 +524,7 @@ class Tags extends CI_Controller {
 							<?php
 							 echo $this->session->set_userdata('grandtotal','');
 							
-						} else  {
+						  } else  {
 							echo '<div style="color:red"><b>GetTransactionDetails failed:</b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
 							/*echo '<pre>';
 							print_r($httpParsedResponseAr);

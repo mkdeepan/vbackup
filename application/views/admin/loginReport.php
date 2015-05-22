@@ -90,7 +90,7 @@
 											<?php if(!empty($log_report)){
 												foreach($log_report as $key=>$login){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?php echo ($login['accountId'])?ucfirst($login['accountFirstName']).' '.$login['accountLastName']:'Anonymous';?></td>												
 												<td><?=$login['deviceType']?></td>												
 												<td><?=$login['phoneType']?></td>												

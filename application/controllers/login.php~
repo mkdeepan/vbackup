@@ -51,10 +51,11 @@ class Login extends CI_Controller {
 				                      //var_dump($account_details); exit;
 	      	                $this->session->set_userdata($account_details);
 				$this->session->set_flashdata('success','Logged-in successfully.');
-				$this->loginLog();
+				
 				if($result[0]['userRole'] == '1'){
 				 redirect('admin');
 				}else if($result[0]['userRole'] == '2'){
+				 $this->loginLog();
 				 redirect('user');
 			   }
 			 }
@@ -297,8 +298,10 @@ clicking the following link.<br><br>
    	            'accountId' => $acc_id,
    	            'latitude' => $location['lat'],
    	            'longitude' => $location['long'],
+   	            'osVersion' => 'Website',
    	            'timeIn' => date('Y-m-d H:i:s')
    	          );
+   	$this->common_model->insert_db('LoginLog',$values);
    }
 }
  

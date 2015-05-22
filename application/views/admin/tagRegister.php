@@ -61,7 +61,7 @@
 											<?php if(!empty($tagList)){
 												foreach($tagList as $key=>$feed){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?=$feed['tagTypeDescription'];?></td>												
 												<td><?=$feed['tagDescription']?></td>												
 												<td><?=$feed['tagMAC']?></td>												

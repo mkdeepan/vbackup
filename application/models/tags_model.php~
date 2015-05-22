@@ -64,7 +64,7 @@ class Tags_model extends CI_Model {
          }
      if($url)
      {
-         $url = base_url().'user/profile/'.$profile_id.'/?tab=panel_edit_allergy';
+         $url = base_url().'user/profile/'.$profile_id.'/?tab=allergy_edit';
          $allergyName .= "<a href='".$url."'>Edit</a>";
      }
      return $allergyName;

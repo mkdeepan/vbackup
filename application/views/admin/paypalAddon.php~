@@ -1,6 +1,6 @@
 <style>
 .delete{
-	pointer-events:none;
+	pointer-events: none;
 }
 </style>
 <div class="wrap-content container" id="container">
@@ -210,6 +210,7 @@ $(document).ready(function(){
    });
    
 	$('#edit_form').validate({
+		
 		rules:{
 			desc_name:{
 				required: true,
@@ -227,8 +228,25 @@ $(document).ready(function(){
 						 }
 			},
 			cost:{
-				required:true,
-				number:true,
+				required:true,	
+				//decimals:true
+				//pattern:/^(-)\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/			
+				discount:{
+					depends:function(){
+						if($('#addonId').val() == '4')
+						{return true;}
+						 else
+						{return false;}
+					 }
+					},
+				decimals:{
+					depends:function(){
+						if($('#addonId').val() != '4')
+						 {return true;}
+						 else
+						 {return false;}
+					 }
+					}
 			},
 			status:{
 				required:true
@@ -241,7 +259,8 @@ $(document).ready(function(){
 			},
 			cost:{
 				required:"You can't leave this empty",
-				number:"Only numbers are allowed"
+				discount:"Minus should be included as prefix (eg: -6.00)",
+				decimals:"Only decimal digits allowed"
 			},
 			status:{
 				required:"You can't leave this empty",
@@ -250,3 +269,6 @@ $(document).ready(function(){
 	});
 });
 </script>
+<!--
+
+				-->

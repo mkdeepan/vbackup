@@ -2,7 +2,9 @@
 .img-rounded{
 	height: 55px !important;
 }
-
+td{
+	vertical-align: top !important;
+}
 </style>
 <?php //var_dump($result_set); ?>
 <div class="wrap-content container" id="container">
@@ -23,6 +25,10 @@
 	</ol>-->
 </div>
 </section>
+<div id="update_message" class="alert alert-success alert-dismissible" role="alert" style="display:none">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    
+</div>
  <?php if($this->session->flashdata('success')) {?>
     <div class="alert alert-success alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -173,25 +179,39 @@ $(document).ready(function(){
          value : 'cancel',
          class : 'edit_cancel'
       }).appendTo("#action_"+id);*/
-		$("#desc_"+id).html("<input type='hidden' id='descrip_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='descrip_"+id+"' id='descrip_"+id+"' value='"+value+"'/>");
+		$("#desc_"+id).html("<input type='hidden' id='descrip_hid_"+id+"' value='"+value+"'/><input type='text' class='form-control' name='descrip_"+id+"' id='descrip_"+id+"' value='"+value+"'/><span style='color:#a94442' id='update_message_"+id+"'></span>");
 		$("#action_"+id).html("<input type='button' id='edit_save_"+id+"' class='edit_save' value='save'/><input type='button' id='edit_cancel_"+id+"' class='edit_cancel' value='cancel'/>");
 		
 	});
 	$("body").on('click','.edit_save', function(){
 		var id = $(this).attr('id').replace("edit_save_","");
 		var desc_val = $('#descrip_'+id).val();
-		$('#desc_'+id).html(desc_val);
-		$.ajax({
-			url:"<?php echo base_url('admin/update/allergyname');?>",
-			data:{cid:id,desc:desc_val},
-			type:'post',
-			async:false,
-			success:function(response){
-				if(response=='false')
-				 alert('update failed');
-			}			
-		});
-		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deltag" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		if(desc_val != '')
+		{
+			$('#desc_'+id).html(desc_val);
+			$.ajax({
+				url:"<?php echo base_url('admin/update/allergyname');?>",
+				data:{cid:id,desc:desc_val},
+				type:'post',
+				async:false,
+				success:function(response){
+					$("#update_message").show();
+					if(response=='false')
+					{
+						$("#update_message").html('Updation failed');
+					}
+					else
+					{
+						$("#update_message").html('Role name updated successfully');
+					}
+				}			
+			});
+			$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deltag" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
+		}
+      else
+      {
+      	$("#update_message_"+id).html('You cant leave this empty');
+      }
 	});
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");

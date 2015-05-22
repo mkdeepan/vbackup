@@ -46,10 +46,10 @@
 												</tr>
 											</thead>
 											<tbody>
-											<?php if(!empty($feedback)){
+											<?php if(!empty($feedback)){												
 												foreach($feedback as $key=>$feed){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?php echo ($feed['accountId'])?ucfirst($feed['accountFirstName']).' '.$feed['accountLastName']:'Anonymous';?></td>												
 												<td><?=$feed['category']?></td>												
 												<td>

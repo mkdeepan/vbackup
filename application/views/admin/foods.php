@@ -66,7 +66,7 @@
 											<?php if(!empty($food_detail)){
 												foreach($food_detail as $key=>$food){ ?>
 												<tr>												
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td id="food_<?php echo $food['foodId'];?>"><?=$food['foodTitle'];?></td>	
 												<td id="fooding_<?php echo $food['foodId'];?>">
 												<span id="foodings_<?php echo $food['foodId'];?>" style="display:none"><?php echo $food['foodIngredient'];?></span>
@@ -288,6 +288,7 @@ $(document).ready(function(){
 		});
 		$("#action_"+id).html('<a href="#" class="edit" id="edit_'+id+'" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a> <a href="#" class="delete" data-toggle="modal" data-target="#deling" data-row-did='+id+' title="Delete"><i class="glyphicon glyphicon-remove"></i></a>');
 	});
+	
 	$("body").on('click','.edit_cancel', function(){
 		var id = $(this).attr('id').replace("edit_cancel_","");
 		var food_val = $('#food_'+id).html();

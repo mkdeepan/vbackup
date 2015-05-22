@@ -57,7 +57,7 @@
 											<i class="ti-id-badge "></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Profile </span>
+											<span class="title"> Profiles </span>
 										</div>
 									</div>
 								</a>

@@ -878,8 +878,9 @@ class User extends CI_Controller {
    	$data = $data + $this->data;
    	$data['state'] = $this->common_model->select_from('State');
    	$data['country'] = $this->common_model->select_from('Country');
-	$data['phone_type'] = $this->common_model->select_from('PhoneType');
-	$data['addr_type'] = $this->common_model->select_from('AddressType');   
-        $this->load->view($data['template'],$data);	
+	   $data['phone_type'] = $this->common_model->select_from('PhoneType');
+	   $data['addr_type'] = $this->common_model->select_from('AddressType');
+	   $data['summary'] = $this->user_model->get_summary_page($data['account_id']); //summary tab information   
+      $this->load->view($data['template'],$data);	
    }
 }

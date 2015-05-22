@@ -11,7 +11,7 @@ $.validator.addMethod("discount", function(value, element) {
     return value.match(/^(-)\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
 });
 $.validator.addMethod("decimals", function(value, element) {
-    return value.match(/^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
+    return value.match(/^(-)\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/);
 });
 $.validator.addMethod("day", function(value, element) {
    	var arr_months = {1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31};

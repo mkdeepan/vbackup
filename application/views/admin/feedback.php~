@@ -4,16 +4,16 @@
 <div class="row">
 	<div class="col-sm-8">
 		<h1 class="mainTitle">Feedback</h1>
-		<span class="mainDescription">Client's feedback over the current site.</span>
+		<!--<span class="mainDescription">Client's feedback over the current site.</span>-->
 	</div>
-	<ol class="breadcrumb">
+	<!--<ol class="breadcrumb">
 		<li>
 		<span>Admin</span>
 		</li>
 		<li class="active">
 		<span>Feedback</span>
 		</li>
-	</ol>
+	</ol>-->
 </div>
 </section>
  <?php if($this->session->flashdata('success')) {?>
@@ -46,10 +46,10 @@
 												</tr>
 											</thead>
 											<tbody>
-											<?php if(!empty($feedback)){
+											<?php if(!empty($feedback)){												
 												foreach($feedback as $key=>$feed){ ?>
 												<tr>
-												<td><?=$key+1?></td>
+												<td><?=++$offset?></td>
 												<td><?php echo ($feed['accountId'])?ucfirst($feed['accountFirstName']).' '.$feed['accountLastName']:'Anonymous';?></td>												
 												<td><?=$feed['category']?></td>												
 												<td>

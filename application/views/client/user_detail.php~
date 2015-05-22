@@ -49,8 +49,8 @@
 					<li>
 					<a data-toggle="tab" href="#panel_edit_signing">Edit Signing Info</a>
 					</li>
-					<li>
-					<a data-toggle="tab" href="#panel_profile">Profile Summary</a></li>
+					<!--<li>
+					<a data-toggle="tab" href="#panel_profile">Profile Summary</a></li>-->
 					
 
 				</ul>
@@ -860,15 +860,15 @@
 				     <?php } ?>
 					</div> <!-- Panel edit ends -->
 
-					<div id="panel_profile" class="tab-pane fade">
+					<!--<div id="panel_profile" class="tab-pane fade table-responsive">
 						<table class="table" id="profile">
 							<thead>
 								<tr>
 									<th>S.No</th>
-									<th class="hidden-xs">Profile Name</th>
+									<th>Profile Name</th>
 									<th>Allergic To</th>
-									<th class="hidden-xs">Emergency Contact #</th>
-									<th class="hidden-xs center">More..</th>
+									<th>Emergency Contact #</th>
+									<th>More..</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -890,7 +890,7 @@
 												 <?php //if(!empty($allergies) && !empty($incidents)) {?>
 												 <a class="label label-warning"  href="<?php echo site_url('user/profile/'.$sum['profileId'].'/?tab=allergy_overview');?>">A</a>
 												 <?php //} //else {?>
-												 <!-- <a class="label label-danger "  href="<?php //echo base_url().'allergy/editInfo/'.$sum['profileId'];?>">A</a> -->
+												 <!-- <a class="label label-danger "  href="<?php //echo base_url().'allergy/editInfo/'.$sum['profileId'];?>">A</a>
 												 <?php //}?>	
 												
 												</td>
@@ -903,7 +903,7 @@
 								
 							</tbody>
 						</table>
-					</div> <!-- Pannel Profile ends -->
+					</div>--> <!-- Pannel Profile ends -->
                     
                     <div id="panel_edit_signing" class="tab-pane fade">
                      <?php if(in_array('1',$write_array)) {?>
@@ -915,10 +915,10 @@
 									<div class="col-md-6">
 										<div class="form-group">
 											<label class="control-label">
-												User Name
+												User Name<span class="symbol required" aria-required="true"></span>
 											</label>
 											<span class="input-icon">
-												<input type="text" readonly placeholder="User Name" class="form-control" name="username" id="username" value="<?php echo @$account[0]['accountEmail'];?>">
+												<input tabindex="1" type="text" readonly placeholder="User Name" class="form-control" name="username" id="username" value="<?php echo @$account[0]['accountEmail'];?>">
 <i class="fa fa-user"></i>
 											</span>
 										</div>
@@ -930,7 +930,7 @@
 												 New Password<span class="symbol required"></span>
 											</label>
 											<span class="input-icon">
-											<input type="password" placeholder="New password" class="form-control" name="new_pwd" id="new_pwd" autocomplete="off">
+											<input tabindex="3" type="password" placeholder="New password" class="form-control" name="new_pwd" id="new_pwd" autocomplete="off">
 <i class="fa fa-unlock-alt"></i>
 										    </span>
 										</div>
@@ -945,7 +945,7 @@
 												Old Password<span class="symbol required"></span>
 											</label>
 											<span class="input-icon">
-											<input type="password" placeholder="Old Password" class="form-control" id="old_pwd" name="old_pwd" value="">
+											<input tabindex="2" type="password" placeholder="Old Password" class="form-control" id="old_pwd" name="old_pwd" value="">
 <i class="fa fa-lock"></i>
 										    </span>
 										</div>
@@ -955,7 +955,7 @@
 												Confirm Password<span class="symbol required"></span>
 											</label>
 											<span class="input-icon">
-											<input type="password"  placeholder="Confirm password" class="form-control" id="c_pwd" name="c_pwd">
+											<input type="password" tabindex="4" placeholder="Confirm password" class="form-control" id="c_pwd" name="c_pwd">
 <i class="fa fa-unlock-alt"></i>
 										    </span>
 										</div> 
@@ -1043,7 +1043,7 @@ function checkForError()
 	 	   error = 0;
 	 	   var msg = '';
     		val = cur_obj.val();
-    		if(val != '' && val.replace(/[^0-9]/g,"").length > 15)
+    		if(val != '' && val.replace(/[^0-9]/g,"").length > 10)
     		{
     			error = 1;
     			msg = 'Enter valid mobile number';

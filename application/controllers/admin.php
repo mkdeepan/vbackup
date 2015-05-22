@@ -362,6 +362,7 @@ class Admin extends CI_Controller {
   	  	if($this->input->post('addonId'))
   	  	{//update
   	  		$addon_id = array('addonId' => $this->input->post('addonId'));
+  	  		//if($addon_id == '4')//discount variable should be minus
   	  		$res = $this->common_model->update_data('PaypalAddons',$addons,$addon_id);
   	  		if($res){
       	$this->session->set_flashdata('success','Paypal description updated successfully');
@@ -876,6 +877,8 @@ class Admin extends CI_Controller {
       case 'add':
       {
           // var_dump($_POST);
+          if(($this->input->post('ingredients')))
+           {
             $datas = array('foodTitle' => $this->input->post('food_title'),
                            'foodIngredient' => implode(',',$this->input->post('ingredients')));
             $res = $this->common_model->insert_db('FoodDetail',$datas);
@@ -884,12 +887,17 @@ class Admin extends CI_Controller {
             }else{
               $this->session->set_flashdata('failure','Food Detail addition failed');
             }
+           }else{
+           	  $this->session->set_flashdata('failure','Please add atleast one ingredient.');
+           }
              redirect('admin/food');
 
       }
       case 'update':
       {
            //var_dump($_POST);exit;
+           if(($this->input->post('eingredients')))
+           {
             $datas = array('foodTitle' => $this->input->post('efood_title'),
                            'foodIngredient' => implode(',',$this->input->post('eingredients')));
             $where = array('foodId' => $this->input->post('ehidid'));
@@ -899,7 +907,11 @@ class Admin extends CI_Controller {
             }else{
               $this->session->set_flashdata('failure','Food Detail addition failed');
             }
-             redirect('admin/food');
+           }else{
+           	  $this->session->set_flashdata('failure','Please add atleast one ingredient.');
+           }
+            
+           redirect('admin/food');
       }
       case 'delete':
       {

@@ -41,7 +41,10 @@
 		<div class="col-md-12">
 			<div class="tabbable">
 				<ul class="nav nav-tabs tab-padding tab-space-3 tab-blue" id="myTab1">
-					<li class="active">
+				   <li class="active">
+					<a data-toggle="tab" href="#panel_profile">Profile Summary</a>
+					</li>
+					<li>
 					<a data-toggle="tab" href="#newprofile">New profile</a>
 					</li>
 					<!--<li>
@@ -57,7 +60,52 @@
 
 				</ul>
 				<div class="tab-content">
-				<div id="newprofile" class="tab-pane fade in active">
+				<div id="panel_profile" class="tab-pane fade in active table-responsive">
+						<table class="table" id="profile">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th>Profile Name</th>
+									<th>Allergic To</th>
+									<th>Emergency Contact #</th>
+									<th>More..</th>
+								</tr>
+							</thead>
+							<tbody>
+							    <?php if(!empty($summary)){
+		 	                 		 	$i=1;
+		 	  							foreach($summary as $sum) {?>
+											<tr>
+												<td><?=$i?></td>
+												<td class="hidden-xs"><?=$sum['profileName']?></td>
+												<td><?=$sum['allergyName']?></td>
+												<td class="hidden-xs"><?=$sum['emergencyContact']?></td>
+												<td class="center hidden-xs">
+												
+												<?php
+												 $allergies = $this->allergy_model->getAllergyById($sum['profileId']);
+								                 $incidents = $this->allergy_model->getIncidentById($sum['profileId']);
+												 ?>
+												 <a class="label label-info" href="<?php echo base_url().'user/profile/'.$sum['profileId'].'/?tab=profile_overview';?>">P</a> | 
+												 <?php //if(!empty($allergies) && !empty($incidents)) {?>
+												 <a class="label label-warning"  href="<?php echo site_url('user/profile/'.$sum['profileId'].'/?tab=allergy_overview');?>">A</a>
+												 <?php //} //else {?>
+												 <!-- <a class="label label-danger "  href="<?php //echo base_url().'allergy/editInfo/'.$sum['profileId'];?>">A</a> -->
+												 <?php //}?>	
+												
+												</td>
+											</tr>
+								<?php $i++; }  } else {?>
+								<tr>
+									<td colspan="5" class="center hidden-xs"><span class="label label-danger">No Records Found</span></td>
+								</tr>
+								<?php } ?>
+								
+							</tbody>
+						</table>
+					</div>
+					
+				<div id="newprofile" class="tab-pane fade">
                <?php if(in_array('2',$write_array)) {?>
 		<form name="profile_reg" id="profile_reg" enctype="multipart/form-data" method="post" action="<?php echo base_url('user/editProfile');?>">
 <?php //echo "<pre>"; var_dump($profile);
