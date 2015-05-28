@@ -158,8 +158,8 @@ if(isset($_GET['tab']))
 													$address .= $profile[0]['profileAddressSecondLine'].',<br/>';
 												if($profile[0]['profileAddressCity'] != '')
 													$address .= $profile[0]['profileAddressCity'].',<br/>';
-												if($profile[0]['profileAddressStateId'] != '')
-													$address .= $profile[0]['profileAddressStateId'].',<br/>';
+												if($profile[0]['profileAddressStateName'] != '')
+													$address .= $profile[0]['profileAddressStateName'].',<br/>';
 												if($profile[0]['profileAddressZip'] != '0' && $profile[0]['profileAddressZip'] != '')
 													$address .= $profile[0]['profileAddressZip'].',<br/>';
 												if($profile[0]['profileAddressCountryId'] != '')

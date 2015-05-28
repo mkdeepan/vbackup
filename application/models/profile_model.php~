@@ -9,7 +9,7 @@ class Profile_model extends CI_Model {
 
      public function profile_info($profileId='')
      {
-       $this->db->select('P.*, S.stateName as profileAddressStateName,C.countryName as profileAddressCountryId,D.*,I.providerName,I.planId,I.groupId,I.payerId,I.expMonth,I.expYear,I.expDay,I.scanCopyFront,I.scanCopyBack');
+       $this->db->select('P.*, S.stateName as profileAddressStateId,C.countryName as profileAddressCountryId,D.*,I.providerName,I.planId,I.groupId,I.payerId,I.expMonth,I.expYear,I.expDay,I.scanCopyFront,I.scanCopyBack');
        $this->db->join('State S','S.stateId= P.profileAddressStateId','left');
        $this->db->join('Country C','C.countryId= P.profileAddressCountryId','left');
        $this->db->join('DoctorDetails D','D.profileId=P.profileId','left');

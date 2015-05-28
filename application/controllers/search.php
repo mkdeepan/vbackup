@@ -5,10 +5,11 @@ class Search extends CI_Controller {
 	function __construct() {
         parent::__construct();
           error_reporting(E_ALL);
-	       $this->load->library('form_validation');
+	       $this->load->library(array('pagination','form_validation'));
 		    $this->load->library('session');
 		    $this->load->helper('cookie');
 		    $this->load->model('common_model');
+		    $this->load->model('search_model');
           $this->data = array(
             'template' => 'template',
             'controller' => $this->router->fetch_class(),
@@ -27,21 +28,42 @@ class Search extends CI_Controller {
 		  $data = array('title' => 'VAert - Allergist', 'page' => 'client/viewAllergist', 'errorCls' => NULL,'page_params' => NULL);
 	  	  $config = array();
 	  	  $options = array();
+	  	  if(isset($_GET) && isset($_GET['q']))
+	  	  {
+	  	  	 $q = $_GET['q'];
+	  	  	 $options['key'] = $q;
+	  	  }
+	     if(isset($_GET) && isset($_GET['key']))
+	  	  {
+	  	  	 $key = $_GET['key'];
+	  	  	 $options['addition'] = $key;
+	  	  }
 	     $config["base_url"] = base_url()."search/allergists";
 	     $config['first_url'] = base_url()."search/allergists";
 	     $config["suffix"] ="?q=".@$_GET['q'];
 		  $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		  $config["per_page"] = 5;
+		  $config["per_page"] = 2;
 	     $config["uri_segment"] = 3;
-		  $config["total_rows"] = "";
+		  $config["total_rows"] = $this->search_model->allergists($options,'count');
 		  $options['limit'] = $config["per_page"];  
 		  $options['offset'] = $page;  
-		  $data["feedback"] = "";
+		  $data["allergist"] = $this->search_model->allergists($options,'record');
 		  $data['offset'] = $page; 
-		  //$this->pagination->initialize($config);
-	     //$data["links"] = $this->pagination->create_links();
-	     //var_dump($data['feedback']);
+		  $this->pagination->initialize($config);
+	     $data["links"] = $this->pagination->create_links();
+	     //var_dump($data['allergist']);
 	     $data = $data + $this->data;
 	     $this->load->view($data['template'],$data);
+    }
+
+    public function getResponse($id)
+    {
+    	$sql = "SELECT count( DISTINCT accountId ) AS response, sum( avgRating ) AS rating FROM AllergistSurvey WHERE allergistId = '1'";
+    	$res = $this->common_model->custom_query($sql);
+    	if(!empty($res)){
+    		return array('response'=>$res[0]['response'],'rating'=>$res[0]['rating']);
+    	}else{
+    		return array('response'=>'0','rating'=>'0');
+    	}
     }
  }

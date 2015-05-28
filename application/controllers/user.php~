@@ -485,8 +485,8 @@ class User extends CI_Controller {
 		redirect('admin');
    	if($this->input->post('profile_save'))
 		{			
-			 /*var_dump($_FILES);
-			 var_dump($_POST); exit;*/
+			 var_dump($_FILES);
+			 var_dump($_POST); exit;
 			 
 			 //profile picture upload
 			 if($_FILES['prof_pic']){
@@ -516,7 +516,7 @@ class User extends CI_Controller {
 	       }   //var_dump($profile); exit;
 		    		
 		    //school image upload
-		    if($_FILES['logo']){
+		    if(isset($_FILES['logo'])){
 			    $config = array();
 			    $config['upload_path'] = './uploads/school/';
 			    $config['allowed_types'] = 'jpg|jpeg|gif|png|bmp';
@@ -580,10 +580,10 @@ class User extends CI_Controller {
 			           'profileAddressSame' => ($this->input->post('sameaddr'))?'1':'0',				           
 			           'profilePicture' => ($profile['file_name'])?$profile['file_name']:$this->input->post('old_profile_pic'),			           
 			           'profileSchoolName' => $this->input->post('schoolname'),            
-			           'profileSchoolLogo' => ($logo['file_name'])?$logo['file_name']:$this->input->post('old_school_logo'),				           
+			           'profileSchoolLogo' => (isset($logo['file_name']))?$logo['file_name']:$this->input->post('old_school_logo'),				           
 			           'profileSchoolGrade' => $this->input->post('grade'),				           			           
 			          );
-				
+				//var_dump($common); exit;
 		    //merge for same address
 		    if($this->input->post('sameaddr') == 'on')
 		    {
@@ -878,8 +878,9 @@ class User extends CI_Controller {
    	$data = $data + $this->data;
    	$data['state'] = $this->common_model->select_from('State');
    	$data['country'] = $this->common_model->select_from('Country');
-	$data['phone_type'] = $this->common_model->select_from('PhoneType');
-	$data['addr_type'] = $this->common_model->select_from('AddressType');   
-        $this->load->view($data['template'],$data);	
+	   $data['phone_type'] = $this->common_model->select_from('PhoneType');
+	   $data['addr_type'] = $this->common_model->select_from('AddressType');
+	   $data['summary'] = $this->user_model->get_summary_page($data['account_id']); //summary tab information   
+      $this->load->view($data['template'],$data);	
    }
 }

@@ -62,21 +62,19 @@
 									</div>
 								</a>
 							</li>	
-							<li <?php $open = '';
-                          $methods = array('allergists');
-                          if($controller == 'search' && in_array($method,$methods)) {echo "class='open'"; $open = 1;}?>>
+							<li>
 							<a href="javascript:void(0)">
 							      <div class="item-content">
 										<div class="item-media">
 											<i class="ti-search"></i>
 										</div>
 										<div class="item-inner">
-											<span class="title"> Search </span><i class="icon-arrow"></i>
+											<span class="title"> Search</span><i class="icon-arrow"></i>
 										</div>
 									</div>
 									
 								</a>
-							   <ul class="sub-menu" <?php echo ($open)? "style='display:block'":"";?>>
+							   <ul class="sub-menu" >
 									<li>
 										<a href="<?php echo base_url('search/allergists');?>">
 											<span class="title">Allergists</span>

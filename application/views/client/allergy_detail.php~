@@ -159,7 +159,7 @@ if(isset($_GET['tab']))
 												if($profile[0]['profileAddressCity'] != '')
 													$address .= $profile[0]['profileAddressCity'].',<br/>';
 												if($profile[0]['profileAddressStateId'] != '')
-													$address .= $profile[0]['profileAddressStateId'].',<br/>';
+													$address .= $profile[0]['profileAddressStateName'].',<br/>';
 												if($profile[0]['profileAddressZip'] != '0' && $profile[0]['profileAddressZip'] != '')
 													$address .= $profile[0]['profileAddressZip'].',<br/>';
 												if($profile[0]['profileAddressCountryId'] != '')
@@ -2378,7 +2378,7 @@ $(document).ready(function(){
 					   else if(parseInt($('#ayear').val())==currentYear)
 					   {
 					      if (mon >= currentMonth && val > currentDay){
-					        error = 1; msg = "Not a validi day";
+					        error = 1; msg = "Not a valid day";
 					      }
 					   }    		
     	      	}

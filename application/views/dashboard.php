@@ -7,45 +7,7 @@
 									<h1 class="mainTitle">Dashboard</h1>
 									
 								</div>
-								<!--<div class="col-sm-5">
-									<!-- start: MINI STATS WITH SPARKLINE -->
-									<!--<ul class="mini-stats pull-right">
-										<li>
-											<div class="sparkline-1">
-												<span ></span>
-											</div>
-											<div class="values">
-												<strong class="text-dark">18304</strong>
-												<p class="text-small no-margin">
-													Sales
-												</p>
-											</div>
-										</li>
-										<li>
-											<div class="sparkline-2">
-												<span ></span>
-											</div>
-											<div class="values">
-												<strong class="text-dark">&#36;3,833</strong>
-												<p class="text-small no-margin">
-													Earnings
-												</p>
-											</div>
-										</li>
-										<li>
-											<div class="sparkline-3">
-												<span ></span>
-											</div>
-											<div class="values">
-												<strong class="text-dark">&#36;848</strong>
-												<p class="text-small no-margin">
-													Referrals
-												</p>
-											</div>
-										</li>
-									</ul>-->
-									<!-- end: MINI STATS WITH SPARKLINE -->
-								<!--</div>-->
+								
 							</div>
 						</section>
 						<!-- end: DASHBOARD TITLE -->
@@ -1008,8 +970,8 @@
 		var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 		var xaxis = new Array();
 		var mysqldate = new Array();
-		for(var i=10;i>0;i--){			
-			if(i==10){
+		for(var i=9;i>=0;i--){			
+			if(i==9){
 				var newdate = new Date(today);
 				xaxis[i]=monthNames[newdate.getMonth()]+"' "+newdate.getDate();
 				mysqldate[i] = newdate.getFullYear()+"-"+(newdate.getMonth()+1)+"-"+newdate.getDate();

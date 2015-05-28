@@ -37,222 +37,101 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div class="search-classic">
-										<form action="#" class="well">
+										<form action="#" method="get" id="searchi" action="<?php echo base_url('search/allergists');?>" class="well">
 											<div class="input-group">
-												<input type="text" class="form-control" placeholder="Search...">
+												<input type="text" name="q" id="q" value="<?php echo (isset($_GET['q']))?$_GET['q']:''; ?>" class="form-control" placeholder="Search...">
+												<input type="hidden" name="key" id="key" value="" />
+											
 												<span class="input-group-btn">
-													<button class="btn btn-primary" type="button">
+													<button class="btn btn-primary" type="submit">
 														<i class="fa fa-search"></i> Search
 													</button> 
 											   </span>											  
 											</div>
-											<p class="search">Sort by: <a href="">Best Match</a> | <a href="">Patient Satisfaction</a> | <a href="">Experience Match</a> | <a href="">Hospital Quality</a> | <a href="">Last Name</a> | <a href="">Distance</a></p>
+											<!--<p style="text-align:justify" class="search">Sort by: <a class="active arrow-down" href="">Best Match</a> | <a href="">Patient Satisfaction</a> | <a href="">Experience Match</a> | <a href="">Hospital Quality</a> | <a href="">Last Name</a> | <a href="">Distance</a></p>-->
+											<p style="text-align:justify" class="search">Sort by: 
+											<a class="<?php echo (isset($_GET) && $_GET['key']=='lastname')?'active arrow-down':'';?>" id="lastname" href="javascript:void(0);">Last Name</a> | 
+											<a class="<?php echo (isset($_GET) && $_GET['key']=='rating')?'active arrow-down':'';?>" id="rating" href="javascript:void(0);">Patient Satisfaction</a></p>
 										</form>
-										<h3>Search results for 'Clip-Two'</h3>
+										<?php if(isset($_GET) && isset($_GET['q']) && $_GET['q'] !='')
+										   echo "<h3>Search results for '".$_GET['q']."'</h3>";
+										?>
 										<hr>
+										<?php
+										   if(!empty($allergist)){
+										   	foreach($allergist as $aller){
+										   		?>
 										<div class="col-md-12">
 										<div class="search-result">
 											<h4>
-											<a href="#">Dr. Vijay Kumar Ilango MBBS, MD,.</a>
-											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
-											</h4>
-											<div class="col-md-3">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-											<div class="user-image">
-												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/vijay.jpg" alt="">
-												</div>											   
-											</div>
-										   </div>
-										   </div>
-										   <p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>									
-										</div>									
-										</div>
-										<div class="clearfix"></div>										
-										<hr>										
-										<div class="col-md-12">
-										<div class="search-result">
-											<h4>
-											<a href="#">
-												Dr. Vijay Kumar Ilango MBBS, MD,.
+											<a href="#"><?=$aller['prefix']?>. 
+											<?php 
+											if($aller['firstname']) echo $aller['firstname'].' ';
+											if($aller['middlename']) echo $aller['middlename'].' ';
+											if($aller['lastname']) echo $aller['lastname'].' '; 
+											?> 
 											</a>
 											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
+											<small>
+											<?php 
+											if($aller['addrLine1']) echo $aller['addrLine1'].', ';
+											if($aller['addrLine2']) echo $aller['addrLine2'].', ';											
+											?><br>
+											<?php
+											if($aller['city']) echo $aller['city'].', ';
+											if($aller['state']) echo $aller['abbr'].', ';
+											if($aller['zip']) echo $aller['zip'].'. '; 
+											echo "(24.1 miles away)";
+											?> 
+											</small>		
 											</h4>
-											<div class="col-md-3">
+											<div class="col-md-3 docs">
 											<div class="fileinput fileinput-new" data-provides="fileinput">
 											<div class="user-image">
 												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/williams.jpg" alt="">
+												<?php
+												//$url = base_url().'uploads/allergist/'.$aller['picture'];
+												$url = $aller['picture'];
+												?>
+													<img src="<?php echo $url;?>" alt="">
 												</div>											   
 											</div>
 										   </div>
 										   </div>
-											<p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>	
-											
-										</div>									
-										</div>
-										<div class="clearfix"></div>										
-										<hr>	
-										<div class="col-md-12">
-										<div class="search-result">
-											<h4>
-											<a href="#">Dr. Vijay Kumar Ilango MBBS, MD,.</a>
-											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
-											</h4>
-											<div class="col-md-3">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-											<div class="user-image">
-												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/vijay.jpg" alt="">
-												</div>											   
+										   <?php
+										   $sql = "SELECT count( DISTINCT accountId ) AS response, sum( avgRating ) AS rating FROM AllergistSurvey WHERE allergistId = '".$aller['allergistId']."'";
+    	                           $res = common_model::custom_query($sql);
+    	                           $rating = '';
+    	                           if($res[0]['rating'])
+    	                             $rating = $res[0]['rating']/2;     	                          
+										   ?>
+										   <div class="col-md-4 docs">										
+											<div class="margin-bottom-15 doctor text-extra-large">
+											    <span class="bg-effect arrow_box">
+														<input type="hidden" class="rating" readonly="readonly" value="<?=$rating?>" data-stop="5"/>														
+												 </span>												 
 											</div>
-										   </div>
-										   </div>
-										   <p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>									
-										</div>									
+											<h2 class="responses">
+												 <?php echo $res[0]['response']; ?> <br>  Responses
+											</h2>
+											<div class="clearfix"></div>											 									
+											</div>																				
+										   </div>										   									
 										</div>
+										<div class="bg-dash col-md-12"><p class="share pull-right" style=""><a href="">share</a> | <a href="">save</a></p></div>
 										<div class="clearfix"></div>										
-										<hr>										
-										<div class="col-md-12">
-										<div class="search-result">
-											<h4>
-											<a href="#">
-												Dr. Vijay Kumar Ilango MBBS, MD,.
-											</a>
-											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
-											</h4>
-											<div class="col-md-3">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-											<div class="user-image">
-												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/williams.jpg" alt="">
-												</div>											   
-											</div>
-										   </div>
-										   </div>
-											<p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>	
-											
-										</div>									
-										</div>
-										<div class="clearfix"></div>										
-										<hr>	
-										<div class="col-md-12">
-										<div class="search-result">
-											<h4>
-											<a href="#">Dr. Vijay Kumar Ilango MBBS, MD,.</a>
-											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
-											</h4>
-											<div class="col-md-3">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-											<div class="user-image">
-												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/vijay.jpg" alt="">
-												</div>											   
-											</div>
-										   </div>
-										   </div>
-										   <p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>									
-										</div>									
-										</div>
-										<div class="clearfix"></div>										
-										<hr>										
-										<div class="col-md-12">
-										<div class="search-result">
-											<h4>
-											<a href="#">
-												Dr. Vijay Kumar Ilango MBBS, MD,.
-											</a>
-											<br>
-											<small>480 N Main St Ste 202 <br>Alpharetta, GA 30009 (24.1 miles away) </small>		
-											</h4>
-											<div class="col-md-3">
-											<div class="fileinput fileinput-new" data-provides="fileinput">
-											<div class="user-image">
-												<div class="fileinput-new thumbnail">
-													<img src="<?php echo base_url();?>uploads/allergist/williams.jpg" alt="">
-												</div>											   
-											</div>
-										   </div>
-										   </div>
-											<p>
-											<div class="margin-bottom-10 text-extra-large">
-												<input type="hidden" name="rating" id="rating" class="rating-tooltip" data-filled="fa fa-star margin-right-5 text-yellow" data-empty="fa fa-star-o margin-right-5"/>
-												<!--<span class="label label-success"></span>-->
-											</div>	
-											</p>	
-											
-										</div>									
-										</div>
-										<div class="clearfix"></div>										
-										<hr>	
+										<hr>
+										   		<?php
+										   	}										   	
+										   }else{
+										      ?>
+										      <div class="bg-dash col-md-12"><h4 class="share">No records found.</h4></div>
+										      <?php
+										   }									    
+										?>															
 										
-										<ol class="pagination pull-right">
-											<li class="prev disabled">
-												<a href="#">
-													Prev
-												</a>
-											</li>
-											<li class="active">
-												<a href="#">
-													1
-												</a>
-											</li>
-											<li>
-												<a href="#">
-													2
-												</a>
-											</li>
-											<li>
-												<a href="#">
-													3
-												</a>
-											</li>
-											<li>
-												<a href="#">
-													4
-												</a>
-											</li>
-											<li>
-												<a href="#">
-													5
-												</a>
-											</li>
-											<li class="next">
-												<a href="#">
-													Next
-												</a>
-											</li>
-										</ol>
+										<?php echo $links; ?>
+										
 									</div>
 								</div>
 							</div>
@@ -261,6 +140,14 @@
 </div>
 <script>
 $(document).ready(function(){
+	$('#lastname').on('click', function(){
+		$('#key').val('lastname');
+		$('#searchi').submit();
+	});
+	$('#rating').on('click', function(){
+		$('#key').val('rating');
+		$('#searchi').submit();
+	});
 	$('.rating, .rating-tooltip').each(function() {
 			$(this).val() > 0 ? $(this).next(".label").show().text($(this).val() || ' ') : $(this).next(".label").hide();
 		});
